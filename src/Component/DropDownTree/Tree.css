@@ -1,146 +1,472 @@
-.tag {
-    background-color: #f4f4f4;
-    border: 1px solid #e9e9e9;
-    padding: 2px 0 2px 2px;
-    border-radius: 2px;
-    display: inline-block;
+:root {
+    --primary: #0058b7;
+  
+  
   }
-  .tag:focus-within {
-    background-color: #e9e9e9;
-    border-color: #a0a0a0;
+  
+  
+  body{
+    /* position: fixed; */
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
   }
-  .tag-remove {
-    color: #a0a0a0;
-    font-size: 75%;
-    line-height: 100%;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-    outline: none;
+  
+  
+  @font-face {
+      font-family: "Material Icons";
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/materialicons/v36/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2)
+        format("woff2");
+    }
+    
+  
+   
+    
+  
+  .mapdiv {
+      height: 100vh;
+    
+      color: #00ff4cd5;
+    }
+    
+    .allcontent {
+      display: flex;
+      /* width: 25%; */
+    }
+    
+    .tableofsreach {
+      width: 25%;
+    }
+    
+    .mapdiv {
+      width: 74%;
+      float: right;
+    }
+    
+    .inptsearch {
+      margin-bottom: 25px;
+    }
+    
+    .inptsearch input {
+      height: 24px;
+      width: 87%;
+    }
+    
+    .road button {
+      width: 90%;
+      height: 37px;
+      background-color: #76c893;
+      color: white;
+      font-weight: bolder;
+      font-size: 21px;
+      border-radius: 5px;
+      margin-top: 2px;
+      margin-bottom: 14px;
+      border: none;
+    }
+    
+    .dropdown-trigger[aria-expanded="true"] {
+      background-color: transparent;
+    }
+    
+   
+    .node > label {
+      font-size: 18px;
+      font-family: monospace;
+      cursor: pointer;
+      margin-left: 2px;
+      color: black;
+    }
+    
+    .react-dropdown-tree-select .dropdown .dropdown-trigger {
+      width: 230px;
+      padding: 4px;
+      line-height: 20px;
+      max-height: auto;
+      display: inline-block;
+      overflow: auto;
+      border: 1px solid #b9b9b9;
+    }
+    
+    .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.top:after {
+      margin-left: 22px;
+    }
+    
+    .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.bottom:after {
+      margin-left: 22px;
+    }
+    
+    
+    /* fallback, until https://github.com/CompuIves/codesandbox-client/issues/174 is resolved */
+    /* @font-face {
+      font-family: "Material Icons";
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/materialicons/v36/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2)
+        format("woff2");
+    } */
+    
+    .material-icons {
+      font-family: "Material Icons";
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* mdl-demo is a custom classname to increases the specificity of our styles. It can be anything. 
+     * The idea is that it is easy to extend/override builtin styles with very little effort.
+     */
+    
+    .mdl-demo .dropdown-trigger > span:after {
+      font-size: 12px;
+      color: #555;
+    }
+    
+    .mdl-demo .toggle {
+      font: normal normal normal 18px/1 "Material Icons";
+      color: #555;
+      white-space: pre;
+      margin-right: 4px;
+    }
+    
+    .mdl-demo .toggle.collapsed::after {
+      cursor: pointer;
+      content: "\E5CF";
+      vertical-align: middle;
+    }
+    
+    .mdl-demo .toggle.expanded::after {
+      cursor: pointer;
+      content: "\E5CE";
+      vertical-align: middle;
+    }
+    
+    /* checkbox styles */
+    .mdl-demo .checkbox-item {
+      position: relative;
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.75rem;
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      outline: 0;
+      vertical-align: middle;
+    }
+    
+    .mdl-demo .checkbox-item:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      border: 2px solid #aaa;
+      transition: all 0.3s ease-in-out;
+    }
+    
+    .mdl-demo .checkbox-item:checked:before {
+      height: 50%;
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+      border-top-style: none;
+      border-right-style: none;
+      border-color: #2196f3;
+    }
+    
+    .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow {
+      cursor: pointer;
+      display:none;
+    }
+    
+    .react-dropdown-tree-select .dropdown .dropdown-content .search{
+      height: 30px;
+      width: 22vw;
+      font-size: 17px;
+      margin-left: -22px;
+    }
+    
+  
+    
+    
+    .react-dropdown-tree-select .dropdown .dropdown-content {
+      overflow-x: hidden;
+      position: sticky;
+      z-index: 1;
+      background: #ffffff;
+      border-top: 1px solid rgba(0,0,0,.05);
+      box-shadow: 0 5px 8px rgba(0,0,0,.15);
+     width: 27vw; 
+      margin-left: 4px;
+      border-radius: 5px;
+      box-shadow: none;
+     
+    }
+    
+    .react-dropdown-tree-select .dropdown .dropdown-content ul {
+      margin-top: 17px;
+    
   }
-  .tag-remove.disabled,
-  .tag-remove.readOnly {
-    cursor: not-allowed;
+    
+    
+    
+    /* Slide Bar */
+    
+    
+    :root {
+      --app-bg: #101827;
+      --sidebar: rgba(21, 30, 47, 1);
+      --sidebar-main-color: #fff;
+      --table-border: #1a2131;
+      --table-header: #1a2131;
+      --app-content-main-color: #fff;
+      --sidebar-link: #fff;
+      --sidebar-active-link: #1d283c;
+      --sidebar-hover-link: #387fff;
+      --action-color: #2869ff;
+      --action-color-hover: #6291fd;
+      --app-content-secondary-color: #1d283c;
+      --filter-reset: #2c394f;
+      --filter-shadow: rgba(16, 24, 39, 0.8) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    }
+    .light:root {
+      --app-bg: #fff;
+      --sidebar: #f3f6fd;
+      --app-content-secondary-color: #f3f6fd;
+      --app-content-main-color: #1f1c2e;
+      --sidebar-link: #1f1c2e;
+      --sidebar-hover-link: #387fff;
+      --sidebar-active-link: rgba(195, 207, 244, 1);
+      --sidebar-main-color: #1f1c2e;
+      --filter-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      /* background-color: var(--app-bg); */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .app-container {
+      border-radius: 4px;
+      width: 100%;
+      height: 100%;
+      max-height: 100%;
+      max-width: 1280px;
+      /* display: flex; */
+      /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+      max-width: 2000px;
+      margin: 0 auto;
+    }
+    .sidebar {
+      background-color: var(--primary);
+      /* position: absolute; */
+      overflow: auto;
+      /* min-height: 59vw; */
+      /* height: 100%; */
+      min-width: 329px;
+      flex-basis: 200px;
+      /* max-width: 200px; */
+      flex-shrink: 0;
+      /* background-color: var(--sidebar); */
+      display: flex;
+      flex-direction: column;
+      width: 20%;
+    }
+  
+  .infinite-scroll-component {
+      height: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 800px;
+      width: 26vw;  
+        text-align: left;
+    
+      margin-left: 12px;
+     
   }
-  .tag-remove:focus {
-    color: #3c3c3c;
+  
+  .mdl-demo .react-dropdown-tree-select{
+width: 24vw;
   }
-  .node > label {
-    cursor: pointer;
-    margin-left: 2px;
+  
+  .mytree{
+    display: flex;
   }
-  .tag-list {
-    display: inline;
-    padding: 0;
-    margin: 0;
+  
+  
+  
+    .infinite-scroll-component::-webkit-scrollbar-track {
+      border: 1px solid #000;
+      padding: 2px 0;
+      background-color: #404040;
+    }
+    
+    .infinite-scroll-component::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    .infinite-scroll-component::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      /* box-shadow: inset 0 0 6px rgba(0,0,0,.3); */
+      background-color: #737272;
+      border: 1px solid #000;
+    }
+  
+  
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+    }
+    .sidebar-list {
+      list-style-type: none;
+      padding: 0;
+      width: 24.5vw;
+    }
+    .sidebar-list-item {
+      border-radius: 4px;
+      position: relative;
+      margin-bottom: 4px;
+      /* width: 26vw; */
+    }
+    .sidebar-list-item a {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 10px 16px;
+      color: var(--sidebar-link);
+      text-decoration: none;
+      font-size: 17px;
+      line-height: 32px;
+    }
+    .Livepreview svg {
+      margin-right: 8px;
+      fill: white;
+    }
+    .sidebar-list-item:hover {
+      background-color: #0058b7;
+    }
+    .sidebar-list-item.active {
+      background-color:  #0058b7;
+    }
+    .sidebar-list-item.active:before {
+      content: '';
+      position: absolute;
+      right: 0;
+      background-color:  #0058b7;
+      height: 100%;
+      width: 4px;
+    }
+    @media screen and (max-width: 1024px) {
+      .sidebar {
+        display: none;
+     }
+    }
+    
+    .logoContainer img{
+      width: 100%;
+  
+    }
+    
+  
+    
+    .node{
+      padding: 6px;  
   }
-  .tag-item {
-    display: inline-block;
-    margin: 4px;
+  
+  
+    .node.focused {
+      background-color: #8aa8ff;
   }
-  .tag-item .search {
-    border: none;
-    border-bottom: 1px solid #ccc;
-    outline: none;
+  
+  
+  /* DateTimPicker */
+  .css-136syx4-MuiStack-root{
+    background-color: white;
+    overflow: hidden;
+    width: 233px;
+      border-radius: 7px;
+      height: 49px;
   }
-  .tag-item:last-child {
-    margin-right: 4px;
+  
+  .MuiStack-root .css-136syx4-MuiStack-root{
+    width: 233px;
+    border-radius: 7px;
+    height: 49px;
   }
-  .hide:not(.match-in-children) {
-    display: none;
+  .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root{
+    top: 8px;
   }
-  .react-dropdown-tree-select .dropdown {
+  
+  .searchContainer{
+    margin-bottom: 13px;
+    display: flex;
+  }
+  .searchContainer input{
+    font-size: 19px;
+    width: 23vw;
+    height: 3vw;
+  }
+  .searchContainer button{
+    width: 5vw;
+    border-radius: 9px;
+    font-size: 14px;
+    font-family: system-ui;
+    margin-left: 5px;
+  }
+  
+  .Radiocontainer{
+    margin-left: 7px;
+    display: flex;
+  }
+  
+  .Radiocontainer label{
     position: relative;
-    display: table;
+    top: -2px;
+    color: rgb(0, 0, 0);
   }
-  .react-dropdown-tree-select .dropdown .dropdown-trigger {
-    padding: 4px;
-    line-height: 20px;
-    max-height: 200px;
-    display: inline-block;
-    overflow: auto;
-    border: 1px solid #b9b9b9;
-  }
-  .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow {
-    cursor: pointer;
-  }
-  .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.bottom:after {
-    content: "\25BC";
-    vertical-align: middle;
-    color: #3c3c3c;
-    margin-right: 2px;
-  }
-  .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.top:after {
-    content: "\25B2";
-    vertical-align: middle;
-    color: #3c3c3c;
-    margin-right: 2px;
-  }
-  .react-dropdown-tree-select .dropdown .dropdown-trigger.arrow.disabled {
-    cursor: not-allowed;
-  }
-  .react-dropdown-tree-select
-    .dropdown
-    .dropdown-trigger.arrow.disabled.bottom:after {
-    color: #b9b9b9;
-  }
-  .react-dropdown-tree-select .dropdown .dropdown-content {
-    position: absolute;
-    padding: 4px;
-    z-index: 1;
-    background: #fff;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    -webkit-box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
-    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
-  }
-  .react-dropdown-tree-select .dropdown .dropdown-content ul {
-    margin: 0;
-    padding: 0;
-  }
-  .node {
-    list-style: none;
-    white-space: nowrap;
-    padding: 4px;
-  }
-  .node.leaf.collapsed {
-    display: none;
-  }
-  .node.disabled > * {
-    color: gray;
-    cursor: not-allowed;
-  }
-  .node.match-in-children.hide .node-label {
-    opacity: 0.5;
-  }
-  .node.focused {
-    background-color: #f4f4f4;
-  }
-  .toggle {
-    white-space: pre;
-    margin-right: 4px;
-    cursor: pointer;
-  }
-  .toggle:after {
-    content: " ";
-  }
-  .toggle.collapsed:after {
-    content: "+";
-  }
-  .toggle.expanded:after {
-    content: "-";
-  }
-  .searchModeOn .toggle {
-    display: none;
-  }
-  .checkbox-item,
-  .radio-item {
-    vertical-align: middle;
-    margin: 0 4px 0 0;
-  }
-  .checkbox-item.simple-select,
-  .radio-item.simple-select {
-    display: none;
+  .Radiocontainer input{
+    position: relative;
+    height: 31px;
+    font-size: 39px;
+    width: 21px;
+    top: -9px;
   }
   
-  /*# sourceMappingURL=styles.css.map*/
+  .radioDivVh{
+    margin: 7px;
+    display: flex;
   
+  }
+  
+  .dddd{
+    background-color: white;
+  
+    /* border-right: 1px solid black; */
+  
+  }
+  
+  .react-dropdown-tree-select .dropdown .dropdown-content ul{
+    height: 42vw;
+  }
