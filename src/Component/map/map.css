@@ -1,0 +1,3 @@
+div.mapdiv{
+    height: calc(100vh - 34px) !important;
+}

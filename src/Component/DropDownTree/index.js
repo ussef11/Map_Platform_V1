@@ -7,6 +7,7 @@ import {
   ReactDropdownTreeSelectMemoized,
 } from "./dropdownTree.container";
 import { ContextID } from "../../Helper/ContextID";
+import axios from "axios";
 
 function Tree() {
   const [ShowLive, setShowLive] = useState(true);
@@ -17,7 +18,9 @@ function Tree() {
   const [TimeFrominput, setTimeFrominput] = useState();
  const [RadioChange , SetsetRadioChange] =  useState(false)
   const { lat_lng, Setlat_lng } = useContext(ContextID);
-
+  const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
+  const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
+ 
   const handlechangeRadio = (e) => {
     setValueCheckedRadio()
     setValueCheckedRadio(e.target.value);
@@ -26,6 +29,29 @@ function Tree() {
     SetsetRadioChange((prev)=>!prev ,RadioChange  )
     console.log(RadioChange);
   };
+  const [ShowTempreel ,  SetShowTempreel] = useState(false)
+  const [ShowHISTORIQUE ,  SetShowHISTORIQUE] = useState(false)
+  useEffect(()=>{
+    if(ContextShowtTee === "TEMPS REEL"){
+      SetShowHISTORIQUE(false)
+      SetShowTempreel(true)
+      console.log(ShowTempreel)
+    }
+    else if(ContextShowtTee === "HISTORIQUE" )
+    {
+      SetShowTempreel(false)
+      SetShowHISTORIQUE(true)
+
+    }else if("close All"){
+      SetShowTempreel(false)
+      SetShowHISTORIQUE(false)
+    }
+
+
+
+  } ,[ContextShowtTee])
+
+  
 
   const {
     Data: vh,
@@ -181,25 +207,26 @@ function Tree() {
 
   useEffect(() => {
     if(ValueCheckedRadio == "vehicul"){
-        
+      setSelectedRadioValue("vehicul")
         if (vh != null) {
-            console.log('vvvvvvvv')
+           
         
             const nestedData = getNestedData(vh, null);
             setDataFromServer(nestedData);
           }
     }
     if(ValueCheckedRadio == "circuit"){
-        
+      setSelectedRadioValue("circuit")
         if (ci != null) {
            
             const nestedData = getNestedData(ci, null);
             setDataFromServer(nestedData);
             console.log(nestedData)
+           
           }
     }
     if(ValueCheckedRadio == "conducteur"){
-        
+      setSelectedRadioValue("conducteur")
         if (ci != null) {
             
             const nestedData = getNestedData(ci, null);
@@ -211,61 +238,109 @@ function Tree() {
   },  [vh , ci ,ValueCheckedRadio ,RadioChange]);
 
   const [Allids, SetAllids] = useState([]);
+  const [devicesP, setDevicesP] = useState([]) 
+
+  useEffect(() => {
+    axios.get('http://tanger.geodaki.com:3000/rpc/tempsreel?uid=71').then((response) => {
+      setDevicesP(response.data);
+    });
+  }, []);
+
+  useEffect(()=>{
+    // console.log("lat_lng from index", lat_lng)
+
+    let Lat_lng =[]
+        devicesP.map((x) => {
+            let position = {
+              lat: x.lat,
+              lng: x.lon,
+            };
+            Lat_lng.push(position)
+            // console.log(Lat_lng)
+            Setlat_lng(Lat_lng);
+               });
+
+  },[ValueCheckedRadio])
 
   const handleChange =  useMemo(
-     () => async (_, selectedValues) => {
-      //   setSeletedValue(selectedValues.map((val) => val.label));
-      //   SetID(selectedValues.map((val) => val.value));
+    
 
-      console.log(selectedValues);
+     () => async (currentNode, selectedValues) => {
+      Setlat_lng()
+      
+      
+      console.log("currentNode" ,currentNode )
+
       let id = [];
       let Lat_lng =[]
+      let deviceid =[]
 
       selectedValues.map((item) => {
         SetAllids((current) => [...current, item.value]);
         id.push(item.value);
+        
       });
-      console.log(id);
+   console.log("id" ,id)
 
+   try {
+    let res
+    res = await fetch(`http://tanger.geodaki.com:3000/rpc/circuit_by_id?idc={${id}}`, requestOptions);
+       const result = await res.json();
+       console.log("result from circuit_by_id",result)
+       result.map((item) => {
+       
+         deviceid.push(item.deviceid)
+          
+       
+    
+      
+           });
+           
+  } catch (error) {
+    console.log('error', error);
+  }
+
+  console.log("deviceid"  , deviceid)
+  console.log("idd"  , id)
       var requestOptions = {
         method: 'GET',
         redirect: 'follow'
       };
-      
+      let response
       try {
-        const response = await fetch(`http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${id}}&uid=71`, requestOptions);
+        if(ValueCheckedRadio == "vehicul"){
+           response = await fetch(`http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${id}}&uid=71`, requestOptions);
+        }  if(ValueCheckedRadio == "circuit"){
+           response = await fetch(`http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${deviceid}}&uid=71`, requestOptions);
+           console.log( "dddddfffffffffffff" ,response)
+        }
+     
         const result = await response.json();
-    
+        console.log("result",result)
         result.map((x) => {
           let position = {
             lat: x.lat,
             lng: x.lon,
+            id :id
           };
           Lat_lng.push(position)
-          console.log(Lat_lng)
+         
           Setlat_lng(Lat_lng);
+          console.log("Setlat_lng after :" , lat_lng)
              });
       } catch (error) {
         console.log('error', error);
       }
+     
     },
-    []
+    [RadioChange]
   );
 
-  // useEffect(() => {
-  //   if (vh != null) {
-  //     const nestedData = getNestedData(vh, null);
-  //     setDataFromServer(nestedData);
-  //   }
-  // }, [vh]);
 
-  // if (!dataFromServer) {
-  //   return "loading...";
-  // }
 
   return (
     <>
-      {ShowLive && (
+      {ShowTempreel && (
         <div className="theTreediv">
           <div className="dddd">
             <div className="Radiocontainer" onChange={handlechangeRadio}>
@@ -328,6 +403,7 @@ function Tree() {
                 inlineSearchInput
                 showDropdown="always"
                 className="mdl-demo"
+                
               />
             </div> : "LOADING.."}
            

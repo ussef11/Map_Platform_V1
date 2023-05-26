@@ -1,69 +1,52 @@
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from 'react';
+import { MenuOutlined,AlertOutlined, CloseOutlined } from '@ant-design/icons';
+import ReactDOM from 'react-dom/client';
 import './Navbar.css'
- import useWindowDimensions from "../Hook/useWindowDimensions";
-import { useEffect, useRef , useState } from "react";
+import { ContextID } from '../Helper/ContextID';
 
+function Navbar() {
+  const [menuVisible, setMenuVisible] = useState(true);
+  const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
 
-const Navbar = () => {
-
-    const {height , width} = useWindowDimensions();
-    const [showopt , setShowopt] = useState(true);
-    const [optmobile , setoptmobile] = useState(false);
-    const [searchinput , setsearchinput] = useState("Srearch");
-    const [showadminBoard , setShowAdminBoard] =  useState(false)
-    const [currentUser , SetCurrentUser] = useState("");
-   
-
-
-    useEffect(()=>{
-        if(width <= 600){
-            setShowopt(false)
-        }else{
-            setShowopt(true)
-        }    
-       
-    })
-   
-    const handleclick = ()=>{
-        setoptmobile(true)      
-    }
-
-    const closeclick = ()=>{
-        if(optmobile)
-        {
-            setoptmobile(false)   
-        }    
-    }
-
-
-    const logoutSubmite = ()=>{
+  const toggleMenu = () => {
     
-        sessionStorage.clear();
-        window.location.reload();
-    }
+    SetContextShowtTree("close All")
 
-
-
-
-
-    
-    return ( 
-  <nav>
-    <input type="checkbox" id="check" />
-    <label for="check" class="checkbtn"><i class="fas fa-bars"></i></label>
-    <label class="logo">Insight solution</label>
-    <ul>
-      <li><Link class="active" href="#">Home</Link></li>
-      <li><Link href="#">About</Link></li>
-      <li><Link href="#">Services</Link></li>
-      <li><Link href="#">Contact</Link></li>
-      <li><Link href="#">Feedback</Link></li>
-    </ul>
-  </nav>
-  
-  
-  
-     );
-}
+    console.log(menuVisible)
  
+
+  };
+
+  useEffect(()=>{
+    if(ContextShowtTee != "close All"  ){
+        setMenuVisible(true);
+    }else{
+        setMenuVisible(false);
+    }
+  } ,[ContextShowtTee] )
+
+  
+
+  return (
+    <div style={{ width: '100%', height: 'auto', backgroundColor: 'rgb(14, 88, 144)', paddingTop:'10px', paddingBottom:'2px', height: '32px ', alignContent: 'center', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 20px' }}>
+        <div style={{ display: 'flex', alignItems: 'left', flexDirection:'row', width:'100%' }}>
+          <div style={{width:'55px', textAlign:'left'}}>
+            <button id='closeMenuButon'  onClick={toggleMenu} style={{background: 'none', border: 'none', color:"white", fontSize:'17pt', cursor:"pointer"}}>
+           {menuVisible ?  <i class="fa-solid fa-xmark"></i>  :    <i class="fa-solid fa-bars"></i> }
+            </button>
+          </div>
+          {/* <div style={{width:'calc(100% - 60px)', textAlign: 'right'}}>
+            <button onClick={toggleMenu} style={{background: 'none', border: 'none', color:"white", fontSize:'17pt', cursor:"pointer"}}>
+            <i class="fa-solid fa-bars"></i>
+            </button>
+          </div> */}
+
+         
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default Navbar;
