@@ -10,6 +10,7 @@ const Home = () => {
   const [lat_lng, Setlat_lng] = useState();
   const [ContextShowtTee, SetContextShowtTree] = useState();
   const [SelectedRadioValue, setSelectedRadioValue] = useState();
+  const [SelectedRadioTree, setSelectedRadioTree] = useState();
   return (
     <ContextID.Provider
       value={{
@@ -19,6 +20,8 @@ const Home = () => {
         SetContextShowtTree,
         SelectedRadioValue,
         setSelectedRadioValue,
+        SelectedRadioTree,
+        setSelectedRadioTree
       }}
     >
       <>

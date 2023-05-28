@@ -1,3 +1,19 @@
 div.mapdiv{
     height: calc(100vh - 34px) !important;
 }
+
+.labelDiv  span{
+    line-height: 23px;
+    color: black;
+    font-weight: 600;
+
+}
+.labelDiv  div{
+    line-height: 23px;
+    color: black;
+
+}
+
+.borderDiv{
+    border-bottom: 1px solid gray;
+}
