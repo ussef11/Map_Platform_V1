@@ -194,9 +194,9 @@
     
     .react-dropdown-tree-select .dropdown .dropdown-content .search{
       height: 30px;
-      width: 22vw;
-      font-size: 17px;
-      margin-left: -22px;
+    width: 308px;
+    font-size: 17px;
+    /* margin-left: -57px; */
     }
     
   
@@ -209,7 +209,7 @@
       /* background: #ffffff; */
       border-top: 1px solid rgba(0,0,0,.05);
       box-shadow: 0 5px 8px rgba(0,0,0,.15);
-     width: 27vw; 
+     /* width: 27vw;  */
       margin-left: 4px;
       border-radius: 5px;
       box-shadow: none;
@@ -425,7 +425,7 @@ width: 24vw;
   }
   .searchContainer input{
     font-size: 19px;
-    width: 23vw;
+    width: 308px;
     height: 3vw;
   }
   .searchContainer button{
@@ -462,14 +462,13 @@ width: 24vw;
   
   .dddd{
     background-color: white;
-  
+    width: 344px;
     /* border-right: 1px solid black; */
   
   }
   
   .react-dropdown-tree-select .dropdown .dropdown-content ul{
-    height: 42vw;
-  }
+    height: 77vh;  }
 
 
   /* DisplayedNone */
@@ -487,6 +486,7 @@ width: 24vw;
       color: #555;
       white-space: pre;
       margin-right: 4px;
+      
     }
     
     .mdl-demoDisplayedNone .toggle.collapsed::after {

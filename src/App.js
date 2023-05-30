@@ -3,6 +3,7 @@ import './App.css';
 import Home from "./Home/Home"
 import NavBAr from "./NavBAR/NavBar"
 import { ContextShowtTee } from './Helper/ContextShowtTee'
+import Test from "./Test/test";
 function App() {
   return (
     <div className="App">
@@ -11,6 +12,7 @@ function App() {
   
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          <Route path="/Test" element={<Test />}></Route>
         </Routes>
       </BrowserRouter>
      

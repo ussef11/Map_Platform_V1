@@ -993,13 +993,17 @@ const Map = () => {
   const [polyLines, setPolyLine] = useState([]);
   const [activeMarker, setActiveMarker] = useState(null);
 
+
+
+
+
   const handleActiveMarker = (id) => {
     if (id === activeMarker) {
       return;
     }
     setActiveMarker(id);
   };
-
+  let coordinatesArray
   async function showPolyLine(idDevice) {
     let response;
     var requestOptions = {
@@ -1018,30 +1022,48 @@ const Map = () => {
 
         result.forEach((polygon) => {
           const coordinates = polygon.geom
-            .replace("MULTIPOLYGON(((", "")
-            .replace(")))", "");
-          const pairs = coordinates.split(",");
+            .replace("MULTILINESTRING((", "")
+            .replace("))", "");
+            // coordinates.split("),(")
+            // console.log("coordinates" ,coordinates )
+          const pairs = coordinates.split("),(");
+          const pairss = coordinates.split("),(");
+
+           coordinatesArray = pairss.map((pair) => {
+            const coordinates = pair.replace("(", "").replace(")", "").split(",");
+            return coordinates.map((coord) => {
+              const [lng, lat] = coord.trim().split(" ");
+              return { lat: parseFloat(lat), lng: parseFloat(lng) };
+            });
+          });
+        
+          setPolyLine(coordinatesArray);
+           console.log("coordinatesArray" ,coordinatesArray )
+
+
+
+
+
 
           pairs.forEach((pair) => {
+          
             const [lng, lat] = pair.trim().split(" ");
             const parsedLat = parseFloat(lat);
             const parsedLng = parseFloat(lng);
-
-            if (isNaN(parsedLng)) {
-              return;
-            }
             polyLine.push({ lat: parsedLat, lng: parsedLng });
-            setPolyLine([...polyLine]);
+            // setPolyLine([...polyLine]);
           });
         });
+        console.log(polyLine)
+
       } catch (error) {
         console.log("error", error);
       }
     }
-    console.log("polyLine", polyLines);
   }
 
   useEffect(() => {
+    setPolyLine([])
     if (SelectedRadioValue == "circuit") {
       if (SelectedRadioTree) {
         console.log(SelectedRadioTree);
@@ -1049,7 +1071,7 @@ const Map = () => {
         setShowPloyLine(true);
         showPolyLine(id);
       }
-    }
+    }setActiveMarker(null)
   }, [SelectedRadioTree]);
 
   useEffect(() => {
@@ -1087,6 +1109,7 @@ const Map = () => {
           } else if (polygon === tangerPolygon[1]) {
             polygonCoords2.push(coords);
           }
+          
         });
       });
 
@@ -1120,6 +1143,7 @@ const Map = () => {
       if (lat_lng) {
         console.log("lat_lng Feom MAppp", lat_lng);
         for (let i = 0; i < lat_lng.length; i++) {
+          console.log( "vehicule" , lat_lng[i].vehicule)
           const icons = {
             url: "https://cdn-icons-png.flaticon.com/512/3256/3256319.png",
             strokeColor: "#00ff4cd5",
@@ -1129,9 +1153,9 @@ const Map = () => {
 
             // rotation: x.heading,
           };
-          console.log("dddddddddddddddddd", lat_lng);
-          let name = lat_lng[i].name;
-          console.log(name);
+          // console.log("dddddddddddddddddd", lat_lng);
+          // let name = lat_lng[i].name;
+          // console.log(name);
           let position = {
             lat: lat_lng[i].lat,
             lng: lat_lng[i].lng,
@@ -1197,7 +1221,7 @@ const Map = () => {
                     handleActiveMarker(index);
                   }}
                 >
-                  {activeMarker === index ? (
+                  { activeMarker === index ? (
                     <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                       <div>
                         <div className="labelDiv">
@@ -1237,16 +1261,24 @@ const Map = () => {
                 />
               ))}
 
-            {ShowPloyLine && (
+            {
+            
+            polyLines && (
+             polyLines.map((x , index)=>(       
               <Polyline
-                path={polyLines}
-                geodesic={true}
-                options={{
-                  strokeColor: "blue",
-                  strokeOpacity: 1.0,
-                  strokeWeight: 2,
-                }}
-              />
+              key={index}
+              path={x}
+              geodesic={true}
+              options={{
+                strokeColor: "blue",
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+              }}
+            />
+             ))
+              
+            
+            
             )}
           </GoogleMap>
         ) : (

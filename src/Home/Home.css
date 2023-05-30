@@ -2,3 +2,10 @@
     display: flex;
     height: calc(100vh -70px);
 }
+
+.mapPopupContainer{
+    width: 100%;
+    /* height: 100px; */
+    position: relative;
+    display: flex;
+}

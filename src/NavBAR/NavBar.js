@@ -33,7 +33,7 @@ function Navbar() {
         <div style={{ display: 'flex', alignItems: 'left', flexDirection:'row', width:'100%' }}>
           <div style={{width:'55px', textAlign:'left'}}>
             <button id='closeMenuButon'  onClick={toggleMenu} style={{background: 'none', border: 'none', color:"white", fontSize:'17pt', cursor:"pointer"}}>
-           {menuVisible ?  <i class="fa-solid fa-xmark"></i>  :    <i class="fa-solid fa-bars"></i> }
+           {menuVisible ? <div className='iconNav'>  <i class="fa-solid fa-xmark"></i></div>  :    <div  className='iconNav'> <i class="fa-solid fa-bars"></i></div> }
             </button>
           </div>
           {/* <div style={{width:'calc(100% - 60px)', textAlign: 'right'}}>

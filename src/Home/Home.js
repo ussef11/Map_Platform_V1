@@ -5,12 +5,15 @@ import Menu from "../Component/SideMenu/Menu";
 import { ContextID } from "../Helper/ContextID";
 import { ContextShowtTee } from "../Helper/ContextShowtTee";
 import Navbar from "../NavBAR/NavBar";
+import Popup from "../Component/SidePopup/Popup";
+
 import "./Home.css";
 const Home = () => {
   const [lat_lng, Setlat_lng] = useState();
   const [ContextShowtTee, SetContextShowtTree] = useState();
   const [SelectedRadioValue, setSelectedRadioValue] = useState();
   const [SelectedRadioTree, setSelectedRadioTree] = useState();
+  const [resultForpopup, setresultForpopup] = useState();
   return (
     <ContextID.Provider
       value={{
@@ -21,7 +24,9 @@ const Home = () => {
         SelectedRadioValue,
         setSelectedRadioValue,
         SelectedRadioTree,
-        setSelectedRadioTree
+        setSelectedRadioTree,
+        resultForpopup,
+        setresultForpopup
       }}
     >
       <>
@@ -30,7 +35,9 @@ const Home = () => {
         <div className="Container">
           <Menu />
           <Tree />
-          <Map />
+          <div className="mapPopupContainer">      <Map />
+      <Popup/></div>
+      
         </div>
       </>
     </ContextID.Provider>

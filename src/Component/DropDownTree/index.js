@@ -21,6 +21,7 @@ function Tree() {
   const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
   const { SelectedRadioTree, setSelectedRadioTree } = useContext(ContextID);
+  const {resultForpopup, setresultForpopup} = useContext(ContextID);
 
   const handlechangeRadio = (e) => {
     setValueCheckedRadio();
@@ -260,12 +261,11 @@ function Tree() {
         lastacc: x.lastacc,
         fonction: x.fonction,
       };
-      console.log(  "typevehicule",x.typevehicule)
       Lat_lng.push(position);
       // console.log(Lat_lng)
       Setlat_lng(Lat_lng);
     });
-  }, [ValueCheckedRadio,lat_lng]);
+  }, [ValueCheckedRadio]);
 
   const handleChange = useMemo(
     () => async (currentNode, selectedValues) => {
@@ -333,7 +333,9 @@ function Tree() {
         }
 
         const result = await response.json();
+
         console.log("result", result);
+        setresultForpopup(result)
         result.map((x) => {
           let position = {
             lat: x.lat,
