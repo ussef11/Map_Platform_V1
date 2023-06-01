@@ -42,10 +42,14 @@ function Tree() {
     } else if (ContextShowtTee === "HISTORIQUE") {
       SetShowTempreel(false);
       SetShowHISTORIQUE(true);
-    } else if ("close All") {
+    } else if (ContextShowtTee ==="close All") {
       SetShowTempreel(false);
       SetShowHISTORIQUE(false);
-    }
+      Setlat_lng([])
+      setSelectedRadioValue([])
+      setSelectedRadioTree([])
+      setresultForpopup([])
+    } 
   }, [ContextShowtTee]);
 
   const {
@@ -374,7 +378,7 @@ function Tree() {
       }
     },
 
-    [RadioChange, ValueCheckedRadio]
+    [RadioChange, ValueCheckedRadio ,ContextShowtTee]
   );
 
   useEffect(() => 
@@ -447,7 +451,7 @@ function Tree() {
     return () => {
       clearInterval(intervalCall);
     };
-  }, [ValueCheckedRadio]);
+  }, [ValueCheckedRadio ,ContextShowtTee]);
   
 
 

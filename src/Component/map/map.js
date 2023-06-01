@@ -181,6 +181,7 @@ const Map = () => {
     setPolyLine();
     polyLine.push();
     setShowPloyLine(false);
+    setshowerrMsg(false)
   }, [SelectedRadioValue]);
 
   const polygonCoords1 = [];
