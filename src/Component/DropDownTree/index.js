@@ -23,6 +23,7 @@ function Tree() {
   const { SelectedRadioTree, setSelectedRadioTree } = useContext(ContextID);
   const {resultForpopup, setresultForpopup} = useContext(ContextID);
 
+
   const handlechangeRadio = (e) => {
     setValueCheckedRadio();
     setValueCheckedRadio(e.target.value);
@@ -394,7 +395,9 @@ function Tree() {
     [RadioChange, ValueCheckedRadio]
   );
 
-  useEffect(() => {
+  useEffect(() => 
+  {
+    setresultForpopup([])
     const fetchData = async () => {
       if (Array.isArray(id) && id.length !== 0) {
         let Lat_lng = [];
@@ -462,7 +465,7 @@ function Tree() {
     return () => {
       clearInterval(intervalCall);
     };
-  }, []);
+  }, [ValueCheckedRadio]);
   
 
 
