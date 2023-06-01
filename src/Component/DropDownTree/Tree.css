@@ -194,7 +194,7 @@
     
     .react-dropdown-tree-select .dropdown .dropdown-content .search{
       height: 30px;
-    width: 308px;
+    width: 303px;
     font-size: 17px;
     /* margin-left: -57px; */
     }
@@ -426,7 +426,7 @@ width: 24vw;
   .searchContainer input{
     font-size: 19px;
     width: 308px;
-    height: 3vw;
+    height: 39px;
   }
   .searchContainer button{
     width: 5vw;

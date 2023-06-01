@@ -270,20 +270,15 @@ function Tree() {
   const [test , settest] = useState(false)
   let id = [];
   let deviceid = [];
+ 
   const handleChange = useMemo(
     () => async (currentNode, selectedValues) => {
       Setlat_lng([]);
       id = [];
       deviceid = [];
-
-
       let Lat_lng = [];
-      
-      // setSelectedRadioTree([]);
-  
       console.log("currentNode currentNode", currentNode);
       console.log("selectedValues", selectedValues);
-  
       let currentNodeArrey = [currentNode];
   
       if (ValueCheckedRadio === "vehicul") {
@@ -329,7 +324,7 @@ function Tree() {
           let response;
           Setlat_lng([]);
           Lat_lng = [];
-          // setSelectedRadioTree([])
+      
           console.log("id inside the interval", id);
           if (ValueCheckedRadio === "vehicul") {
             response = await fetch(
@@ -370,28 +365,15 @@ function Tree() {
   
           Setlat_lng(Lat_lng);
           setSelectedRadioTree(Lat_lng);
+          console.log(  "SelectedRadioTreess",SelectedRadioTree)
           console.log("Setlat_lng after:", Lat_lng);
-       
-      
-     console.log( "id.length", id.length)
+          console.log( "id.length", id.length)
        
       } catch (error) {
         console.log("error", error);
       }
-
-
-  
-      
-
-
-
-
-
-
     },
 
-
-    
     [RadioChange, ValueCheckedRadio]
   );
 
@@ -401,18 +383,17 @@ function Tree() {
     const fetchData = async () => {
       if (Array.isArray(id) && id.length !== 0) {
         let Lat_lng = [];
-        let deviceid = [];
+      
   
         var requestOptions = {
           method: "GET",
           redirect: "follow",
         };
-  
         try {
           let response;
           Setlat_lng([]);
           Lat_lng = [];
-          // setSelectedRadioTree([])
+       
           console.log("id inside the interval", id);
           if (ValueCheckedRadio === "vehicul") {
             response = await fetch(
@@ -453,7 +434,8 @@ function Tree() {
   
           Setlat_lng(Lat_lng);
           setSelectedRadioTree(Lat_lng);
-          console.log("Setlat_lng afterdd:", Lat_lng);
+          console.log(  "SelectedRadioTreess",SelectedRadioTree)
+          console.log("Setlat_lng id:", id);
         } catch (error) {
           console.log("error", error);
         }

@@ -153,6 +153,9 @@ const Map = () => {
     }
   }
 
+
+  const [errMsg , SeterrMsg] = useState();
+  const [showerrMsg , setshowerrMsg] = useState(false)
   useEffect(() => {
     setPolyLine([])
     if (SelectedRadioValue == "circuit") {
@@ -162,8 +165,12 @@ const Map = () => {
           const id = SelectedRadioTree[0].id[0];
           setShowPloyLine(true);
           showPolyLine(id);
+          setshowerrMsg(false)
         }catch(error){
           console.log(error)
+          SeterrMsg("Sorry, Not Found !")
+          setshowerrMsg(true)
+         
         }
        
       }
@@ -294,6 +301,9 @@ const [test , settest] = useState(false)
   return (
     <>
       <div className="mapdiv">
+        { showerrMsg && <div className="errMsg">
+        <p>{errMsg}</p>  
+        </div>}
         {/* <button onClick={()=>{settest(!test)}}>Test</button> */}
         {isLoaded ? (
           <GoogleMap

@@ -22,3 +22,30 @@ div.mapdiv{
 .borderDiv{
     border-bottom: 1px solid gray;
 }
+
+
+.errMsg{
+    z-index: 10;
+    position: absolute;
+
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
+        margin-top: 13px;
+    background-color: #ff00008a;
+    height: 32px;
+    border-radius: 7px;
+    padding: 8px;
+
+    width: 216px;
+ 
+   
+}
+.errMsg p{
+    position: relative;
+    top: -2px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+}
