@@ -240,6 +240,7 @@ function Tree() {
   }, []);
 
   useEffect(() => {
+    
     console.log("lat_lng from index", lat_lng);
 
     let Lat_lng = [];
@@ -247,17 +248,14 @@ function Tree() {
       let position = {
         lat: x.lat,
         lng: x.lon,
-       
         name: x.name,
-        typevehicule: x.typevehicule,
-
+        typevehicule: x.typev,
         lastupdate: x.lastupdate,
         batterie: x.batterie,
-        vehicule: x.vehicule,
+        vehicule: x.typev,
         capteur: x.capteur,
         immatriculation: x.immatriculation,
         datems: x.datems,
-
         lastacc: x.lastacc,
         fonction: x.fonction,
       };
@@ -267,35 +265,41 @@ function Tree() {
     });
   }, [ValueCheckedRadio]);
 
+
+  const [test , settest] = useState(false)
+  let id = [];
+  let deviceid = [];
   const handleChange = useMemo(
     () => async (currentNode, selectedValues) => {
-      Setlat_lng();
+      Setlat_lng([]);
+      id = [];
+      deviceid = [];
 
-      setSelectedRadioTree();
 
-      console.log("currentNode", currentNode);
-      console.log("selectedValues", selectedValues);
-
-      let id = [];
       let Lat_lng = [];
-      let deviceid = [];
+      
+      // setSelectedRadioTree([]);
+  
+      console.log("currentNode currentNode", currentNode);
+      console.log("selectedValues", selectedValues);
+  
       let currentNodeArrey = [currentNode];
-
-      if (ValueCheckedRadio == "vehicul") {
+  
+      if (ValueCheckedRadio === "vehicul") {
         selectedValues.map((item) => {
           SetAllids((current) => [...current, item.value]);
           id.push(item.value);
         });
       }
-      if (ValueCheckedRadio == "circuit") {
+      if (ValueCheckedRadio === "circuit") {
         currentNodeArrey.map((item) => {
           SetAllids((current) => [...current, item.value]);
           id.push(item.value);
         });
       }
-
+  
       console.log("id", id);
-
+  
       try {
         let res;
         res = await fetch(
@@ -310,66 +314,184 @@ function Tree() {
       } catch (error) {
         console.log("error", error);
       }
-
+  
       console.log("deviceid", deviceid);
       console.log("idd", id);
+  
       var requestOptions = {
         method: "GET",
         redirect: "follow",
       };
-      let response;
+  
       try {
-        if (ValueCheckedRadio == "vehicul") {
-          response = await fetch(
-            `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${id}}&uid=71`,
-            requestOptions
-          );
-        }
-        if (ValueCheckedRadio == "circuit") {
-          response = await fetch(
-            `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${deviceid}}&uid=71`,
-            requestOptions
-          );
-        }
-
-        const result = await response.json();
-
-        console.log("result", result);
-        setresultForpopup(result)
-        result.map((x) => {
-          let position = {
-            lat: x.lat,
-            lng: x.lon,
-            id: id,
-            name: x.name,
-            typevehicule: x.typevehicule,
-
-            lastupdate: x.lastupdate,
-            batterie: x.batterie,
-            vehicule: x.vehicule,
-            capteur: x.capteur,
-            immatriculation: x.immatriculation,
-            datems: x.datems,
-
-            lastacc: x.lastacc,
-            fonction: x.fonction,
-          };
-          Lat_lng.push(position);
-
+      
+          let response;
+          Setlat_lng([]);
+          Lat_lng = [];
+          // setSelectedRadioTree([])
+          console.log("id inside the interval", id);
+          if (ValueCheckedRadio === "vehicul") {
+            response = await fetch(
+              `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${id}}&uid=71`,
+              requestOptions
+            );
+          }
+          if (ValueCheckedRadio === "circuit") {
+            response = await fetch(
+              `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${deviceid}}&uid=71`,
+              requestOptions
+            );
+          }
+  
+          const result = await response.json();
+  
+          console.log("result", result);
+  
+          setresultForpopup(result);
+          result.map((x) => {
+            let position = {
+              lat: x.lat,
+              lng: x.lon,
+              id: id,
+              name: x.name,
+              typevehicule: x.typevehicule,
+              lastupdate: x.lastupdate,
+              batterie: x.batterie,
+              vehicule: x.vehicule,
+              capteur: x.capteur,
+              immatriculation: x.immatriculation,
+              datems: x.datems,
+              lastacc: x.lastacc,
+              fonction: x.fonction,
+            };
+            Lat_lng.push(position);
+          });
+  
           Setlat_lng(Lat_lng);
           setSelectedRadioTree(Lat_lng);
-          console.log("Setlat_lng after :", Lat_lng);
-        });
+          console.log("Setlat_lng after:", Lat_lng);
+       
+      
+     console.log( "id.length", id.length)
+       
       } catch (error) {
         console.log("error", error);
       }
+
+
+  
+      
+
+
+
+
+
+
     },
+
+
+    
     [RadioChange, ValueCheckedRadio]
   );
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (Array.isArray(id) && id.length !== 0) {
+        let Lat_lng = [];
+        let deviceid = [];
+  
+        var requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+  
+        try {
+          let response;
+          Setlat_lng([]);
+          Lat_lng = [];
+          // setSelectedRadioTree([])
+          console.log("id inside the interval", id);
+          if (ValueCheckedRadio === "vehicul") {
+            response = await fetch(
+              `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${id}}&uid=71`,
+              requestOptions
+            );
+          }
+          if (ValueCheckedRadio === "circuit") {
+            response = await fetch(
+              `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${deviceid}}&uid=71`,
+              requestOptions
+            );
+          }
+  
+          const result = await response.json();
+  
+          console.log("resultddd", result);
+  
+          setresultForpopup(result);
+          result.map((x) => {
+            let position = {
+              lat: x.lat,
+              lng: x.lon,
+              id: id,
+              name: x.name,
+              typevehicule: x.typevehicule,
+              lastupdate: x.lastupdate,
+              batterie: x.batterie,
+              vehicule: x.vehicule,
+              capteur: x.capteur,
+              immatriculation: x.immatriculation,
+              datems: x.datems,
+              lastacc: x.lastacc,
+              fonction: x.fonction,
+            };
+            Lat_lng.push(position);
+          });
+  
+          Setlat_lng(Lat_lng);
+          setSelectedRadioTree(Lat_lng);
+          console.log("Setlat_lng afterdd:", Lat_lng);
+        } catch (error) {
+          console.log("error", error);
+        }
+      }
+    };
+  
+    const intervalCall = setInterval(fetchData, 5000);
+  
+    return () => {
+      clearInterval(intervalCall);
+    };
+  }, []);
+  
+
+
+
+ 
+  
+  // useEffect(() => {
+  //   const intervalCall = setInterval(() => {
+  //     if (Array.isArray(id) && id.length !== 0) {
+  //       console.log("ids", id);
+  //     }
+  //   }, 5000);
+  
+  //   return () => {
+  //     // Clean up the interval when the component unmounts
+  //     clearInterval(intervalCall);
+  //   };
+  // }, []);
+
+
+
+
+
   return (
     <>
+ {/* <button onClick={handleChangeTEst}>test</button> */}
+    
       {ShowTempreel && (
+       
         <div className="theTreediv">
           <div className="dddd">
             <div className="Radiocontainer" onChange={handlechangeRadio}>

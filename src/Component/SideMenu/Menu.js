@@ -34,20 +34,7 @@ const MENU_ITEM_ICONS = {
   ETATS: <ApartmentOutlined />,
 };
 
-// transform data APi to MenuData, katbdel data li katji mn api bach trje3ha form dyal Menu
-/**
- * exemple :
- *   api : [
- *      {id:1, name='1', parent:'null'},
- *      {id:2, name='2', parent:1},
- *      {id:3, name='3', parent:'null'},
- *   ]
- *   new form :
- *      [
- *          {id:1, name:'1', childs:[{....}]}
- *      ]
- *
- */
+
 
 function transformDataToMenuItems(data) {
   // Find items with no parent and type 'interface'
@@ -136,10 +123,10 @@ function MenuSide({ handleMenuClick }) {
           lat: x.lat,
           lng: x.lon,
           name: x.name,
-          typevehicule: x.typevehicule,
+          typevehicule: x.typev,
           lastupdate: x.lastupdate,
           batterie: x.batterie,
-          vehicule: x.vehicule,
+          vehicule: x.typev,
           capteur: x.capteur,
           immatriculation: x.immatriculation,
           datems: x.datems,
