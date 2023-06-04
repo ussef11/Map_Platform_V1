@@ -19,6 +19,25 @@ const AccordionItem = (props) => {
     lastacc,
   } = faq;
 
+  const [showRIFDinfo , setshowRIFDinfo]  = useState(false)
+  const [showAllinfo , setshowAllinfo]  = useState(true)
+
+  const handleDispalyInfo =()=>{
+
+     if(showAllinfo === false){
+      setshowRIFDinfo(false)
+      setshowAllinfo(true)
+    }
+  }
+  const handleDispalyRifdInfo =()=>{
+    if(showRIFDinfo === false){
+      setshowRIFDinfo(true)
+      setshowAllinfo(false)
+    }
+  }
+
+  
+
   return (
     <div className="rc-accordion-card">
       <header
@@ -45,6 +64,12 @@ const AccordionItem = (props) => {
             : { height: "0px" }
         }
       >
+
+        <div className="divButtoninfo">
+          <button  style={ showAllinfo ?{backgroundColor:"#ff4b4b"} :{backgroundColor:"transparent"}} onClick={handleDispalyInfo}>Info</button>
+          <button style={ showRIFDinfo ?{backgroundColor:"#ff4b4b"} :{backgroundColor:"transparent"}}   onClick={handleDispalyRifdInfo}>RIFD</button>
+        </div>
+       { showAllinfo &&  <> 
         <div>
           <div className="divone">
             <p>{lastupdate}</p>
@@ -223,7 +248,29 @@ const AccordionItem = (props) => {
         {/* <p>{name}</p>
         <p>{vehicule}</p>
         <p>{fonction}</p> */}
+ </>}
+
+
+{  showRIFDinfo &&   <div>
+          <div className="divone">
+            <p>{name}</p>
+          </div>
+          <div className="divInfoContent">        
+            <div> 
+              <p> Fonction :</p>
+            </div>
+            <div>    
+              <p> {fonction}</p>
+            </div>
+          </div>
+        </div>}
+
+
       </div>
+
+
+
+
     </div>
   );
 };

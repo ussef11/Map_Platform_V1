@@ -204,7 +204,6 @@ const Map = () => {
             const [lng, lat] = pair.trim().split(" ");
             const parsedLat = parseFloat(lat);
             const parsedLng = parseFloat(lng);
-
             coords.push({ lat: parsedLat, lng: parsedLng });
           });
 

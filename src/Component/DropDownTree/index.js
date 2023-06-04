@@ -453,10 +453,6 @@ function Tree() {
     };
   }, [ValueCheckedRadio ,ContextShowtTee]);
   
-
-
-
- 
   
   // useEffect(() => {
   //   const intervalCall = setInterval(() => {
@@ -471,16 +467,9 @@ function Tree() {
   //   };
   // }, []);
 
-
-
-
-
   return (
     <>
- {/* <button onClick={handleChangeTEst}>test</button> */}
-    
-      {ShowTempreel && (
-       
+      {ShowTempreel && ( 
         <div className="theTreediv">
           <div className="dddd">
             <div className="Radiocontainer" onChange={handlechangeRadio}>

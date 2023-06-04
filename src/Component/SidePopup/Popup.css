@@ -93,3 +93,27 @@
     margin-left: auto; 
     margin-right: 0;
   }
+
+
+  .divButtoninfo{
+
+    margin-left: 1px;
+    height: 37px;
+    display: flex;
+    border: none;
+  }
+
+  .divButtoninfo button{
+    border-color: #bfbfbfbd;
+    width: 90px;
+    margin-right: -8px;
+    border-bottom: 0.5px;
+    margin-left: 10px;
+    background-color: transparent;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    font-weight: 600;
+
+    font-family: system-ui;
+    font-size: 17px;
+  }
