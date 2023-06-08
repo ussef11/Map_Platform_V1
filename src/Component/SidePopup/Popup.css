@@ -56,6 +56,7 @@
   }
   
   .collapse {
+    filter: blur(0);
     position: relative;
     height: 0;
     overflow: hidden;
@@ -117,3 +118,51 @@
     font-family: system-ui;
     font-size: 17px;
   }
+
+  .displayBackButton{
+    color: white;
+    font-family: inherit;
+    height: 34px;
+    margin-right: 20px;
+    padding: 4px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    background: #4ea4ff;
+    font-weight: 500;
+    width: 170px;
+  }
+
+  .displayBackButtonl{
+    color: white;
+    font-family: inherit;
+    height: 34px;
+    margin-right: 7px;
+    padding: 4px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    background: #4ea4ff;
+    font-weight: 500;
+    width: 29px;
+
+  }
+
+  .divInfotag{
+    padding: 11px;
+    display: flex;
+    height: 100px;
+    background-color: gray;
+    margin-top: 20px;
+    border-radius: 20px;
+    margin: 14px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .divInfotag label{
+    color :white
+
+  }
+
+  

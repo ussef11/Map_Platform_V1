@@ -18,5 +18,5 @@ export class ReactDropdownTreeSelectContainer extends React.Component {
 }
 
 export const ReactDropdownTreeSelectMemoized = React.memo(props => {
-  return <DropdownTreeSelect {...props} />;
+  return <DropdownTreeSelect {...props}  />;
 });

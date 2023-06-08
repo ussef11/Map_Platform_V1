@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
-import truck from "../../media/garbage-truck.svg";
+import truck from "../../media/images/garbage-truck.svg";
 import {
   Marker,
   useJsApiLoader,
@@ -14,42 +14,16 @@ import {
 import { ContextID } from "../../Helper/ContextID";
 import useFetch from "../../Hook/UseFetch";
 import "./map.css";
-import CHARIOT from '../../media/bacmetal_vert.png'
-import moto from '../../media/motoGreen.png'
-
-
-
 
 const Map = () => {
   const { lat_lng, Setlat_lng } = useContext(ContextID);
   const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const { SelectedRadioTree, setSelectedRadioTree } = useContext(ContextID);
+  const { displaybacs, setdisplaybacs } = useContext(ContextID);
   const center = {
     lat: 35.759465,
     lng: -5.833954,
   };
-
-
-  
-//  const [dtest , setdtest] = useState(false)
-//   useEffect(() => { 
-// if(lat_lng){
-//   console.log("Updated lat_lng:", lat_lng);
-// }else{
-//   console.log("none")
-// }
-//   }, [dtest]);
-//   useEffect(() => {
-//     const intervalId = setInterval(() => {
-//       setdtest((prevTest) => {
-//         const updatedTest = !prevTest;
-//         console.log(updatedTest);
-//         return updatedTest;
-//       });
-//     }, 5000);
-//     return () => clearInterval(intervalId); // Cleanup the interval on component unmount
-//   }, [])
-
 
   const [currnetposition, setcurrnetposition] = useState();
   const [hascurrnetposition, sethascurrnetposition] = useState(false);
@@ -66,10 +40,11 @@ const Map = () => {
   const [ShowPloyLine, setShowPloyLine] = useState(false);
   const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [triangleCoords1, setTriangleCoords1] = useState();
-  const [zoomy, setzoomy] = useState(7);
+  const [zoomy, setzoomy] = useState(12);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
 
-
+  const [mycenterlng, setmycenterlng] = useState(35.759465);
+  const [mycenterlat, setmycenterlat] = useState(-5.833954);
 
   const {
     Data: tangerPolygon,
@@ -84,17 +59,13 @@ const Map = () => {
   const [polyLines, setPolyLine] = useState([]);
   const [activeMarker, setActiveMarker] = useState(null);
 
-
-
-
-
   const handleActiveMarker = (id) => {
     if (id === activeMarker) {
       return;
     }
     setActiveMarker(id);
   };
-  let coordinatesArray
+  let coordinatesArray;
   async function showPolyLine(idDevice) {
     let response;
     var requestOptions = {
@@ -115,29 +86,26 @@ const Map = () => {
           const coordinates = polygon.geom
             .replace("MULTILINESTRING((", "")
             .replace("))", "");
-            // coordinates.split("),(")
-            // console.log("coordinates" ,coordinates )
+          // coordinates.split("),(")
+          // console.log("coordinates" ,coordinates )
           const pairs = coordinates.split("),(");
           const pairss = coordinates.split("),(");
 
-           coordinatesArray = pairss.map((pair) => {
-            const coordinates = pair.replace("(", "").replace(")", "").split(",");
+          coordinatesArray = pairss.map((pair) => {
+            const coordinates = pair
+              .replace("(", "")
+              .replace(")", "")
+              .split(",");
             return coordinates.map((coord) => {
               const [lng, lat] = coord.trim().split(" ");
               return { lat: parseFloat(lat), lng: parseFloat(lng) };
             });
           });
-        
+
           setPolyLine(coordinatesArray);
-           console.log("coordinatesArray" ,coordinatesArray )
-
-
-
-
-
+          console.log("coordinatesArray", coordinatesArray);
 
           pairs.forEach((pair) => {
-          
             const [lng, lat] = pair.trim().split(" ");
             const parsedLat = parseFloat(lat);
             const parsedLng = parseFloat(lng);
@@ -145,49 +113,55 @@ const Map = () => {
             // setPolyLine([...polyLine]);
           });
         });
-        console.log(polyLine)
-
+        console.log(polyLine);
       } catch (error) {
         console.log("error", error);
       }
     }
   }
 
-
-  const [errMsg , SeterrMsg] = useState();
-  const [showerrMsg , setshowerrMsg] = useState(false)
+  const [errMsg, SeterrMsg] = useState();
+  const [showerrMsg, setshowerrMsg] = useState(false);
   useEffect(() => {
-    setPolyLine([])
+    setPolyLine([]);
     if (SelectedRadioValue == "circuit") {
       if (SelectedRadioTree) {
-        try{
-          console.log(  "SelectedRadioTreeSelectedRadioTree",SelectedRadioTree);
+        try {
+          console.log("SelectedRadioTreeSelectedRadioTree", SelectedRadioTree);
           const id = SelectedRadioTree[0].id[0];
           setShowPloyLine(true);
           showPolyLine(id);
-          setshowerrMsg(false)
-        }catch(error){
-          console.log(error)
-          SeterrMsg("Sorry, Not Found !")
-          setshowerrMsg(true)
-         
+          setshowerrMsg(false);
+        } catch (error) {
+          console.log(error);
+          SeterrMsg("Sorry, Not Found !");
+          setshowerrMsg(true);
         }
-       
       }
-    }setActiveMarker(null)
+    }
+    setActiveMarker(null);
+  }, [SelectedRadioTree]);
+
+  useEffect(() => {
+    setmycenterlng(-5.833954);
+    setmycenterlat(35.759465);
+    // setzoomy(20)
+  }, [ContextShowtTee]);
+  useEffect(() => {
+    // setzoomy(20)
+    console.log("SelectedRadioTree1", zoomy);
   }, [SelectedRadioTree]);
 
   useEffect(() => {
     setPolyLine();
     polyLine.push();
     setShowPloyLine(false);
-    setshowerrMsg(false)
+    setshowerrMsg(false);
   }, [SelectedRadioValue]);
 
   const polygonCoords1 = [];
   const polygonCoords2 = [];
   useEffect(() => {
-    console.log(zoomy);
     console.log("ContextShowtTee", ContextShowtTee);
     if (tangerPolygon) {
       tangerPolygon.forEach((polygon) => {
@@ -212,7 +186,6 @@ const Map = () => {
           } else if (polygon === tangerPolygon[1]) {
             polygonCoords2.push(coords);
           }
-          
         });
       });
 
@@ -227,7 +200,9 @@ const Map = () => {
 
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
-
+    // setmycenterlng(-5.833954)
+    // setmycenterlat(35.759465)
+    // setzoomy(12)
     map.fitBounds(bounds);
   }, []);
 
@@ -235,9 +210,92 @@ const Map = () => {
     setMap(null);
   }, []);
 
-const [test , settest] = useState(false)
+  const [test, settest] = useState(false);
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  //Display Bacs
+  const [currentTimeB, setCurrentTimeB] = useState(new Date());
+
+  const [markersBacs , setmarkersBacs] = useState([])
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTimeB(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  useEffect(() => {
+    if (isLoaded) {
+      const fetchData = async () => {
+        var requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+        try {
+          let response = await fetch(
+            `http://tanger.geodaki.com:3000/rpc/bacs?uid=71`,
+            requestOptions
+          );
+          const result = await response.json();
+
+      
 
 
+            
+            for (let i = 0; i < result.length; i++) {
+              const targetDateTime = new Date(result[i].lastudate);
+            const timeDiff = Math.abs(targetDateTime - currentTimeB);
+            const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+              let status = "rouge";
+           
+            if (minutesDiff < 60*24) {
+               status = "vert";
+           
+            }else{
+              status = "rouge"
+            }
+
+              let position = {
+            lat: result[i].latitude,
+            lng: result[i].longitude,
+          };
+          const marker = new window.google.maps.Marker({
+            position: position,
+            icon: window.location.origin +`/images/${result[i].typebac.replace(' ',"")}_${status}.png`,
+          });
+          console.log("drrrr", window.location.origin +`/images/${result[i].typebac.replace(' ',"").replace(' ',"").replace(' ',"").replace(' ',"").replace(' ',"")}_${status}.png`);
+          setmarkersBacs((current) => [...current, marker]);
+          }
+
+         
+        } catch (error) {
+          console.log("error", error);
+        }
+      };
+      fetchData()
+      // const intervalCall = setInterval(fetchData, 5000);
+      // return () => {
+      //   clearInterval(intervalCall);
+      // };
+
+    }
+    console.log("drrrr", displaybacs);
+
+
+  }, [displaybacs]);
 
   useEffect(() => {
     setDirectionsResponse();
@@ -247,33 +305,52 @@ const [test , settest] = useState(false)
       if (lat_lng) {
         // console.log("lat_lng Feom MAppp", lat_lng);
         for (let i = 0; i < lat_lng.length; i++) {
+          const targetDateTime = new Date(lat_lng[i].lastupdate);
+          const timeDiff = Math.abs(targetDateTime - currentTime);
+          const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+          const secondsDiff = Math.floor((timeDiff % (1000 * 60)) / 1000);
+          let status = "rouge";
+          // console.log("timeDiff" , minutesDiff)
+          if (minutesDiff < 60) {
+            if (lat_lng[i].vehicule == "CHARIOT") status = "vert";
+            else {
+              if (lat_lng[i].lastacc == 1) status = "vert";
+              else status = "orange";
+            }
+          } else if (minutesDiff > 60 && minutesDiff < 24 * 60) {
+            status = "orange";
+          } else {
+            status = "rouge";
+          }
 
-            // console.log( "lat_lng from map" ,lat_lng)
-            const icons = {
-            url: lat_lng[i].vehicule === "CHARIOT"
-            ? "https://cdn-icons-png.flaticon.com/512/3264/3264042.png"
-            : lat_lng[i].vehicule === "MOTO"
-            ? moto
-            : lat_lng[i].vehicule === "CAMION"
-            ? "https://cdn-icons-png.flaticon.com/512/3256/3256319.png"
-            : lat_lng[i].vehicule === "VOITURE" ? "https://cdn-icons-png.flaticon.com/512/575/575703.png"
-            : null,
+          console.log(
+            "status",
+            window.location.origin +
+              `/images/${lat_lng[i].typevehicule}-${status}.png`
+          );
+
+          const icons = {
+            url:
+              window.location.origin +`/images/${lat_lng[i].typevehicule}-${status}.png`,
             strokeColor: "#00ff4cd5",
-            scaledSize: { width: 32, height: 32 },     
-            anchor: new window.google.maps.Point(0, 0)
+            scaledSize: { width: 32, height: 32 },
+            anchor: new window.google.maps.Point(0, 0),
           };
-      
+
           let position = {
             lat: lat_lng[i].lat,
             lng: lat_lng[i].lng,
           };
+
           setcurrnetposition({
             lat: lat_lng[i].lat,
             lng: lat_lng[i].lng,
           });
           sethascurrnetposition(true);
-
-          const marker = new window.google.maps.Marker({
+          // setmycenterlng(lat_lng[i].lng)
+          // setmycenterlat(lat_lng[i].lat)
+            console.log("lppp", mycenterlng);
+            const marker = new window.google.maps.Marker({
             position: position,
             icon: icons,
             name: lat_lng[i].name,
@@ -288,22 +365,21 @@ const [test , settest] = useState(false)
             lastacc: lat_lng[i].lastacc,
             fonction: lat_lng[i].fonction,
           });
-      
           setmarkers((current) => [...current, marker]);
-        }  
+        }
       }
     }
     console.log("markers", markers);
-  }, [lat_lng, ContextShowtTee ]);
-
-
+  }, [lat_lng, ContextShowtTee]);
 
   return (
     <>
       <div className="mapdiv">
-        { showerrMsg && <div className="errMsg">
-        <p>{errMsg}</p>  
-        </div>}
+        {showerrMsg && (
+          <div className="errMsg">
+            <p>{errMsg}</p>
+          </div>
+        )}
         {/* <button onClick={()=>{settest(!test)}}>Test</button> */}
         {isLoaded ? (
           <GoogleMap
@@ -314,7 +390,10 @@ const [test , settest] = useState(false)
               streetViewControl: true,
               mapTypeControl: true,
               fullscreenControl: false,
-              //  zoom: 12,
+
+              // zoom: 12
+              // center: new window.google.maps.LatLng( mycenterlat , mycenterlng),
+              //  zoom:zoomy
             }}
             // center={hascurrnetposition ? currnetposition : center}
             onUnmount={onUnmount}
@@ -330,30 +409,37 @@ const [test , settest] = useState(false)
                     handleActiveMarker(index);
                   }}
                 >
-                  { activeMarker === index ? (
+                  {activeMarker === index ? (
                     <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                       <div>
                         <div className="labelDiv">
                           <div>
-                            
                             <span>N° Parc : </span>
                             {x.name}
                           </div>
                           <div>
-                            
-                            <span>Type :  </span>{x.typevehicule}
+                            <span>Type : </span>
+                            {x.typevehicule}
                           </div>
                           <div>
-                            
                             <span>Conducteur : </span>
                           </div>
                         </div>
-                        <div className="borderDiv">
-
-                        </div>
+                        <div className="borderDiv"></div>
                       </div>
                     </InfoWindow>
                   ) : null}
+                </Marker>
+              ))}
+
+            {markersBacs &&
+              markersBacs.map((x, index) => (
+                <Marker
+                  position={x.position}
+                  icon={x.icon}
+                  key={index}
+                  draggable={true}
+                >
                 </Marker>
               ))}
 
@@ -370,25 +456,19 @@ const [test , settest] = useState(false)
                 />
               ))}
 
-            {
-            
-            polyLines && (
-             polyLines.map((x , index)=>(       
-              <Polyline
-              key={index}
-              path={x}
-              geodesic={true}
-              options={{
-                strokeColor: "blue",
-                strokeOpacity: 1.0,
-                strokeWeight: 2,
-              }}
-            />
-             ))
-              
-            
-            
-            )}
+            {polyLines &&
+              polyLines.map((x, index) => (
+                <Polyline
+                  key={index}
+                  path={x}
+                  geodesic={true}
+                  options={{
+                    strokeColor: "blue",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                  }}
+                />
+              ))}
           </GoogleMap>
         ) : (
           <p>Please wait </p>

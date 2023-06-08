@@ -16,9 +16,9 @@ import {
 import axios from "axios";
 import "./Menu.css";
 import ReactDOM from "react-dom";
-import Geodaki from "../../media/geodaki.png";
-import insight_removebg from "../../media/insight-removebg-preview.png";
-import Logo1 from "../../media/logo1.png";
+import Geodaki from "../../media/images/icon_mainmenu.png";
+import insight_removebg from "../../media/images/insight-removebg-preview.png";
+import Logo1 from "../../media/images/logo1.png";
 import { ContextID } from "../../Helper/ContextID";
 const MENU_ITEM_ICONS = {
   "TEMPS REEL": <EyeOutlined />,
@@ -161,7 +161,7 @@ function MenuSide({ handleMenuClick }) {
       <table>
         <tr>
           <td>
-            <img src={Geodaki}></img>
+            <img src={window.location.origin + '/images/icon_mainmenu.png'}  ></img>
           </td>
           <td style={{ marginLeft: "200px" }}>
             {" "}

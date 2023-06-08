@@ -14,6 +14,8 @@ const Home = () => {
   const [SelectedRadioValue, setSelectedRadioValue] = useState();
   const [SelectedRadioTree, setSelectedRadioTree] = useState();
   const [resultForpopup, setresultForpopup] = useState();
+  const [displaybacs, setdisplaybacs] = useState(false);
+
   return (
     <ContextID.Provider
       value={{
@@ -26,7 +28,9 @@ const Home = () => {
         SelectedRadioTree,
         setSelectedRadioTree,
         resultForpopup,
-        setresultForpopup
+        setresultForpopup,
+        displaybacs,
+        setdisplaybacs,
       }}
     >
       <>
@@ -35,9 +39,11 @@ const Home = () => {
         <div className="Container">
           <Menu />
           <Tree />
-          <div className="mapPopupContainer">      <Map />
-      <Popup/></div>
-      
+          <div className="mapPopupContainer">
+            {" "}
+            <Map />
+            <Popup />
+          </div>
         </div>
       </>
     </ContextID.Provider>

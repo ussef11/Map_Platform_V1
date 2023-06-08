@@ -21,8 +21,7 @@ function Tree() {
   const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
   const { SelectedRadioTree, setSelectedRadioTree } = useContext(ContextID);
-  const {resultForpopup, setresultForpopup} = useContext(ContextID);
-
+  const { resultForpopup, setresultForpopup } = useContext(ContextID);
 
   const handlechangeRadio = (e) => {
     setValueCheckedRadio();
@@ -42,14 +41,14 @@ function Tree() {
     } else if (ContextShowtTee === "HISTORIQUE") {
       SetShowTempreel(false);
       SetShowHISTORIQUE(true);
-    } else if (ContextShowtTee ==="close All") {
+    } else if (ContextShowtTee === "close All") {
       SetShowTempreel(false);
       SetShowHISTORIQUE(false);
-      Setlat_lng([])
-      setSelectedRadioValue([])
-      setSelectedRadioTree([])
-      setresultForpopup([])
-    } 
+      Setlat_lng([]);
+      setSelectedRadioValue([]);
+      setSelectedRadioTree([]);
+      setresultForpopup([]);
+    }
   }, [ContextShowtTee]);
 
   const {
@@ -65,6 +64,47 @@ function Tree() {
     errormsg1,
     counter1,
   } = useFetch("http://tanger.geodaki.com:3000/rpc/groups_par_cir?uid=71");
+
+  const red = String.fromCodePoint(0x1f534);
+  const green = String.fromCodePoint(0x1f7e2);
+  const yello = String.fromCodePoint(0x1F7E1);
+  // const gCar = String.fromCodePoint(0x1f699);
+  const gCar = String.fromCodePoint(0x1f17f);
+  const RCar = String.fromCodePoint(0x1f697);
+
+  const Light = String.fromCodePoint(0x1F4A1);
+  const Lightning = String.fromCodePoint(0x26A1);
+  const sos = String.fromCodePoint(0x1F198);
+  const Warning = String.fromCodePoint(0x26A0,0xFE0F);
+  const Cross = String.fromCodePoint(0x274C);
+  const parking = String.fromCodePoint(0x1f17f);
+
+  //  console.log("currenttime",Math.abs(currenttime))
+  const iconGreen = { symbol: green };
+  const iconRed = { symbol: red };
+  const iconyello = { symbol: yello };
+  const greenCar = { symbol: gCar };
+  const RedCar = { symbol: RCar };
+
+
+  const Lighti = { symbol: Light };
+  const Lightningi = { symbol: Lightning };
+  const sosi = { symbol: sos };
+  const Warningi = { symbol: Warning };
+  const Crossi = { symbol: Cross };
+  const parkingi = { symbol: parking };
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   function getNestedData2(data, parentId) {
     const result = [];
@@ -86,33 +126,61 @@ function Tree() {
         // String.fromCodePoint(parseInt(2699,16))
         const mydate = new Date(item.lastu);
         let LastUpdateMin = mydate.getMinutes();
-        let currenttime = currentmin - LastUpdateMin;
 
-        const red = String.fromCodePoint(0x1f534);
-        const green = String.fromCodePoint(0x1f7e2);
-        const gCar = String.fromCodePoint(0x1f17f);
-        const RCar = String.fromCodePoint(0x1f697);
+        const targetDateTime = new Date(item.lastu);
 
-        //  console.log("currenttime",Math.abs(currenttime))
-        const iconGreen = { symbol: green };
-        const iconRed = { symbol: red };
-        const greenCar = { symbol: gCar };
-        const RedCar = { symbol: RCar };
+
+        const timeDiff = Math.abs(targetDateTime - currentTime);
+        const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+        const secondsDiff = Math.floor((timeDiff % (1000 * 60)) / 1000);
+ 
+     
+
+
 
         const newItem = {
           value: item.id,
           label:
-            item.typeveh != "rien"
-              ? ValueCheckedRadio === "vehicul"
-                ? Math.abs(currenttime) > 60
-                  ? item.name + iconRed.symbol
-                  : item.name + iconGreen.symbol
-                : item.name
-              : item.name,
-          lastu: item.lastu,
+            item.typeveh != "rien"  && item.typeveh == "CHARIOT"
+              ? ValueCheckedRadio === "vehicul"  ?
+                minutesDiff<60?
+                  item.name + iconGreen.symbol 
+                : minutesDiff >24*60  ?
+                    item.name + iconRed.symbol :
+                item.name + iconyello.symbol
+              : item.name 
+            : 
+            
+             minutesDiff <= 60 &&  item.typeveh != "rien"
+            ? Math.abs(item.lacc) == 1  ? 
+              item.vitesse > 0 ? 
+              item.name + Lighti.symbol // endif vitesse>0
+              : 
+              item.name + Lightningi.symbol
+            : Math.abs(item.lacc) === 0 // else if acc = 1
+              ? item.name + Warningi.symbol
+              : item.name
+            
+          : minutesDiff < 60  &&  item.typeveh != "rien"?
+            item.name + parkingi.symbol
+          :  item.typeveh != "rien" ?
+              item.name +sosi.symbol : item.name
+             
+             
+        
+            
+            
+            , 
+            
+            
+             lastu: item.lastu,
+         
           // parent: item.parent,
           //  children: children.length > 0 ? children : null,
         };
+
+
+
         if (item.type === "group")
           newItem.children = getNestedData(data, item.id);
         result.push(newItem);
@@ -135,52 +203,59 @@ function Tree() {
         let hours = newDate.getHours() + 1;
         let currentmin = newDate.getMinutes();
         let sec = newDate.getSeconds();
-
-        // "2023-05-15T15:33:04"
-        // let time = `${year}-${month<10?`0${month}`:`${month}`}-${date}T:${hours <10?`0${hours}`:`${hours}` }-${min <10?`0${min}`:`${min}` }-${sec <10?`0${sec}`:`${sec}` }`
-        // String.fromCodePoint(parseInt(2699,16))
         const mydate = new Date(item.lastu);
         let LastUpdateMin = mydate.getMinutes();
         let currenttime = currentmin - LastUpdateMin;
 
-        const red = String.fromCodePoint(0x1f534);
-        const green = String.fromCodePoint(0x1f7e2);
-        // const gCar = String.fromCodePoint(0x1f699);
-        const gCar = String.fromCodePoint(0x1f17f);
-        const RCar = String.fromCodePoint(0x1f697);
+        console.log("currenttime" ,Math.abs(currenttime)); 
+        const targetDateTime = new Date(item.lastu);
+       
 
-        //  console.log("currenttime",Math.abs(currenttime))
-        const iconGreen = { symbol: green };
-        const iconRed = { symbol: red };
-        const greenCar = { symbol: gCar };
-        const RedCar = { symbol: RCar };
-
-        if (item.type == "vehicule" && item.typeveh == "CHARIOT") {
+        const timeDiff = Math.abs(targetDateTime - currentTime);
+        const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+        const secondsDiff = Math.floor((timeDiff % (1000 * 60)) / 1000);
+ 
+        console.log("item.typeveh" ,item.typeveh )
+        if ( item.typeveh == "CHARIOT" ) {
           const newItem = {
             value: item.id,
             label:
               ValueCheckedRadio === "vehicul"
-                ? Math.abs(currenttime) > 60
-                  ? item.name + iconRed.symbol
-                  : item.name + iconGreen.symbol
-                : item.name,
+                ? minutesDiff <= 60? 
+                  item.name + iconGreen.symbol :
+                  minutesDiff >60 && minutesDiff <= 180 ?
+                      item.name + iconyello.symbol 
+                  : item.name + iconRed.symbol
+              : '',
             lastu: item.lastu,
             // parent: item.parent,
             //  children: children.length > 0 ? children : null,
           };
           result.push(newItem);
-        } else if (item.type == "vehicule" && item.type != "CHARIOT") {
+        } else if (item.typeveh != "CHARIOT" &&  item.typeveh != "rien") {
           const newItem = {
             value: item.id,
             label:
               ValueCheckedRadio === "vehicul"
-                ? Math.abs(currenttime) > 60
-                  ? item.name + RedCar.symbol
-                  : item.name + greenCar.symbol
-                : item.name,
+              ? minutesDiff <= 60
+                ? Math.abs(item.lacc) == 1 ? 
+                  item.vitesse > 0 ? 
+                  item.name + Lighti.symbol // endif vitesse>0
+                  : 
+                  item.name + Lightningi.symbol
+                : Math.abs(item.lacc) === 0 // else if acc = 1
+                  ? item.name + Warningi.symbol
+                  : item.name
+                
+              : minutesDiff < 60 ?
+                item.name + parkingi.symbol
+              :  
+                  item.name +sosi.symbol
+                 
+                 
+            : "",
             lastu: item.lastu,
-            // parent: item.parent,
-            //  children: children.length > 0 ? children : null,
+           
           };
           result.push(newItem);
         } else {
@@ -211,6 +286,7 @@ function Tree() {
         setdisplayCheckBox(true);
 
         const nestedData = getNestedData(vh, null);
+        console.log(vh , "vh")
         setDataFromServer(nestedData);
       }
     }
@@ -245,7 +321,6 @@ function Tree() {
   }, []);
 
   useEffect(() => {
-    
     console.log("lat_lng from index", lat_lng);
 
     let Lat_lng = [];
@@ -270,11 +345,10 @@ function Tree() {
     });
   }, [ValueCheckedRadio]);
 
-
-  const [test , settest] = useState(false)
+  const [test, settest] = useState(false);
   let id = [];
   let deviceid = [];
- 
+
   const handleChange = useMemo(
     () => async (currentNode, selectedValues) => {
       Setlat_lng([]);
@@ -284,7 +358,7 @@ function Tree() {
       console.log("currentNode currentNode", currentNode);
       console.log("selectedValues", selectedValues);
       let currentNodeArrey = [currentNode];
-  
+
       if (ValueCheckedRadio === "vehicul") {
         selectedValues.map((item) => {
           SetAllids((current) => [...current, item.value]);
@@ -297,9 +371,9 @@ function Tree() {
           id.push(item.value);
         });
       }
-  
+
       console.log("id", id);
-  
+
       try {
         let res;
         res = await fetch(
@@ -314,81 +388,77 @@ function Tree() {
       } catch (error) {
         console.log("error", error);
       }
-  
+
       console.log("deviceid", deviceid);
       console.log("idd", id);
-  
+
       var requestOptions = {
         method: "GET",
         redirect: "follow",
       };
-  
+
       try {
-      
-          let response;
-          Setlat_lng([]);
-          Lat_lng = [];
-      
-          console.log("id inside the interval", id);
-          if (ValueCheckedRadio === "vehicul") {
-            response = await fetch(
-              `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${id}}&uid=71`,
-              requestOptions
-            );
-          }
-          if (ValueCheckedRadio === "circuit") {
-            response = await fetch(
-              `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${deviceid}}&uid=71`,
-              requestOptions
-            );
-          }
-  
-          const result = await response.json();
-  
-          console.log("result", result);
-  
-          setresultForpopup(result);
-          result.map((x) => {
-            let position = {
-              lat: x.lat,
-              lng: x.lon,
-              id: id,
-              name: x.name,
-              typevehicule: x.typevehicule,
-              lastupdate: x.lastupdate,
-              batterie: x.batterie,
-              vehicule: x.vehicule,
-              capteur: x.capteur,
-              immatriculation: x.immatriculation,
-              datems: x.datems,
-              lastacc: x.lastacc,
-              fonction: x.fonction,
-            };
-            Lat_lng.push(position);
-          });
-  
-          Setlat_lng(Lat_lng);
-          setSelectedRadioTree(Lat_lng);
-          console.log(  "SelectedRadioTreess",SelectedRadioTree)
-          console.log("Setlat_lng after:", Lat_lng);
-          console.log( "id.length", id.length)
-       
+        let response;
+        Setlat_lng([]);
+        Lat_lng = [];
+
+        console.log("id inside the interval", id);
+        if (ValueCheckedRadio === "vehicul") {
+          response = await fetch(
+            `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${id}}&uid=71`,
+            requestOptions
+          );
+        }
+        if (ValueCheckedRadio === "circuit") {
+          response = await fetch(
+            `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${deviceid}}&uid=71`,
+            requestOptions
+          );
+        }
+
+        const result = await response.json();
+
+        console.log("result", result);
+
+        setresultForpopup(result);
+        result.map((x) => {
+          let position = {
+            lat: x.lat,
+            lng: x.lon,
+            id: id,
+            name: x.name,
+            typevehicule: x.typevehicule,
+            lastupdate: x.lastupdate,
+            batterie: x.batterie,
+            vehicule: x.vehicule,
+            capteur: x.capteur,
+            immatriculation: x.immatriculation,
+            datems: x.datems,
+            lastacc: x.lastacc,
+            fonction: x.fonction,
+          };
+          Lat_lng.push(position);
+        });
+
+        Setlat_lng(Lat_lng);
+        setSelectedRadioTree(Lat_lng);
+        console.log("SelectedRadioTreess", SelectedRadioTree);
+        console.log("Setlat_lng after:", Lat_lng);
+        console.log("id.length", id.length);
       } catch (error) {
         console.log("error", error);
       }
     },
 
-    [RadioChange, ValueCheckedRadio ,ContextShowtTee]
+    [RadioChange, ValueCheckedRadio, ContextShowtTee]
   );
 
-  useEffect(() => 
-  {
-    setresultForpopup([])
+  useEffect(() => {
+    setresultForpopup([]);
     const fetchData = async () => {
       if (Array.isArray(id) && id.length !== 0) {
         let Lat_lng = [];
-      
-  
+
         var requestOptions = {
           method: "GET",
           redirect: "follow",
@@ -397,7 +467,7 @@ function Tree() {
           let response;
           Setlat_lng([]);
           Lat_lng = [];
-       
+
           console.log("id inside the interval", id);
           if (ValueCheckedRadio === "vehicul") {
             response = await fetch(
@@ -411,11 +481,11 @@ function Tree() {
               requestOptions
             );
           }
-  
+
           const result = await response.json();
-  
+
           console.log("resultddd", result);
-  
+
           setresultForpopup(result);
           result.map((x) => {
             let position = {
@@ -435,32 +505,31 @@ function Tree() {
             };
             Lat_lng.push(position);
           });
-  
+
           Setlat_lng(Lat_lng);
           setSelectedRadioTree(Lat_lng);
-          console.log(  "SelectedRadioTreess",SelectedRadioTree)
+          console.log("SelectedRadioTreess", SelectedRadioTree);
           console.log("Setlat_lng id:", id);
         } catch (error) {
           console.log("error", error);
         }
       }
     };
-  
+
     const intervalCall = setInterval(fetchData, 5000);
-  
+
     return () => {
       clearInterval(intervalCall);
     };
-  }, [ValueCheckedRadio ,ContextShowtTee]);
-  
-  
+  }, [ValueCheckedRadio, ContextShowtTee]);
+
   // useEffect(() => {
   //   const intervalCall = setInterval(() => {
   //     if (Array.isArray(id) && id.length !== 0) {
   //       console.log("ids", id);
   //     }
   //   }, 5000);
-  
+
   //   return () => {
   //     // Clean up the interval when the component unmounts
   //     clearInterval(intervalCall);
@@ -469,7 +538,7 @@ function Tree() {
 
   return (
     <>
-      {ShowTempreel && ( 
+      {ShowTempreel && (
         <div className="theTreediv">
           <div className="dddd">
             <div className="Radiocontainer" onChange={handlechangeRadio}>
