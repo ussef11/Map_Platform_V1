@@ -95,7 +95,7 @@ const AccordionItem = (props) => {
       clearInterval(intervalCall);
     };
     
-  }, [Data]);
+  }, [Data,lastupdate]);
 
   const [showRIFDinfo, setshowRIFDinfo] = useState(false);
   const [showAllinfo, setshowAllinfo] = useState(true);
@@ -139,17 +139,9 @@ const AccordionItem = (props) => {
         );
         const result = await response.json();
 
-          for (let i = 0; i < result.length; i++) {
-            Alltagdata.push(
-              {
-                device : result[i].device ,
-                idbac : result[i].idbac ,
-                tag : result[i].tag ,
-              }
-            )
-            settagdata(Alltagdata)
+            settagdata(result)
 
-          }
+         
           console.log("Alltagdata" , Alltagdata)
       } catch (error) {
         console.log("error", error);
