@@ -124,40 +124,33 @@ const AccordionItem = (props) => {
   const [tagdata , settagdata] = useState();
 
 
-  useEffect(()=>{
-
+  useEffect(() => {
     const fetchData = async () => {
-      var requestOptions = {
+      const requestOptions = {
         method: "GET",
         redirect: "follow",
       };
-      const Alltagdata =[]
       try {
-        let response = await fetch(
-          `http://tanger.geodaki.com:3000/rpc/last_tag?uid=71&devid={${active}`,
+        const response = await fetch(
+          `http://tanger.geodaki.com:3000/rpc/last_tag?uid=71&devid=${active}`,
           requestOptions
         );
         const result = await response.json();
-
-            settagdata(result)
-            console.log("activetag" ,tagdata )
-
-         
-          
+        settagdata(result);
+        console.log("activetag", tagdata);
       } catch (error) {
         console.log("error", error);
       }
-    
-
-     
-    const intervalCall = setInterval(fetchData, 5000);
+    };
+  
+    fetchData()
+  
+    const intervalCall = setInterval(fetchData, 5000); 
+  
     return () => {
       clearInterval(intervalCall);
     };
-
-  }
-
-  },[active ,lastupdate])
+  }, [active, lastupdate]);
   
 
   useEffect(()=>{
@@ -422,10 +415,11 @@ const AccordionItem = (props) => {
                 </div>
                 <div style={{display:"grid"}} className="divInfotag">
                 
-               {tagdata && tagdata.map((item)=>{ 
-                         <label>{item.tag}</label>
-                      
-                 })} 
+                {tagdata && tagdata.map((item) => {
+  return (
+    <label key={item.tag}>{item.tag}</label>
+  );
+})}
                
                 </div>
               </div>

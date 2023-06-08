@@ -149,9 +149,10 @@
   }
 
   .divInfotag{
+    overflow: auto;
     padding: 11px;
     display: flex;
-    height: 100px;
+    /* height: 100px; */
     background-color: gray;
     margin-top: 20px;
     border-radius: 20px;

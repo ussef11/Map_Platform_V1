@@ -164,6 +164,7 @@
       appearance: none;
       outline: 0;
       vertical-align: middle;
+      top: -2px;
     }
     
     .mdl-demo .checkbox-item:before {
