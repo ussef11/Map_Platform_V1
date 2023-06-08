@@ -8,7 +8,11 @@ const AccordionItem = (props) => {
   const contentEl = useRef(null);
   const { handleToggle, active, faq } = props;
   const { displaybacs, setdisplaybacs } = useContext(ContextID);
+  const [ showAllbacs, setshowAllbacs]  = useState('');
+  const { deleteAllbaks, setdeleteAllbaks } = useState('');
+ 
 
+  
   const {
     name,
     id,
@@ -38,49 +42,59 @@ const AccordionItem = (props) => {
 
   const { Data } = useFetch("http://tanger.geodaki.com:3000/rpc/position_capt");
 
-  const binaryString = "00000000010000011100000000000000_1111111100";
+
 
   const [listCan, setListCan] = useState([]);
   const [listCap, setListCap] = useState([]);
 
   useEffect(() => {
-    if (Data) {
-      if (typevehicule != "CHARIOT" && can_capteurs != "VIDE") {
-        const [binaryCan, binaryCap] = can_capteurs.split("_");
-
-        const newListCan = [];
-        for (let i = 0; i < binaryCan.length; i++) {
-          const charlastCap = last_capteurs.charAt(i);
-
-          const char = binaryCan.charAt(i);
-          const position = i + 1;
-
-          const item = Data.find((obj) => obj.code === String(position));
-
-          if (item && char === "1") {
-            newListCan.push({
-              intitule: item.intitule,
-              active: charlastCap === "1" ? "ON" : "OFF",
-              color: charlastCap === "1" ? "green" : "red",
-            });
+    const fetchData = async () => {
+      setListCap([])
+      if (Data) {
+        if (typevehicule != "CHARIOT" && can_capteurs != "VIDE") {
+          const [binaryCan, binaryCap] = can_capteurs.split("_");
+  
+          const newListCan = [];
+          for (let i = 0; i < binaryCan.length; i++) {
+            const charlastCap = last_capteurs.charAt(i);
+  
+            const char = binaryCan.charAt(i);
+            const position = i + 1;
+  
+            const item = Data.find((obj) => obj.code === String(position));
+  
+            if (item && char === "1") {
+              newListCan.push({
+                intitule: item.intitule,
+                active: charlastCap === "1" ? "ON" : "OFF",
+                color: charlastCap === "1" ? "green" : "red",
+              });
+            }
           }
-        }
-        setListCan(newListCan);
-
-        const newListCap = [];
-        for (let i = 0; i < binaryCap.length; i++) {
-          const char = binaryCap.charAt(i);
-          const position = i + 1;
-
-          const item = Data.find((obj) => obj.code === String(position));
-
-          if (item && char === "1") {
-            newListCap.push(item.intitule);
+          setListCan(newListCan);
+  
+          const newListCap = [];
+          for (let i = 0; i < binaryCap.length; i++) {
+            const char = binaryCap.charAt(i);
+            const position = i + 1;
+  
+            const item = Data.find((obj) => obj.code === String(position));
+  
+            if (item && char === "1") {
+              newListCap.push(item.intitule);
+            }
           }
+          setListCap(binaryCap);
         }
-        setListCap(binaryCap);
       }
     }
+    fetchData()
+    const intervalCall = setInterval(fetchData, 5000);
+
+    return () => {
+      clearInterval(intervalCall);
+    };
+    
   }, [Data]);
 
   const [showRIFDinfo, setshowRIFDinfo] = useState(false);
@@ -99,14 +113,78 @@ const AccordionItem = (props) => {
     }
   };
 
-  const handledisplaybacs = ()=>{
-    if(displaybacs){
-      setdisplaybacs(false)
-    }else
-    {
-      setdisplaybacs(true)
-    }
+
+  const handleclickShowBacs = ()=>{
+    setshowAllbacs("show")
   }
+  const handleclickhideBacs = ()=>{
+    setshowAllbacs("hide")
+  }
+
+  const [tagdata , settagdata] = useState();
+
+
+  useEffect(()=>{
+
+    const fetchData = async () => {
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      const Alltagdata =[]
+      try {
+        let response = await fetch(
+          `http://tanger.geodaki.com:3000/rpc/last_tag?uid=71&devid={${active}`,
+          requestOptions
+        );
+        const result = await response.json();
+
+          for (let i = 0; i < result.length; i++) {
+            Alltagdata.push(
+              {
+                device : result[i].device ,
+                idbac : result[i].idbac ,
+                tag : result[i].tag ,
+              }
+            )
+            settagdata(Alltagdata)
+
+          }
+          console.log("Alltagdata" , Alltagdata)
+      } catch (error) {
+        console.log("error", error);
+      }
+    
+
+     
+    const intervalCall = setInterval(fetchData, 5000);
+    return () => {
+      clearInterval(intervalCall);
+    };
+
+  }
+
+  },[active])
+  
+
+  useEffect(()=>{
+    if(active == null){
+      setdisplaybacs(false)
+    }
+    console.log("active" ,active)
+  },[active])
+
+  useEffect(()=>{
+
+    if(showAllbacs == "show"){
+      setdisplaybacs(true)
+    }else{
+      setdisplaybacs(false)
+    }
+
+  },[showAllbacs])
+
+
 
   return (
     <div className="rc-accordion-card">
@@ -335,10 +413,10 @@ const AccordionItem = (props) => {
                 </div>
 
                 <div style={{ marginTop: "32px" }}>
-                  <button onClick={handledisplaybacs}   className="displayBackButton">
+                  <button onClick={handleclickShowBacs}   className="displayBackButton">
                     Afficher Les Bacs
                   </button>
-                  <button className="displayBackButtonl">
+                  <button  onClick={handleclickhideBacs}  className="displayBackButtonl">
                     {" "}
                     <i class="fa-solid fa-xmark"></i>
                   </button>
@@ -349,8 +427,13 @@ const AccordionItem = (props) => {
                     <i class="fa-solid fa-right-long"></i>
                   </button>
                 </div>
-                <div className="divInfotag">
-                  <label>tagggggggggggggggggggggg</label>
+                <div style={{display:"grid"}} className="divInfotag">
+                
+               {tagdata && tagdata.map((item)=>{ 
+                         <label>{item.tag}</label>
+                      
+                 })} 
+               
                 </div>
               </div>
             )

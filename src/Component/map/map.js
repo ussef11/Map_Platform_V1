@@ -20,6 +20,7 @@ const Map = () => {
   const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const { SelectedRadioTree, setSelectedRadioTree } = useContext(ContextID);
   const { displaybacs, setdisplaybacs } = useContext(ContextID);
+  const { SelectedValueTreeNointerval, setSelectedValueTreeNointerval } = useContext(ContextID);
   const center = {
     lat: 35.759465,
     lng: -5.833954,
@@ -56,6 +57,7 @@ const Map = () => {
     "http://tanger.geodaki.com:3000/rpc/polygons"
   );
   const polyLine = [];
+  const [polyLinesBacs, setPolyLineBacs] = useState([]);
   const [polyLines, setPolyLine] = useState([]);
   const [activeMarker, setActiveMarker] = useState(null);
 
@@ -66,16 +68,68 @@ const Map = () => {
     setActiveMarker(id);
   };
   let coordinatesArray;
-  async function showPolyLine(idDevice) {
+  async function showPolyLineBacs(url) {
     let response;
     var requestOptions = {
       method: "GET",
       redirect: "follow",
     };
-    if (tangerPolygon) {
+  
       try {
-        response = await fetch(
-          `http://tanger.geodaki.com:3000/rpc/circuit_by_id?idc={${idDevice}}`,
+        response = await fetch(url,
+          requestOptions
+        );
+
+        const result = await response.json();
+        // console.log("resultresultresult" ,result)
+
+        result.forEach((polygon) => {
+          const coordinates = polygon.geom
+            .replace("MULTILINESTRING((", "")
+            .replace("))", "");
+          // coordinates.split("),(")
+          // console.log("coordinates" ,coordinates )
+          const pairs = coordinates.split("),(");
+          const pairss = coordinates.split("),(");
+
+          coordinatesArray = pairss.map((pair) => {
+            const coordinates = pair
+              .replace("(", "")
+              .replace(")", "")
+              .split(",");
+            return coordinates.map((coord) => {
+              const [lng, lat] = coord.trim().split(" ");
+              return { lat: parseFloat(lat), lng: parseFloat(lng) };
+            });
+          });
+
+          setPolyLineBacs(coordinatesArray);
+          console.log("coordinatesArray", coordinatesArray);
+
+          pairs.forEach((pair) => {
+            const [lng, lat] = pair.trim().split(" ");
+            const parsedLat = parseFloat(lat);
+            const parsedLng = parseFloat(lng);
+            polyLine.push({ lat: parsedLat, lng: parsedLng });
+            // setPolyLine([...polyLine]);
+          });
+        });
+        console.log( "polyLine",polyLine);
+      } catch (error) {
+        console.log("error", error);
+      }
+    
+  }
+
+  async function showPolyLine(url) {
+    let response;
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+  
+      try {
+        response = await fetch(url,
           requestOptions
         );
 
@@ -113,11 +167,11 @@ const Map = () => {
             // setPolyLine([...polyLine]);
           });
         });
-        console.log(polyLine);
+        console.log( "polyLine",polyLine);
       } catch (error) {
         console.log("error", error);
       }
-    }
+    
   }
 
   const [errMsg, SeterrMsg] = useState();
@@ -130,7 +184,10 @@ const Map = () => {
           console.log("SelectedRadioTreeSelectedRadioTree", SelectedRadioTree);
           const id = SelectedRadioTree[0].id[0];
           setShowPloyLine(true);
-          showPolyLine(id);
+
+          showPolyLine(`http://tanger.geodaki.com:3000/rpc/circuit_by_id?idc={${id}}`);
+
+
           setshowerrMsg(false);
         } catch (error) {
           console.log(error);
@@ -238,6 +295,8 @@ const Map = () => {
     };
   }, []);
   useEffect(() => {
+      setPolyLineBacs([])
+    setmarkersBacs([])
     if (isLoaded) {
       const fetchData = async () => {
         var requestOptions = {
@@ -251,10 +310,6 @@ const Map = () => {
           );
           const result = await response.json();
 
-      
-
-
-            
             for (let i = 0; i < result.length; i++) {
               const targetDateTime = new Date(result[i].lastudate);
             const timeDiff = Math.abs(targetDateTime - currentTimeB);
@@ -276,16 +331,34 @@ const Map = () => {
             position: position,
             icon: window.location.origin +`/images/${result[i].typebac.replace(' ',"")}_${status}.png`,
           });
-          console.log("drrrr", window.location.origin +`/images/${result[i].typebac.replace(' ',"").replace(' ',"").replace(' ',"").replace(' ',"").replace(' ',"")}_${status}.png`);
           setmarkersBacs((current) => [...current, marker]);
           }
+
+
+        
 
          
         } catch (error) {
           console.log("error", error);
         }
       };
-      fetchData()
+      let id
+      if (lat_lng) { 
+        for (let i = 0; i < lat_lng.length; i++) {
+          console.log("idbacs", lat_lng[i].id)
+          id = lat_lng[i].id 
+        }
+        }
+
+        if(displaybacs){
+          showPolyLineBacs(`http://tanger.geodaki.com:3000/rpc/circuit_by_deviceid?ids={${id}}`)
+          fetchData()
+        }else{
+          //setPolyLineBacs([])
+          setmarkersBacs([])
+        }
+        
+       
       // const intervalCall = setInterval(fetchData, 5000);
       // return () => {
       //   clearInterval(intervalCall);
@@ -295,7 +368,12 @@ const Map = () => {
     console.log("drrrr", displaybacs);
 
 
-  }, [displaybacs]);
+  }, [displaybacs ,SelectedValueTreeNointerval ]);
+
+  // useEffect(()=>{
+  //   // setPolyLineBacs([])
+  //   // setmarkersBacs([])
+  // },[SelectedRadioTree])
 
   useEffect(() => {
     setDirectionsResponse();
@@ -391,7 +469,7 @@ const Map = () => {
               mapTypeControl: true,
               fullscreenControl: false,
 
-              // zoom: 12
+              zoom: 12
               // center: new window.google.maps.LatLng( mycenterlat , mycenterlng),
               //  zoom:zoomy
             }}
@@ -458,6 +536,19 @@ const Map = () => {
 
             {polyLines &&
               polyLines.map((x, index) => (
+                <Polyline
+                  key={index}
+                  path={x}
+                  geodesic={true}
+                  options={{
+                    strokeColor: "blue",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                  }}
+                />
+              ))}
+            {polyLinesBacs &&
+              polyLinesBacs.map((x, index) => (
                 <Polyline
                   key={index}
                   path={x}

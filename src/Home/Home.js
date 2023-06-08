@@ -13,6 +13,7 @@ const Home = () => {
   const [ContextShowtTee, SetContextShowtTree] = useState();
   const [SelectedRadioValue, setSelectedRadioValue] = useState();
   const [SelectedRadioTree, setSelectedRadioTree] = useState();
+  const [SelectedValueTreeNointerval, setSelectedValueTreeNointerval] = useState();
   const [resultForpopup, setresultForpopup] = useState();
   const [displaybacs, setdisplaybacs] = useState(false);
 
@@ -31,6 +32,9 @@ const Home = () => {
         setresultForpopup,
         displaybacs,
         setdisplaybacs,
+        SelectedValueTreeNointerval,
+        setSelectedValueTreeNointerval
+
       }}
     >
       <>
