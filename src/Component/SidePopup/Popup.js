@@ -416,9 +416,14 @@ const AccordionItem = (props) => {
                 <div style={{display:"grid"}} className="divInfotag">
                 
                 {tagdata && tagdata.map((item) => {
-  return (
-    <label key={item.tag}>{item.tag}</label>
-  );
+  try {
+    return (
+      <label key={item.tag}>{item.tag}</label>
+    );
+  } catch (error) {
+    console.log("Error rendering item:", error);
+    return null; 
+  }
 })}
                
                 </div>

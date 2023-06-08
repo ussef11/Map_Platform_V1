@@ -163,9 +163,9 @@ function MenuSide({ handleMenuClick }) {
           <td>
             <img src={window.location.origin + '/images/icon_mainmenu.png'}  ></img>
           </td>
-          <td style={{ marginLeft: "200px" }}>
+          <td className="marque" style={{ marginLeft: "200px" }}>
             {" "}
-            <marquee>Geodaki</marquee>{" "}
+            <marquee>Geodaki <span> insight solutions</span> </marquee>{" "}
           </td>
         </tr>
       </table>

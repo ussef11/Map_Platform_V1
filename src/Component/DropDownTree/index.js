@@ -52,7 +52,7 @@ function Tree() {
       setresultForpopup([]);
       setSelectedValueTreeNointerval([])
     }
-  }, [ContextShowtTee]);
+  }, [ContextShowtTee , SelectedRadioValue]);
 
   const {
     Data: vh,
