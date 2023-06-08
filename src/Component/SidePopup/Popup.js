@@ -140,9 +140,10 @@ const AccordionItem = (props) => {
         const result = await response.json();
 
             settagdata(result)
+            console.log("activetag" ,tagdata )
 
          
-          console.log("Alltagdata" , Alltagdata)
+          
       } catch (error) {
         console.log("error", error);
       }
@@ -156,7 +157,7 @@ const AccordionItem = (props) => {
 
   }
 
-  },[active])
+  },[active ,lastupdate])
   
 
   useEffect(()=>{
