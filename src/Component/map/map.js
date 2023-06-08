@@ -25,7 +25,7 @@ const Map = () => {
     lat: 35.759465,
     lng: -5.833954,
   };
-
+  const host = process.env.REACT_APP_HOST;
   const [currnetposition, setcurrnetposition] = useState();
   const [hascurrnetposition, sethascurrnetposition] = useState(false);
   const [markers, setmarkers] = useState([]);
@@ -329,7 +329,7 @@ const Map = () => {
           };
           const marker = new window.google.maps.Marker({
             position: position,
-            icon: window.location.origin +`/images/${result[i].typebac.replace(' ',"")}_${status}.png`,
+            icon: host +`/images/${result[i].typebac.replaceAll(' ',"").toLowerCase()}_${status}.png`,
           });
           setmarkersBacs((current) => [...current, marker]);
           }
@@ -403,13 +403,13 @@ const Map = () => {
 
           console.log(
             "status",
-            window.location.origin +
-              `/images/${lat_lng[i].typevehicule}-${status}.png`
+            host +
+              `/images/${lat_lng[i].typevehicule.replaceAll(" ","").toLowerCase()}-${status}.png`
           );
 
           const icons = {
             url:
-              window.location.origin +`/images/${lat_lng[i].typevehicule}-${status}.png`,
+              host +`/images/${lat_lng[i].typevehicule.replaceAll(" ","").toLowerCase()}-${status}.png`,
             strokeColor: "#00ff4cd5",
             scaledSize: { width: 32, height: 32 },
             anchor: new window.google.maps.Point(0, 0),
