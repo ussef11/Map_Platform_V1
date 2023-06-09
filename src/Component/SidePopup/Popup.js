@@ -110,6 +110,7 @@ const AccordionItem = (props) => {
     if (showRIFDinfo === false) {
       setshowRIFDinfo(true);
       setshowAllinfo(false);
+      console.log( "mytagdata" ,tagdata)
     }
   };
 
@@ -414,17 +415,9 @@ const AccordionItem = (props) => {
                   </button>
                 </div>
                 <div style={{display:"grid"}} className="divInfotag">
-                
-                {tagdata && tagdata.map((item) => {
-  try {
-    return (
-      <label key={item.tag}>{item.tag}</label>
-    );
-  } catch (error) {
-    console.log("Error rendering item:", error);
-    return null; 
-  }
-})}
+                {Array.isArray(tagdata) && tagdata.map((item) => (
+  <label key={item.tag}>{item.tag}</label>
+))}
                
                 </div>
               </div>
