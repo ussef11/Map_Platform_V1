@@ -20,7 +20,8 @@ const Map = () => {
   const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const { SelectedRadioTree, setSelectedRadioTree } = useContext(ContextID);
   const { displaybacs, setdisplaybacs } = useContext(ContextID);
-  const { SelectedValueTreeNointerval, setSelectedValueTreeNointerval } = useContext(ContextID);
+  const { SelectedValueTreeNointerval, setSelectedValueTreeNointerval } =
+    useContext(ContextID);
   let center = {
     lat: 35.759465,
     lng: -5.833954,
@@ -30,7 +31,7 @@ const Map = () => {
   const [hascurrnetposition, sethascurrnetposition] = useState(false);
   const [markers, setmarkers] = useState([]);
   const [DirectionsResponse, setDirectionsResponse] = useState();
-  const [ libraries ] = useState(['places']);
+  const [libraries] = useState(["places"]);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -46,7 +47,6 @@ const Map = () => {
   const [zoomy, setzoomy] = useState(12);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
   const { IdMark, setIdMark } = useContext(ContextID);
-
 
   const [mycenterlng, setmycenterlng] = useState(35.759465);
   const [mycenterlat, setmycenterlat] = useState(-5.833954);
@@ -78,51 +78,45 @@ const Map = () => {
       method: "GET",
       redirect: "follow",
     };
-  
-      try {
-        response = await fetch(url,
-          requestOptions
-        );
 
-        const result = await response.json();
-        // console.log("resultresultresult" ,result)
+    try {
+      response = await fetch(url, requestOptions);
 
-        result.forEach((polygon) => {
-          const coordinates = polygon.geom
-            .replace("MULTILINESTRING((", "")
-            .replace("))", "");
-          // coordinates.split("),(")
-          // console.log("coordinates" ,coordinates )
-          const pairs = coordinates.split("),(");
-          const pairss = coordinates.split("),(");
+      const result = await response.json();
+      // console.log("resultresultresult" ,result)
 
-          coordinatesArray = pairss.map((pair) => {
-            const coordinates = pair
-              .replace("(", "")
-              .replace(")", "")
-              .split(",");
-            return coordinates.map((coord) => {
-              const [lng, lat] = coord.trim().split(" ");
-              return { lat: parseFloat(lat), lng: parseFloat(lng) };
-            });
-          });
+      result.forEach((polygon) => {
+        const coordinates = polygon.geom
+          .replace("MULTILINESTRING((", "")
+          .replace("))", "");
+        // coordinates.split("),(")
+        // console.log("coordinates" ,coordinates )
+        const pairs = coordinates.split("),(");
+        const pairss = coordinates.split("),(");
 
-          setPolyLineBacs(coordinatesArray);
-          // console.log("coordinatesArray", coordinatesArray);
-
-          pairs.forEach((pair) => {
-            const [lng, lat] = pair.trim().split(" ");
-            const parsedLat = parseFloat(lat);
-            const parsedLng = parseFloat(lng);
-            polyLine.push({ lat: parsedLat, lng: parsedLng });
-            // setPolyLine([...polyLine]);
+        coordinatesArray = pairss.map((pair) => {
+          const coordinates = pair.replace("(", "").replace(")", "").split(",");
+          return coordinates.map((coord) => {
+            const [lng, lat] = coord.trim().split(" ");
+            return { lat: parseFloat(lat), lng: parseFloat(lng) };
           });
         });
-        // console.log( "polyLine",polyLine);
-      } catch (error) {
-        console.log("error", error);
-      }
-    
+
+        setPolyLineBacs(coordinatesArray);
+        // console.log("coordinatesArray", coordinatesArray);
+
+        pairs.forEach((pair) => {
+          const [lng, lat] = pair.trim().split(" ");
+          const parsedLat = parseFloat(lat);
+          const parsedLng = parseFloat(lng);
+          polyLine.push({ lat: parsedLat, lng: parsedLng });
+          // setPolyLine([...polyLine]);
+        });
+      });
+      // console.log( "polyLine",polyLine);
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 
   async function showPolyLine(url) {
@@ -131,51 +125,45 @@ const Map = () => {
       method: "GET",
       redirect: "follow",
     };
-  
-      try {
-        response = await fetch(url,
-          requestOptions
-        );
 
-        const result = await response.json();
-        // console.log("resultresultresult" ,result)
+    try {
+      response = await fetch(url, requestOptions);
 
-        result.forEach((polygon) => {
-          const coordinates = polygon.geom
-            .replace("MULTILINESTRING((", "")
-            .replace("))", "");
-          // coordinates.split("),(")
-          // console.log("coordinates" ,coordinates )
-          const pairs = coordinates.split("),(");
-          const pairss = coordinates.split("),(");
+      const result = await response.json();
+      // console.log("resultresultresult" ,result)
 
-          coordinatesArray = pairss.map((pair) => {
-            const coordinates = pair
-              .replace("(", "")
-              .replace(")", "")
-              .split(",");
-            return coordinates.map((coord) => {
-              const [lng, lat] = coord.trim().split(" ");
-              return { lat: parseFloat(lat), lng: parseFloat(lng) };
-            });
-          });
+      result.forEach((polygon) => {
+        const coordinates = polygon.geom
+          .replace("MULTILINESTRING((", "")
+          .replace("))", "");
+        // coordinates.split("),(")
+        // console.log("coordinates" ,coordinates )
+        const pairs = coordinates.split("),(");
+        const pairss = coordinates.split("),(");
 
-          setPolyLine(coordinatesArray);
-          // console.log("coordinatesArray", coordinatesArray);
-
-          pairs.forEach((pair) => {
-            const [lng, lat] = pair.trim().split(" ");
-            const parsedLat = parseFloat(lat);
-            const parsedLng = parseFloat(lng);
-            polyLine.push({ lat: parsedLat, lng: parsedLng });
-            // setPolyLine([...polyLine]);
+        coordinatesArray = pairss.map((pair) => {
+          const coordinates = pair.replace("(", "").replace(")", "").split(",");
+          return coordinates.map((coord) => {
+            const [lng, lat] = coord.trim().split(" ");
+            return { lat: parseFloat(lat), lng: parseFloat(lng) };
           });
         });
-        // console.log( "polyLine",polyLine);
-      } catch (error) {
-        console.log("error", error);
-      }
-    
+
+        setPolyLine(coordinatesArray);
+        // console.log("coordinatesArray", coordinatesArray);
+
+        pairs.forEach((pair) => {
+          const [lng, lat] = pair.trim().split(" ");
+          const parsedLat = parseFloat(lat);
+          const parsedLng = parseFloat(lng);
+          polyLine.push({ lat: parsedLat, lng: parsedLng });
+          // setPolyLine([...polyLine]);
+        });
+      });
+      // console.log( "polyLine",polyLine);
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 
   const [errMsg, SeterrMsg] = useState();
@@ -189,8 +177,9 @@ const Map = () => {
           const id = SelectedRadioTree[0].id[0];
           setShowPloyLine(true);
 
-          showPolyLine(`http://tanger.geodaki.com:3000/rpc/circuit_by_id?idc={${id}}`);
-
+          showPolyLine(
+            `http://tanger.geodaki.com:3000/rpc/circuit_by_id?idc={${id}}`
+          );
 
           setshowerrMsg(false);
         } catch (error) {
@@ -206,10 +195,8 @@ const Map = () => {
   useEffect(() => {
     // setmycenterlng(-5.833954);
     // setmycenterlat(35.759465);
-    
   }, [ContextShowtTee]);
   useEffect(() => {
-    
     // console.log("SelectedRadioTree1", zoomy);
   }, [SelectedRadioTree]);
 
@@ -259,10 +246,9 @@ const Map = () => {
     // console.log("Updated Polygon 3:", triangleCoords1);
   }, [triangleCoords1]);
 
-
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
-  
+
     map.fitBounds(bounds);
   }, []);
 
@@ -287,7 +273,7 @@ const Map = () => {
   //Display Bacs
   const [currentTimeB, setCurrentTimeB] = useState(new Date());
 
-  const [markersBacs , setmarkersBacs] = useState([])
+  const [markersBacs, setmarkersBacs] = useState([]);
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTimeB(new Date());
@@ -298,8 +284,8 @@ const Map = () => {
     };
   }, []);
   useEffect(() => {
-      setPolyLineBacs([])
-    setmarkersBacs([])
+    setPolyLineBacs([]);
+    setmarkersBacs([]);
     if (isLoaded) {
       const fetchData = async () => {
         var requestOptions = {
@@ -313,83 +299,77 @@ const Map = () => {
           );
           const result = await response.json();
 
-            for (let i = 0; i < result.length; i++) {
-              const targetDateTime = new Date(result[i].lastudate);
+          for (let i = 0; i < result.length; i++) {
+            const targetDateTime = new Date(result[i].lastudate);
             const timeDiff = Math.abs(targetDateTime - currentTimeB);
             const minutesDiff = Math.floor(timeDiff / (1000 * 60));
-              let status = "rouge";
-           
-            if (minutesDiff < 60*24) {
-               status = "vert";
-           
-            }else{
-              status = "rouge"
+            let status = "rouge";
+
+            if (minutesDiff < 60 * 24) {
+              status = "vert";
+            } else {
+              status = "rouge";
             }
 
-              let position = {
-            lat: result[i].latitude,
-            lng: result[i].longitude,
-          };
-          const marker = new window.google.maps.Marker({
-            position: position,
-            icon: host +`/images/${result[i].typebac.replaceAll(' ',"").toLowerCase()}_${status}.png`,
-          });
-          setmarkersBacs((current) => [...current, marker]);
+            let position = {
+              lat: result[i].latitude,
+              lng: result[i].longitude,
+            };
+            const marker = new window.google.maps.Marker({
+              position: position,
+              icon:
+                host +
+                `/images/${result[i].typebac
+                  .replaceAll(" ", "")
+                  .toLowerCase()}_${status}.png`,
+            });
+            setmarkersBacs((current) => [...current, marker]);
           }
-
-
-        
-
-         
         } catch (error) {
           console.log("error", error);
         }
       };
-      let id
-      if (lat_lng) { 
+      let id;
+      if (lat_lng) {
         for (let i = 0; i < lat_lng.length; i++) {
           // console.log("idbacs", lat_lng[i].id)
-          id = lat_lng[i].id 
+          id = lat_lng[i].id;
         }
-        }
+      }
 
-        if(displaybacs){
-          showPolyLineBacs(`http://tanger.geodaki.com:3000/rpc/circuit_by_deviceid?ids={${id}}`)
-          fetchData()
-        }else{
-          //setPolyLineBacs([])
-          setmarkersBacs([])
-        }
-        
-       
+      if (displaybacs) {
+        showPolyLineBacs(
+          `http://tanger.geodaki.com:3000/rpc/circuit_by_deviceid?ids={${id}}`
+        );
+        fetchData();
+      } else {
+        //setPolyLineBacs([])
+        setmarkersBacs([]);
+      }
+
       // const intervalCall = setInterval(fetchData, 5000);
       // return () => {
       //   clearInterval(intervalCall);
       // };
-
     }
     // console.log("drrrr", displaybacs);
+  }, [displaybacs, SelectedValueTreeNointerval]);
 
+  let idmarks;
+  let centerd;
 
-  }, [displaybacs ,SelectedValueTreeNointerval]);
+  let lat;
+  let lng;
 
- 
- 
-  let idmarks
-  let  centerd 
-
-  let lat 
-  let lng
-
-  const [defaultzoom , setdefaultzoom] = useState(true)
+  const [defaultzoom, setdefaultzoom] = useState(true);
 
   useEffect(() => {
     setDirectionsResponse();
-    idmarks = null
+    idmarks = null;
     setmarkers([]);
     if (isLoaded) {
       if (lat_lng) {
-        setdefaultzoom(false)
+        setdefaultzoom(false);
         // console.log("lat_lng Feom MAppp", lat_lng);
         for (let i = 0; i < lat_lng.length; i++) {
           const targetDateTime = new Date(lat_lng[i].lastupdate);
@@ -410,37 +390,37 @@ const Map = () => {
             status = "rouge";
           }
 
-          console.log(
-            "status",
-            host +
-              `/images/${lat_lng[i].typevehicule.replaceAll(" ","").toLowerCase()}-${status}.png`
-          );
+          // console.log(
+          //   "status",
+          //   host +
+          //     `/images/${lat_lng[i].typevehicule.replaceAll(" ","").toLowerCase()}-${status}.png`
+          // );
 
           const icons = {
             url:
-              host +`/images/${lat_lng[i].typevehicule.replaceAll(" ","").toLowerCase()}-${status}.png`,
+              host +
+              `/images/${lat_lng[i].typevehicule
+                .replaceAll(" ", "")
+                .toLowerCase()}-${status}.png`,
             strokeColor: "#00ff4cd5",
             scaledSize: { width: 32, height: 32 },
             anchor: new window.google.maps.Point(0, 0),
           };
 
-     
-      
-      
-        // const lastElement = lat_lng[i].id[lat_lng[i].id.length - 1];
-        idmarks = lat_lng[i].idcenter
-        if (IdMark && lat_lng[i].idcenter === IdMark) {
-          setmycenterlat(null);
-          setmycenterlng(null);
-         
-         lat = lat_lng[i].lat
-         lng = lat_lng[i].lng
-          const centerd = {
-            lat: lat_lng[i].lat,
-            lng: lat_lng[i].lng,
-          };
-        console.log("idddd", IdMark, lat_lng[i].idcenter  , centerd);
-        }
+          // const lastElement = lat_lng[i].id[lat_lng[i].id.length - 1];
+          idmarks = lat_lng[i].idcenter;
+          if (IdMark && lat_lng[i].idcenter === IdMark) {
+            setmycenterlat(null);
+            setmycenterlng(null);
+
+            lat = lat_lng[i].lat;
+            lng = lat_lng[i].lng;
+            const centerd = {
+              lat: lat_lng[i].lat,
+              lng: lat_lng[i].lng,
+            };
+            console.log("idddd", IdMark, lat_lng[i].idcenter, centerd);
+          }
 
           let position = {
             lat: lat_lng[i].lat,
@@ -452,7 +432,7 @@ const Map = () => {
             lng: lat_lng[i].lng,
           });
           sethascurrnetposition(true);
-            const marker = new window.google.maps.Marker({
+          const marker = new window.google.maps.Marker({
             position: position,
             icon: icons,
             name: lat_lng[i].name,
@@ -466,37 +446,33 @@ const Map = () => {
             datems: lat_lng[i].datems,
             lastacc: lat_lng[i].lastacc,
             fonction: lat_lng[i].fonction,
-            marque:  lat_lng[i].marque,
-            kilometrage: lat_lng[i].kilometrage ,
-            heures: lat_lng[i].heures ,
+            marque: lat_lng[i].marque,
+            kilometrage: lat_lng[i].kilometrage,
+            heures: lat_lng[i].heures,
             consomation_total: lat_lng[i].consomation_total,
-            temp_refroi:  lat_lng[i].temp_refroi,      
-            last_capteurs:lat_lng[i].last_capteurs ,
-            can_capteurs:lat_lng[i].can_capteurs,
-            nombre_bac:  lat_lng[i].nombre_bac,       
-            fin_rfid: lat_lng[i].fin_rfid ,
-            debut_rfid:lat_lng[i].debut_rfid,
-            vitesse:  lat_lng[i].vitesse   
+            temp_refroi: lat_lng[i].temp_refroi,
+            last_capteurs: lat_lng[i].last_capteurs,
+            can_capteurs: lat_lng[i].can_capteurs,
+            nombre_bac: lat_lng[i].nombre_bac,
+            fin_rfid: lat_lng[i].fin_rfid,
+            debut_rfid: lat_lng[i].debut_rfid,
+            vitesse: lat_lng[i].vitesse,
           });
           setmarkers((current) => [...current, marker]);
         }
       }
     }
-  
+
     setmycenterlat(lat);
     setmycenterlng(lng);
-    
-  
- 
-  }, [lat_lng, ContextShowtTee , IdMark]);
+  }, [lat_lng, ContextShowtTee, IdMark]);
 
-
-  useEffect(()=>{
-    setzoomy(20)
-    if(idmarks === null) {
-      setzoomy(12)
+  useEffect(() => {
+    setzoomy(20);
+    if (idmarks === null) {
+      setzoomy(12);
     }
-    },[IdMark])
+  }, [IdMark]);
 
   return (
     <>
@@ -509,7 +485,6 @@ const Map = () => {
         {/* <button onClick={()=>{settest(!test)}}>Test</button> */}
         {isLoaded ? (
           <GoogleMap
-          
             mapContainerStyle={{ width: "100%", height: "100%" }}
             options={{
               zoomControl: true,
@@ -517,11 +492,9 @@ const Map = () => {
               mapTypeControl: true,
               fullscreenControl: false,
               // zoom : zoomy,
-              zoom :  defaultzoom && 12,
-              center: new window.google.maps.LatLng( mycenterlat , mycenterlng),
-            
+              zoom: defaultzoom && 12,
+              // center: new window.google.maps.LatLng(mycenterlat, mycenterlng),
             }}
-        
             onUnmount={onUnmount}
             onLoad={onLoad}
           >
@@ -535,12 +508,10 @@ const Map = () => {
                     handleActiveMarker(index);
                   }}
                 >
-
-
                   {activeMarker === index ? (
                     <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                       <div>
-                        <div style={{textAlign:"left"}} className="labelDiv">
+                        <div style={{ textAlign: "left" }} className="labelDiv">
                           <div>
                             <span>N° Parc : </span>
                             {x.name}
@@ -564,31 +535,39 @@ const Map = () => {
                             <span>BATTERIE : </span>
                             {x.batterie}
                           </div>
-                         { x.marque && <div>
-                            <span>Marque : </span>
-                            {x.marque}
-                          </div>}
+                          {x.marque && (
+                            <div>
+                              <span>Marque : </span>
+                              {x.marque}
+                            </div>
+                          )}
 
-                      {  x.kilometrage &&  <div>
-                            <span>kilométrage : </span>
-                            {x.kilometrage}
-                          </div>}
-                          
-                      {    x.heures && <div>
-                            <span>Nombre Heure  : </span>
-                            {x.heures}
-                          </div>}
-  
-                         
-                        { <div>
-                            <span>Vitesse : </span>
-                            {x.vitesse}
-                          </div>}
-                     {  x.datems &&   <div>
-                            <span>Date mise en services : </span>
-                            {x.datems}
-                          </div>}
-                     
+                          {x.kilometrage && (
+                            <div>
+                              <span>kilométrage : </span>
+                              {x.kilometrage}
+                            </div>
+                          )}
+
+                          {x.heures && (
+                            <div>
+                              <span>Nombre Heure : </span>
+                              {x.heures}
+                            </div>
+                          )}
+
+                          {
+                            <div>
+                              <span>Vitesse : </span>
+                              {x.vitesse}
+                            </div>
+                          }
+                          {x.datems && (
+                            <div>
+                              <span>Date mise en services : </span>
+                              {x.datems}
+                            </div>
+                          )}
                         </div>
                         <div className="borderDiv"></div>
                       </div>
@@ -604,8 +583,7 @@ const Map = () => {
                   icon={x.icon}
                   key={index}
                   draggable={true}
-                >
-                </Marker>
+                ></Marker>
               ))}
 
             {poly &&

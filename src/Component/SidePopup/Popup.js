@@ -185,7 +185,7 @@ const AccordionItem = (props) => {
       >
         <h2>{name}</h2>
         <span className="material-symbols-outlined">
-          <i class="fa-solid fa-caret-down"></i>
+          <i className="fa-solid fa-caret-down"></i>
         </span>
       </header>
       <div
@@ -409,13 +409,13 @@ const AccordionItem = (props) => {
                   </button>
                   <button  onClick={handleclickhideBacs}  className="displayBackButtonl">
                     {" "}
-                    <i class="fa-solid fa-xmark"></i>
+                    <i className="fa-solid fa-xmark"></i>
                   </button>
                   <button className="displayBackButtonl">
-                    <i class="fa-solid fa-clock"></i>
+                    <i className="fa-solid fa-clock"></i>
                   </button>
                   <button className="displayBackButtonl">
-                    <i class="fa-solid fa-right-long"></i>
+                    <i className="fa-solid fa-right-long"></i>
                   </button>
                 </div>
                 <div style={{display:"grid"}} className="divInfotag">

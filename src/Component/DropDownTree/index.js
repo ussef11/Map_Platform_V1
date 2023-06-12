@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useContext,
+  useCallback,
+} from "react";
 import ReactDOM from "react-dom";
 import useFetch from "../../Hook/UseFetch";
 import "./Tree.css";
@@ -21,10 +27,23 @@ function Tree() {
   const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
   const { SelectedRadioTree, setSelectedRadioTree } = useContext(ContextID);
-  const { SelectedValueTreeNointerval, setSelectedValueTreeNointerval } = useContext(ContextID);
+  const { SelectedValueTreeNointerval, setSelectedValueTreeNointerval } =
+    useContext(ContextID);
   const { resultForpopup, setresultForpopup } = useContext(ContextID);
 
-        
+  const keyDownHandler = (event) => {
+    if (event.ctrlKey && event.key === "s") {
+      console.log("You just pressed Control and K!");
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", keyDownHandler);
+    return () => {
+      window.removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);
+
   const handlechangeRadio = (e) => {
     setValueCheckedRadio();
     setValueCheckedRadio(e.target.value);
@@ -50,9 +69,9 @@ function Tree() {
       setSelectedRadioValue([]);
       setSelectedRadioTree([]);
       setresultForpopup([]);
-      setSelectedValueTreeNointerval([])
+      setSelectedValueTreeNointerval([]);
     }
-  }, [ContextShowtTee , SelectedRadioValue]);
+  }, [ContextShowtTee, SelectedRadioValue]);
 
   const {
     Data: vh,
@@ -199,7 +218,7 @@ function Tree() {
         const minutesDiff = Math.floor(timeDiff / (1000 * 60));
         const secondsDiff = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-        console.log("item.typeveh", item.typeveh);
+        // console.log("item.typeveh", item.typeveh);
         if (item.typeveh == "CHARIOT") {
           const newItem = {
             value: item.id,
@@ -317,17 +336,17 @@ function Tree() {
         lastacc: x.lastacc,
         fonction: x.fonction,
 
-        marque:  x.marque,
-        kilometrage: x.kilometrage ,
-        heures: x.heures ,
+        marque: x.marque,
+        kilometrage: x.kilometrage,
+        heures: x.heures,
         consomation_total: x.consomation_total,
-        temp_refroi:  x.temp_refroi,      
-        last_capteurs:x.last_capteurs ,
-        can_capteurs:x.can_capteurs,
-        nombre_bac:  x.nombre_bac,       
-        fin_rfid: x.fin_rfid ,
-        debut_rfid:x.debut_rfid,
-        vitesse:  x.vitesse   
+        temp_refroi: x.temp_refroi,
+        last_capteurs: x.last_capteurs,
+        can_capteurs: x.can_capteurs,
+        nombre_bac: x.nombre_bac,
+        fin_rfid: x.fin_rfid,
+        debut_rfid: x.debut_rfid,
+        vitesse: x.vitesse,
       };
       Lat_lng.push(position);
       // console.log(Lat_lng)
@@ -338,7 +357,7 @@ function Tree() {
   const [test, settest] = useState(false);
   let id = [];
   let deviceid = [];
-  let idcenter = null
+  let idcenter = null;
 
   const handleChange = useMemo(
     () => async (currentNode, selectedValues) => {
@@ -354,19 +373,17 @@ function Tree() {
         selectedValues.map((item) => {
           SetAllids((current) => [...current, item.value]);
           id.push(item.value);
-         
-          idcenter = item.value
-         
+
+          idcenter = item.value;
         });
       }
       if (ValueCheckedRadio === "circuit") {
         currentNodeArrey.map((item) => {
           SetAllids((current) => [...current, item.value]);
           id.push(item.value);
-          idcenter = item.value
+          idcenter = item.value;
         });
       }
-
 
       console.log("idff", idcenter);
       try {
@@ -431,27 +448,26 @@ function Tree() {
             datems: x.datems,
             lastacc: x.lastacc,
             fonction: x.fonction,
-            idcenter : idcenter,
+            idcenter: idcenter,
 
-            marque:  x.marque,
-            kilometrage: x.kilometrage ,
-            heures: x.heures ,
+            marque: x.marque,
+            kilometrage: x.kilometrage,
+            heures: x.heures,
             consomation_total: x.consomation_total,
-            temp_refroi:  x.temp_refroi,      
-            last_capteurs:x.last_capteurs ,
-            can_capteurs:x.can_capteurs,
-            nombre_bac:  x.nombre_bac,       
-            fin_rfid: x.fin_rfid ,
-            debut_rfid:x.debut_rfid,
-            vitesse:  x.vitesse      
-      
-      };
+            temp_refroi: x.temp_refroi,
+            last_capteurs: x.last_capteurs,
+            can_capteurs: x.can_capteurs,
+            nombre_bac: x.nombre_bac,
+            fin_rfid: x.fin_rfid,
+            debut_rfid: x.debut_rfid,
+            vitesse: x.vitesse,
+          };
           Lat_lng.push(position);
         });
 
         Setlat_lng(Lat_lng);
         setSelectedRadioTree(Lat_lng);
-        setSelectedValueTreeNointerval(Lat_lng)
+        setSelectedValueTreeNointerval(Lat_lng);
         console.log("SelectedRadioTreess", SelectedRadioTree);
         console.log("Setlat_lng after:", Lat_lng);
         console.log("id.length", id.length);
@@ -512,18 +528,18 @@ function Tree() {
               datems: x.datems,
               lastacc: x.lastacc,
               fonction: x.fonction,
-              idcenter : idcenter,
-              marque:  x.marque,
-              kilometrage: x.kilometrage ,
-              heures: x.heures ,
+              idcenter: idcenter,
+              marque: x.marque,
+              kilometrage: x.kilometrage,
+              heures: x.heures,
               consomation_total: x.consomation_total,
-              temp_refroi:  x.temp_refroi,      
-              last_capteurs:x.last_capteurs ,
-              can_capteurs:x.can_capteurs,
-              nombre_bac:  x.nombre_bac,       
-              fin_rfid: x.fin_rfid ,
-              debut_rfid:x.debut_rfid,
-              vitesse:  x.vitesse   
+              temp_refroi: x.temp_refroi,
+              last_capteurs: x.last_capteurs,
+              can_capteurs: x.can_capteurs,
+              nombre_bac: x.nombre_bac,
+              fin_rfid: x.fin_rfid,
+              debut_rfid: x.debut_rfid,
+              vitesse: x.vitesse,
             };
             Lat_lng.push(position);
           });
