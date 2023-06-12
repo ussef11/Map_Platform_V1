@@ -21,7 +21,7 @@ const Map = () => {
   const { SelectedRadioTree, setSelectedRadioTree } = useContext(ContextID);
   const { displaybacs, setdisplaybacs } = useContext(ContextID);
   const { SelectedValueTreeNointerval, setSelectedValueTreeNointerval } = useContext(ContextID);
-  const center = {
+  let center = {
     lat: 35.759465,
     lng: -5.833954,
   };
@@ -43,6 +43,8 @@ const Map = () => {
   const [triangleCoords1, setTriangleCoords1] = useState();
   const [zoomy, setzoomy] = useState(12);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
+  const { IdMark, setIdMark } = useContext(ContextID);
+
 
   const [mycenterlng, setmycenterlng] = useState(35.759465);
   const [mycenterlat, setmycenterlat] = useState(-5.833954);
@@ -104,7 +106,7 @@ const Map = () => {
           });
 
           setPolyLineBacs(coordinatesArray);
-          console.log("coordinatesArray", coordinatesArray);
+          // console.log("coordinatesArray", coordinatesArray);
 
           pairs.forEach((pair) => {
             const [lng, lat] = pair.trim().split(" ");
@@ -114,7 +116,7 @@ const Map = () => {
             // setPolyLine([...polyLine]);
           });
         });
-        console.log( "polyLine",polyLine);
+        // console.log( "polyLine",polyLine);
       } catch (error) {
         console.log("error", error);
       }
@@ -157,7 +159,7 @@ const Map = () => {
           });
 
           setPolyLine(coordinatesArray);
-          console.log("coordinatesArray", coordinatesArray);
+          // console.log("coordinatesArray", coordinatesArray);
 
           pairs.forEach((pair) => {
             const [lng, lat] = pair.trim().split(" ");
@@ -167,7 +169,7 @@ const Map = () => {
             // setPolyLine([...polyLine]);
           });
         });
-        console.log( "polyLine",polyLine);
+        // console.log( "polyLine",polyLine);
       } catch (error) {
         console.log("error", error);
       }
@@ -181,7 +183,7 @@ const Map = () => {
     if (SelectedRadioValue == "circuit") {
       if (SelectedRadioTree) {
         try {
-          console.log("SelectedRadioTreeSelectedRadioTree", SelectedRadioTree);
+          // console.log("SelectedRadioTreeSelectedRadioTree", SelectedRadioTree);
           const id = SelectedRadioTree[0].id[0];
           setShowPloyLine(true);
 
@@ -200,13 +202,13 @@ const Map = () => {
   }, [SelectedRadioTree]);
 
   useEffect(() => {
-    setmycenterlng(-5.833954);
-    setmycenterlat(35.759465);
-    // setzoomy(20)
+    // setmycenterlng(-5.833954);
+    // setmycenterlat(35.759465);
+    
   }, [ContextShowtTee]);
   useEffect(() => {
-    // setzoomy(20)
-    console.log("SelectedRadioTree1", zoomy);
+    
+    // console.log("SelectedRadioTree1", zoomy);
   }, [SelectedRadioTree]);
 
   useEffect(() => {
@@ -219,7 +221,7 @@ const Map = () => {
   const polygonCoords1 = [];
   const polygonCoords2 = [];
   useEffect(() => {
-    console.log("ContextShowtTee", ContextShowtTee);
+    // console.log("ContextShowtTee", ContextShowtTee);
     if (tangerPolygon) {
       tangerPolygon.forEach((polygon) => {
         const coordinates = polygon.geom
@@ -252,16 +254,17 @@ const Map = () => {
   }, [ContextShowtTee]);
 
   useEffect(() => {
-    console.log("Updated Polygon 3:", triangleCoords1);
+    // console.log("Updated Polygon 3:", triangleCoords1);
   }, [triangleCoords1]);
+
 
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
-    // setmycenterlng(-5.833954)
-    // setmycenterlat(35.759465)
-    // setzoomy(12)
+    setzoomy(12)
+    map.setZoom(zoomy);
     map.fitBounds(bounds);
-  }, []);
+    console.log("zoomy", zoomy)
+  }, [center, zoomy]);
 
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
@@ -345,7 +348,7 @@ const Map = () => {
       let id
       if (lat_lng) { 
         for (let i = 0; i < lat_lng.length; i++) {
-          console.log("idbacs", lat_lng[i].id)
+          // console.log("idbacs", lat_lng[i].id)
           id = lat_lng[i].id 
         }
         }
@@ -365,19 +368,22 @@ const Map = () => {
       // };
 
     }
-    console.log("drrrr", displaybacs);
+    // console.log("drrrr", displaybacs);
 
 
-  }, [displaybacs ,SelectedValueTreeNointerval ]);
+  }, [displaybacs ,SelectedValueTreeNointerval ,zoomy]);
 
-  // useEffect(()=>{
-  //   // setPolyLineBacs([])
-  //   // setmarkersBacs([])
-  // },[SelectedRadioTree])
+ 
+ 
+  let idmarks
+  let  centerd 
+
+  let lat 
+  let lng
 
   useEffect(() => {
     setDirectionsResponse();
-
+    idmarks = null
     setmarkers([]);
     if (isLoaded) {
       if (lat_lng) {
@@ -415,6 +421,26 @@ const Map = () => {
             anchor: new window.google.maps.Point(0, 0),
           };
 
+     
+      
+      
+        // const lastElement = lat_lng[i].id[lat_lng[i].id.length - 1];
+        idmarks = lat_lng[i].idcenter
+        if (IdMark && lat_lng[i].idcenter === IdMark) {
+          setmycenterlat(null);
+          setmycenterlng(null);
+         
+         lat = lat_lng[i].lat
+         lng = lat_lng[i].lng
+          const centerd = {
+            lat: lat_lng[i].lat,
+            lng: lat_lng[i].lng,
+          };
+          // console.log("idddd", IdMark, centerd);
+        }
+
+  
+
           let position = {
             lat: lat_lng[i].lat,
             lng: lat_lng[i].lng,
@@ -427,7 +453,7 @@ const Map = () => {
           sethascurrnetposition(true);
           // setmycenterlng(lat_lng[i].lng)
           // setmycenterlat(lat_lng[i].lat)
-            console.log("lppp", mycenterlng);
+            // console.log("lppp", mycenterlng);
             const marker = new window.google.maps.Marker({
             position: position,
             icon: icons,
@@ -447,8 +473,21 @@ const Map = () => {
         }
       }
     }
-    console.log("markers", markers);
-  }, [lat_lng, ContextShowtTee]);
+  
+    setmycenterlat(lat);
+    setmycenterlng(lng);
+    
+  
+ 
+  }, [lat_lng, ContextShowtTee , IdMark ,zoomy]);
+
+
+  useEffect(()=>{
+    setzoomy(17)
+    if(idmarks === null) {
+      setzoomy(12)
+    }
+    },[IdMark])
 
   return (
     <>
@@ -461,19 +500,19 @@ const Map = () => {
         {/* <button onClick={()=>{settest(!test)}}>Test</button> */}
         {isLoaded ? (
           <GoogleMap
-            // zoom={11}
+          
             mapContainerStyle={{ width: "100%", height: "100%" }}
             options={{
               zoomControl: true,
               streetViewControl: true,
               mapTypeControl: true,
               fullscreenControl: false,
-
-              zoom: 12
-              // center: new window.google.maps.LatLng( mycenterlat , mycenterlng),
-              //  zoom:zoomy
+              zoom : zoomy,
+              // zoom: 17,
+              center: new window.google.maps.LatLng( mycenterlat , mycenterlng),
+            
             }}
-            // center={hascurrnetposition ? currnetposition : center}
+        
             onUnmount={onUnmount}
             onLoad={onLoad}
           >
@@ -498,6 +537,10 @@ const Map = () => {
                           <div>
                             <span>Type : </span>
                             {x.typevehicule}
+                          </div>
+                          <div>
+                            <span>ID : </span>
+                            {x.id}
                           </div>
                           <div>
                             <span>Conducteur : </span>

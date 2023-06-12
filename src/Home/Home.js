@@ -16,6 +16,8 @@ const Home = () => {
   const [SelectedValueTreeNointerval, setSelectedValueTreeNointerval] = useState();
   const [resultForpopup, setresultForpopup] = useState();
   const [displaybacs, setdisplaybacs] = useState(false);
+  const [IdMark, setIdMark] = useState();
+
 
   return (
     <ContextID.Provider
@@ -33,7 +35,9 @@ const Home = () => {
         displaybacs,
         setdisplaybacs,
         SelectedValueTreeNointerval,
-        setSelectedValueTreeNointerval
+        setSelectedValueTreeNointerval,
+        IdMark,
+        setIdMark
 
       }}
     >

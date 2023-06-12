@@ -8,6 +8,8 @@ const AccordionItem = (props) => {
   const contentEl = useRef(null);
   const { handleToggle, active, faq } = props;
   const { displaybacs, setdisplaybacs } = useContext(ContextID);
+  const { IdMark, setIdMark } = useContext(ContextID);
+  
   const [ showAllbacs, setshowAllbacs]  = useState('');
   const { deleteAllbaks, setdeleteAllbaks } = useState('');
  
@@ -157,6 +159,10 @@ const AccordionItem = (props) => {
   useEffect(()=>{
     if(active == null){
       setdisplaybacs(false)
+      setshowAllbacs("hide")
+      
+    }else{
+      setIdMark(active)
     }
     console.log("active" ,active)
   },[active])
@@ -170,8 +176,6 @@ const AccordionItem = (props) => {
     }
 
   },[showAllbacs])
-
-
 
   return (
     <div className="rc-accordion-card">

@@ -326,6 +326,7 @@ function Tree() {
   const [test, settest] = useState(false);
   let id = [];
   let deviceid = [];
+  let idcenter = null
 
   const handleChange = useMemo(
     () => async (currentNode, selectedValues) => {
@@ -341,17 +342,21 @@ function Tree() {
         selectedValues.map((item) => {
           SetAllids((current) => [...current, item.value]);
           id.push(item.value);
+         
+          idcenter = item.value
+         
         });
       }
       if (ValueCheckedRadio === "circuit") {
         currentNodeArrey.map((item) => {
           SetAllids((current) => [...current, item.value]);
           id.push(item.value);
+          idcenter = item.value
         });
       }
 
-      console.log("id", id);
 
+      console.log("idff", idcenter);
       try {
         let res;
         res = await fetch(
@@ -414,6 +419,7 @@ function Tree() {
             datems: x.datems,
             lastacc: x.lastacc,
             fonction: x.fonction,
+            idcenter : idcenter
           };
           Lat_lng.push(position);
         });
@@ -481,6 +487,7 @@ function Tree() {
               datems: x.datems,
               lastacc: x.lastacc,
               fonction: x.fonction,
+              idcenter : idcenter
             };
             Lat_lng.push(position);
           });
