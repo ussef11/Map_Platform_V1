@@ -194,10 +194,12 @@
     }
     
     .react-dropdown-tree-select .dropdown .dropdown-content .search{
-      height: 30px;
-    width: 303px;
-    font-size: 17px;
-    /* margin-left: -57px; */
+      margin-top: 6px;
+      padding: 6px;
+      height: 44px;
+      width: 303px;
+      font-size: 17px;
+   
     }
     
   

@@ -606,7 +606,7 @@ function Tree() {
               </div>
             </div>
 
-            <div className="searchContainer">
+            {/* <div className="searchContainer">
               <div style={{ marginLeft: "11px" }}>
                 <input
                   value={timeSearch}
@@ -614,8 +614,8 @@ function Tree() {
                   type="date"
                 />
               </div>
-              {/* <button onClick={handleSearch}> Search </button> */}
-            </div>
+            
+            </div> */}
             {dataFromServer ? (
               <div>
                 <ReactDropdownTreeSelectMemoized
