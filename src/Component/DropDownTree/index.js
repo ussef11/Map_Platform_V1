@@ -192,7 +192,7 @@ function Tree() {
         let LastUpdateMin = mydate.getMinutes();
         let currenttime = currentmin - LastUpdateMin;
 
-        console.log("currenttime", Math.abs(currenttime));
+        // console.log("currenttime", Math.abs(currenttime));
         const targetDateTime = new Date(item.lastu);
 
         const timeDiff = Math.abs(targetDateTime - currentTime);
@@ -316,6 +316,18 @@ function Tree() {
         datems: x.datems,
         lastacc: x.lastacc,
         fonction: x.fonction,
+
+        marque:  x.marque,
+        kilometrage: x.kilometrage ,
+        heures: x.heures ,
+        consomation_total: x.consomation_total,
+        temp_refroi:  x.temp_refroi,      
+        last_capteurs:x.last_capteurs ,
+        can_capteurs:x.can_capteurs,
+        nombre_bac:  x.nombre_bac,       
+        fin_rfid: x.fin_rfid ,
+        debut_rfid:x.debut_rfid,
+        vitesse:  x.vitesse   
       };
       Lat_lng.push(position);
       // console.log(Lat_lng)
@@ -419,8 +431,21 @@ function Tree() {
             datems: x.datems,
             lastacc: x.lastacc,
             fonction: x.fonction,
-            idcenter : idcenter
-          };
+            idcenter : idcenter,
+
+            marque:  x.marque,
+            kilometrage: x.kilometrage ,
+            heures: x.heures ,
+            consomation_total: x.consomation_total,
+            temp_refroi:  x.temp_refroi,      
+            last_capteurs:x.last_capteurs ,
+            can_capteurs:x.can_capteurs,
+            nombre_bac:  x.nombre_bac,       
+            fin_rfid: x.fin_rfid ,
+            debut_rfid:x.debut_rfid,
+            vitesse:  x.vitesse      
+      
+      };
           Lat_lng.push(position);
         });
 
@@ -487,7 +512,18 @@ function Tree() {
               datems: x.datems,
               lastacc: x.lastacc,
               fonction: x.fonction,
-              idcenter : idcenter
+              idcenter : idcenter,
+              marque:  x.marque,
+              kilometrage: x.kilometrage ,
+              heures: x.heures ,
+              consomation_total: x.consomation_total,
+              temp_refroi:  x.temp_refroi,      
+              last_capteurs:x.last_capteurs ,
+              can_capteurs:x.can_capteurs,
+              nombre_bac:  x.nombre_bac,       
+              fin_rfid: x.fin_rfid ,
+              debut_rfid:x.debut_rfid,
+              vitesse:  x.vitesse   
             };
             Lat_lng.push(position);
           });

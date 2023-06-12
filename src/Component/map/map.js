@@ -30,10 +30,12 @@ const Map = () => {
   const [hascurrnetposition, sethascurrnetposition] = useState(false);
   const [markers, setmarkers] = useState([]);
   const [DirectionsResponse, setDirectionsResponse] = useState();
+  const [ libraries ] = useState(['places']);
+
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDYnXGg1sTZkCxqhO6Kf0eU64OqnyEVpMM",
-    libraries: ["places"],
+    googleMapsApiKey: "AIzaSyB-dn4yi8nZ8f8lMfQZNZ8AmEEVT07DEcE",
+    libraries,
     region: "MA",
   });
 
@@ -260,11 +262,9 @@ const Map = () => {
 
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
-    setzoomy(12)
-    map.setZoom(zoomy);
+  
     map.fitBounds(bounds);
-    console.log("zoomy", zoomy)
-  }, [center, zoomy]);
+  }, []);
 
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
@@ -371,7 +371,7 @@ const Map = () => {
     // console.log("drrrr", displaybacs);
 
 
-  }, [displaybacs ,SelectedValueTreeNointerval ,zoomy]);
+  }, [displaybacs ,SelectedValueTreeNointerval]);
 
  
  
@@ -381,12 +381,15 @@ const Map = () => {
   let lat 
   let lng
 
+  const [defaultzoom , setdefaultzoom] = useState(true)
+
   useEffect(() => {
     setDirectionsResponse();
     idmarks = null
     setmarkers([]);
     if (isLoaded) {
       if (lat_lng) {
+        setdefaultzoom(false)
         // console.log("lat_lng Feom MAppp", lat_lng);
         for (let i = 0; i < lat_lng.length; i++) {
           const targetDateTime = new Date(lat_lng[i].lastupdate);
@@ -436,10 +439,8 @@ const Map = () => {
             lat: lat_lng[i].lat,
             lng: lat_lng[i].lng,
           };
-          // console.log("idddd", IdMark, centerd);
+        console.log("idddd", IdMark, lat_lng[i].idcenter  , centerd);
         }
-
-  
 
           let position = {
             lat: lat_lng[i].lat,
@@ -451,9 +452,6 @@ const Map = () => {
             lng: lat_lng[i].lng,
           });
           sethascurrnetposition(true);
-          // setmycenterlng(lat_lng[i].lng)
-          // setmycenterlat(lat_lng[i].lat)
-            // console.log("lppp", mycenterlng);
             const marker = new window.google.maps.Marker({
             position: position,
             icon: icons,
@@ -468,6 +466,17 @@ const Map = () => {
             datems: lat_lng[i].datems,
             lastacc: lat_lng[i].lastacc,
             fonction: lat_lng[i].fonction,
+            marque:  lat_lng[i].marque,
+            kilometrage: lat_lng[i].kilometrage ,
+            heures: lat_lng[i].heures ,
+            consomation_total: lat_lng[i].consomation_total,
+            temp_refroi:  lat_lng[i].temp_refroi,      
+            last_capteurs:lat_lng[i].last_capteurs ,
+            can_capteurs:lat_lng[i].can_capteurs,
+            nombre_bac:  lat_lng[i].nombre_bac,       
+            fin_rfid: lat_lng[i].fin_rfid ,
+            debut_rfid:lat_lng[i].debut_rfid,
+            vitesse:  lat_lng[i].vitesse   
           });
           setmarkers((current) => [...current, marker]);
         }
@@ -479,11 +488,11 @@ const Map = () => {
     
   
  
-  }, [lat_lng, ContextShowtTee , IdMark ,zoomy]);
+  }, [lat_lng, ContextShowtTee , IdMark]);
 
 
   useEffect(()=>{
-    setzoomy(17)
+    setzoomy(20)
     if(idmarks === null) {
       setzoomy(12)
     }
@@ -507,8 +516,8 @@ const Map = () => {
               streetViewControl: true,
               mapTypeControl: true,
               fullscreenControl: false,
-              zoom : zoomy,
-              // zoom: 17,
+              // zoom : zoomy,
+              zoom :  defaultzoom && 12,
               center: new window.google.maps.LatLng( mycenterlat , mycenterlng),
             
             }}
@@ -526,10 +535,12 @@ const Map = () => {
                     handleActiveMarker(index);
                   }}
                 >
+
+
                   {activeMarker === index ? (
                     <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                       <div>
-                        <div className="labelDiv">
+                        <div style={{textAlign:"left"}} className="labelDiv">
                           <div>
                             <span>N° Parc : </span>
                             {x.name}
@@ -545,6 +556,39 @@ const Map = () => {
                           <div>
                             <span>Conducteur : </span>
                           </div>
+                          <div>
+                            <span>DATE : </span>
+                            {x.datems}
+                          </div>
+                          <div>
+                            <span>BATTERIE : </span>
+                            {x.batterie}
+                          </div>
+                         { x.marque && <div>
+                            <span>Marque : </span>
+                            {x.marque}
+                          </div>}
+
+                      {  x.kilometrage &&  <div>
+                            <span>kilométrage : </span>
+                            {x.kilometrage}
+                          </div>}
+                          
+                      {    x.heures && <div>
+                            <span>Nombre Heure  : </span>
+                            {x.heures}
+                          </div>}
+  
+                         
+                        { <div>
+                            <span>Vitesse : </span>
+                            {x.vitesse}
+                          </div>}
+                     {  x.datems &&   <div>
+                            <span>Date mise en services : </span>
+                            {x.datems}
+                          </div>}
+                     
                         </div>
                         <div className="borderDiv"></div>
                       </div>
