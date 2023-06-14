@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useContext } from "react";
+import React, { useRef, useEffect, useState, useContext, useCallback } from "react";
 import truck from "../../media/images/garbage-truck.svg";
 import {
   Marker,
@@ -48,8 +48,8 @@ const Map = () => {
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
   const { IdMark, setIdMark } = useContext(ContextID);
 
-  const [mycenterlng, setmycenterlng] = useState(35.759465);
-  const [mycenterlat, setmycenterlat] = useState(-5.833954);
+  const [mycenterlng, setmycenterlng] = useState(-5.833954);
+  const [mycenterlat, setmycenterlat] = useState(35.759465);
 
   const {
     Data: tangerPolygon,
@@ -246,11 +246,13 @@ const Map = () => {
     // console.log("Updated Polygon 3:", triangleCoords1);
   }, [triangleCoords1]);
 
-  const onLoad = React.useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-
-    map.fitBounds(bounds);
-  }, []);
+  // const onLoad = React.useCallback(function callback(map) {
+  //   const bounds = new window.google.maps.LatLngBounds();
+  //   bounds.extend(new window.google.maps.LatLng(Number(mycenterlat), Number(mycenterlng)));
+  //   map.fitBounds(bounds);
+    
+  //   console.log("qwe", { lat: Number(mycenterlat), lng: Number(mycenterlng) });
+  // }, [mycenterlat, mycenterlng, IdMark]);
 
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
@@ -353,23 +355,17 @@ const Map = () => {
       // };
     }
     // console.log("drrrr", displaybacs);
-  }, [displaybacs, SelectedValueTreeNointerval]);
-
-  let idmarks;
-  let centerd;
-
-  let lat;
-  let lng;
+  }, [displaybacs, SelectedValueTreeNointerval, IdMark]);
 
   const [defaultzoom, setdefaultzoom] = useState(true);
 
   useEffect(() => {
     setDirectionsResponse();
-    idmarks = null;
+
     setmarkers([]);
     if (isLoaded) {
       if (lat_lng) {
-        setdefaultzoom(false);
+        
         // console.log("lat_lng Feom MAppp", lat_lng);
         for (let i = 0; i < lat_lng.length; i++) {
           const targetDateTime = new Date(lat_lng[i].lastupdate);
@@ -407,20 +403,7 @@ const Map = () => {
             anchor: new window.google.maps.Point(0, 0),
           };
 
-          // const lastElement = lat_lng[i].id[lat_lng[i].id.length - 1];
-          idmarks = lat_lng[i].idcenter;
-          if (IdMark && lat_lng[i].idcenter === IdMark) {
-            setmycenterlat(null);
-            setmycenterlng(null);
-
-            lat = lat_lng[i].lat;
-            lng = lat_lng[i].lng;
-            const centerd = {
-              lat: lat_lng[i].lat,
-              lng: lat_lng[i].lng,
-            };
-            console.log("idddd", IdMark, lat_lng[i].idcenter, centerd);
-          }
+     
 
           let position = {
             lat: lat_lng[i].lat,
@@ -462,17 +445,56 @@ const Map = () => {
         }
       }
     }
-
-    setmycenterlat(lat);
-    setmycenterlng(lng);
   }, [lat_lng, ContextShowtTee, IdMark]);
-
+  const [position, setPosition] = useState({
+    lat: 35.759465,
+    lng: -5.833954,
+  });
   useEffect(() => {
-    setzoomy(20);
-    if (idmarks === null) {
-      setzoomy(12);
-    }
+    const fetchData = async () => {
+      if (IdMark != null) {
+        try {
+          const response = await fetch(`http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${IdMark}}&uid=71`);
+          const result = await response.json();
+  
+          if (result && result.length > 0) {
+            const { lat, lon } = result[0];
+            setmycenterlat(lat);
+            setmycenterlng(lon);
+            const center = {
+              lat: lat,
+              lng: lon,
+            };
+            setPosition({
+              lat: lat,
+              lng:lon,
+            })
+            console.log("mycenterlat", mycenterlat);
+            console.log("mycenterlng", mycenterlng);
+            setdefaultzoom(false);
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+    };
+  
+    fetchData();
+  }, [IdMark ,mycenterlat]);
+ 
+
+  const onLoad = useCallback(function callback(map) {
+    const bounds = new window.google.maps.LatLngBounds(position);
+    bounds.extend(new window.google.maps.LatLng(position));
+    map.fitBounds(bounds);
+    
+    // console.log("onLoad mycenterlat", mycenterlat);
+    // console.log("onLoad mycenterlng", mycenterlng);
   }, [IdMark]);
+
+  useEffect(()=>{
+    console.log("onLoad mycenterlat", position);
+  }, [position]);
 
   return (
     <>
@@ -484,148 +506,157 @@ const Map = () => {
         )}
         {/* <button onClick={()=>{settest(!test)}}>Test</button> */}
         {isLoaded ? (
-          <GoogleMap
-            mapContainerStyle={{ width: "100%", height: "100%" }}
-            options={{
-              zoomControl: true,
-              streetViewControl: true,
-              mapTypeControl: true,
-              fullscreenControl: false,
-              // zoom : zoomy,
-              zoom: defaultzoom && 12,
-              // center: new window.google.maps.LatLng(mycenterlat, mycenterlng),
-            }}
-            onUnmount={onUnmount}
-            onLoad={onLoad}
-          >
-            {markers &&
-              markers.map((x, index) => (
-                <Marker
-                  position={x.position}
-                  icon={x.icon}
-                  key={index}
-                  onClick={() => {
-                    handleActiveMarker(index);
-                  }}
-                >
-                  {activeMarker === index ? (
-                    <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                      <div>
-                        <div style={{ textAlign: "left" }} className="labelDiv">
-                          <div>
-                            <span>N° Parc : </span>
-                            {x.name}
-                          </div>
-                          <div>
-                            <span>Type : </span>
-                            {x.typevehicule}
-                          </div>
-                          <div>
-                            <span>ID : </span>
-                            {x.id}
-                          </div>
-                          <div>
-                            <span>Conducteur : </span>
-                          </div>
-                          <div>
-                            <span>DATE : </span>
-                            {x.datems}
-                          </div>
-                          <div>
-                            <span>BATTERIE : </span>
-                            {x.batterie}
-                          </div>
-                          {x.marque && (
-                            <div>
-                              <span>Marque : </span>
-                              {x.marque}
-                            </div>
-                          )}
+          (console.log("abc",defaultzoom),
+          (
+            <GoogleMap
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+              options={{
+                zoomControl: true,
+                streetViewControl: true,
+                mapTypeControl: true,
+                fullscreenControl: false,
 
-                          {x.kilometrage && (
+              
+                 zoom: defaultzoom ? 12 : 20,
+              
+                center: new window.google.maps.LatLng(position),
+              }}
+              center={position}
+              onUnmount={onUnmount}
+              onLoad={onLoad}
+            >
+              {markers &&
+                markers.map((x, index) => (
+                  <Marker
+                    position={x.position}
+                    icon={x.icon}
+                    key={index}
+                    onClick={() => {
+                      handleActiveMarker(index);
+                    }}
+                  >
+                    {activeMarker === index ? (
+                      <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                        <div>
+                          <div
+                            style={{ textAlign: "left" }}
+                            className="labelDiv"
+                          >
                             <div>
-                              <span>kilométrage : </span>
-                              {x.kilometrage}
+                              <span>N° Parc : </span>
+                              {x.name}
                             </div>
-                          )}
-
-                          {x.heures && (
                             <div>
-                              <span>Nombre Heure : </span>
-                              {x.heures}
+                              <span>Type : </span>
+                              {x.typevehicule}
                             </div>
-                          )}
-
-                          {
                             <div>
-                              <span>Vitesse : </span>
-                              {x.vitesse}
+                              <span>ID : </span>
+                              {x.id}
                             </div>
-                          }
-                          {x.datems && (
                             <div>
-                              <span>Date mise en services : </span>
+                              <span>Conducteur : </span>
+                            </div>
+                            <div>
+                              <span>DATE : </span>
                               {x.datems}
                             </div>
-                          )}
+                            <div>
+                              <span>BATTERIE : </span>
+                              {x.batterie}
+                            </div>
+                            {x.marque && (
+                              <div>
+                                <span>Marque : </span>
+                                {x.marque}
+                              </div>
+                            )}
+
+                            {x.kilometrage && (
+                              <div>
+                                <span>kilométrage : </span>
+                                {x.kilometrage}
+                              </div>
+                            )}
+
+                            {x.heures && (
+                              <div>
+                                <span>Nombre Heure : </span>
+                                {x.heures}
+                              </div>
+                            )}
+
+                            {
+                              <div>
+                                <span>Vitesse : </span>
+                                {x.vitesse}
+                              </div>
+                            }
+                            {x.datems && (
+                              <div>
+                                <span>Date mise en services : </span>
+                                {x.datems}
+                              </div>
+                            )}
+                          </div>
+                          <div className="borderDiv"></div>
                         </div>
-                        <div className="borderDiv"></div>
-                      </div>
-                    </InfoWindow>
-                  ) : null}
-                </Marker>
-              ))}
+                      </InfoWindow>
+                    ) : null}
+                  </Marker>
+                ))}
 
-            {markersBacs &&
-              markersBacs.map((x, index) => (
-                <Marker
-                  position={x.position}
-                  icon={x.icon}
-                  key={index}
-                  draggable={true}
-                ></Marker>
-              ))}
+              {markersBacs &&
+                markersBacs.map((x, index) => (
+                  <Marker
+                    position={x.position}
+                    icon={x.icon}
+                    key={index}
+                    draggable={true}
+                  ></Marker>
+                ))}
 
-            {poly &&
-              triangleCoords1.map((x, index) => (
-                <Polygon
-                  key={index}
-                  paths={x}
-                  options={{
-                    strokeOpacity: 0.8,
-                    strokeColor: "red",
-                    fillColor: "transparent",
-                  }}
-                />
-              ))}
+              {poly &&
+                triangleCoords1.map((x, index) => (
+                  <Polygon
+                    key={index}
+                    paths={x}
+                    options={{
+                      strokeOpacity: 0.8,
+                      strokeColor: "red",
+                      fillColor: "transparent",
+                    }}
+                  />
+                ))}
 
-            {polyLines &&
-              polyLines.map((x, index) => (
-                <Polyline
-                  key={index}
-                  path={x}
-                  geodesic={true}
-                  options={{
-                    strokeColor: "blue",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2,
-                  }}
-                />
-              ))}
-            {polyLinesBacs &&
-              polyLinesBacs.map((x, index) => (
-                <Polyline
-                  key={index}
-                  path={x}
-                  geodesic={true}
-                  options={{
-                    strokeColor: "blue",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2,
-                  }}
-                />
-              ))}
-          </GoogleMap>
+              {polyLines &&
+                polyLines.map((x, index) => (
+                  <Polyline
+                    key={index}
+                    path={x}
+                    geodesic={true}
+                    options={{
+                      strokeColor: "blue",
+                      strokeOpacity: 1.0,
+                      strokeWeight: 2,
+                    }}
+                  />
+                ))}
+              {polyLinesBacs &&
+                polyLinesBacs.map((x, index) => (
+                  <Polyline
+                    key={index}
+                    path={x}
+                    geodesic={true}
+                    options={{
+                      strokeColor: "blue",
+                      strokeOpacity: 1.0,
+                      strokeWeight: 2,
+                    }}
+                  />
+                ))}
+            </GoogleMap>
+          ))
         ) : (
           <p>Please wait </p>
         )}
