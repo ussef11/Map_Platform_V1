@@ -278,8 +278,10 @@ function Tree() {
 
   useEffect(() => {
     if (ValueCheckedRadio == "vehicul") {
+      setDataFromServer(null)
       setSelectedRadioValue("vehicul");
       if (vh != null) {
+
         setdisplayCheckBox(true);
 
         const nestedData = getNestedData(vh, null);
@@ -288,6 +290,8 @@ function Tree() {
       }
     }
     if (ValueCheckedRadio == "circuit") {
+      setDataFromServer(null)
+
       setdisplayCheckBox(false);
       setSelectedRadioValue("circuit");
       if (ci != null) {
@@ -297,6 +301,8 @@ function Tree() {
       }
     }
     if (ValueCheckedRadio == "conducteur") {
+      setDataFromServer(null)
+
       setSelectedRadioValue("conducteur");
       if (ci != null) {
         const nestedData = getNestedData(ci, null);
@@ -370,6 +376,7 @@ function Tree() {
       let currentNodeArrey = [currentNode];
 
       if (ValueCheckedRadio === "vehicul") {
+        
         selectedValues.map((item) => {
           SetAllids((current) => [...current, item.value]);
           id.push(item.value);
