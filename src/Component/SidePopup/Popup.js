@@ -129,21 +129,24 @@ const AccordionItem = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const requestOptions = {
-        method: "GET",
-        redirect: "follow",
-      };
-      try {
-        const response = await fetch(
-          `http://tanger.geodaki.com:3000/rpc/last_tag?uid=71&devid=${active}`,
-          requestOptions
-        );
-        const result = await response.json();
-        settagdata(result);
-        console.log("activetag", tagdata);
-      } catch (error) {
-        console.log("error", error);
+      if(active != null){
+        const requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+        try {
+          const response = await fetch(
+            `http://tanger.geodaki.com:3000/rpc/last_tag?uid=71&devid=${active}`,
+            requestOptions
+          );
+          const result = await response.json();
+          settagdata(result);
+          console.log("activetag", tagdata);
+        } catch (error) {
+          console.log("error", error);
+        }
       }
+      
     };
   
     fetchData()
