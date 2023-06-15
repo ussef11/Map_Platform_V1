@@ -449,7 +449,9 @@ const Map = () => {
     lng: -5.833954,
   });
   useEffect(() => {
+    setPosition()
     const fetchData = async () => {
+      setPosition()
       if (IdMark != null) {
         try {
           const response = await fetch(
@@ -469,9 +471,10 @@ const Map = () => {
               lat: lat,
               lng: lon,
             });
-            console.log("mycenterlat", mycenterlat);
-            console.log("mycenterlng", mycenterlng);
+            // console.log("position", position);
+            // console.log("mycenterlng", mycenterlng);
             setdefaultzoom(false);
+          
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -479,8 +482,14 @@ const Map = () => {
       }
     };
 
+    console.log("IdMark"  ,IdMark)
+
     fetchData();
-  }, [IdMark, mycenterlat]);
+
+    // setInterval(() => {
+    //   fetchData();
+    // }, 5000);
+  }, [lat_lng, ContextShowtTee, IdMark]);
 
   const onLoad = useCallback(
     function callback(map) {
@@ -488,8 +497,7 @@ const Map = () => {
       bounds.extend(new window.google.maps.LatLng(position));
       map.fitBounds(bounds);
 
-      // console.log("onLoad mycenterlat", mycenterlat);
-      // console.log("onLoad mycenterlng", mycenterlng);
+     
     },
     [IdMark]
   );
@@ -517,13 +525,15 @@ const Map = () => {
               fullscreenControl: false,
 
               zoom:
+              IdMark === null ? null :
               SelectedRadioValue === "circuit" ?
                      null
                        : defaultzoom
                            ? 12
-                              : 20,
+                              : 18,
 
               center: new window.google.maps.LatLng(position),
+              
             }}
             center={position}
             onUnmount={onUnmount}
