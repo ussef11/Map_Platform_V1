@@ -54,6 +54,9 @@ function Tree() {
   };
   const [ShowTempreel, SetShowTempreel] = useState(false);
   const [ShowHISTORIQUE, SetShowHISTORIQUE] = useState(false);
+
+
+  
   useEffect(() => {
     if (ContextShowtTee === "TEMPS REEL") {
       SetShowHISTORIQUE(false);
@@ -71,7 +74,14 @@ function Tree() {
       setresultForpopup([]);
       setSelectedValueTreeNointerval([]);
     }
+
   }, [ContextShowtTee, SelectedRadioValue]);
+
+  const [refreshKey, setRefreshKey] = useState(0);
+  useEffect(() => {
+    setRefreshKey((prevKey) => prevKey + 1); 
+  }, [ContextShowtTee, SelectedRadioValue]); 
+
 
   const {
     Data: vh,
@@ -128,146 +138,152 @@ function Tree() {
   }, []);
 
   function getNestedData2(data, parentId) {
-    const result = [];
-    data.forEach((item) => {
-      if (item.parent === parentId) {
-        const children = null;
-
-        let newDate = new Date();
-        let date = newDate.getDate();
-        let day = newDate.getDay();
-        let month = newDate.getMonth() + 1;
-        let year = newDate.getFullYear();
-        let hours = newDate.getHours() + 1;
-        let currentmin = newDate.getMinutes();
-        let sec = newDate.getSeconds();
-
-        // "2023-05-15T15:33:04"
-        // let time = `${year}-${month<10?`0${month}`:`${month}`}-${date}T:${hours <10?`0${hours}`:`${hours}` }-${min <10?`0${min}`:`${min}` }-${sec <10?`0${sec}`:`${sec}` }`
-        // String.fromCodePoint(parseInt(2699,16))
-        const mydate = new Date(item.lastu);
-        let LastUpdateMin = mydate.getMinutes();
-
-        const targetDateTime = new Date(item.lastu);
-
-        const timeDiff = Math.abs(targetDateTime - currentTime);
-        const minutesDiff = Math.floor(timeDiff / (1000 * 60));
-        const secondsDiff = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-        const newItem = {
-          value: item.id,
-          label:
-            item.typeveh != "rien" && item.typeveh == "CHARIOT"
-              ? ValueCheckedRadio === "vehicul"
-                ? minutesDiff < 60
-                  ? item.name + iconGreen.symbol
-                  : minutesDiff > 24 * 60
-                  ? item.name + iconRed.symbol
-                  : item.name + iconyello.symbol
-                : item.name
-              : minutesDiff <= 60 && item.typeveh != "rien"
-              ? Math.abs(item.lacc) == 1
-                ? item.vitesse > 0
-                  ? item.name + Lighti.symbol // endif vitesse>0
-                  : item.name + Lightningi.symbol
-                : Math.abs(item.lacc) === 0 // else if acc = 1
-                ? item.name + Warningi.symbol
-                : item.name
-              : minutesDiff < 60 && item.typeveh != "rien"
-              ? item.name + parkingi.symbol
-              : item.typeveh != "rien"
-              ? item.name + sosi.symbol
-              : item.name,
-
-          lastu: item.lastu,
-
-          // parent: item.parent,
-          //  children: children.length > 0 ? children : null,
-        };
-
-        if (item.type === "group")
-          newItem.children = getNestedData(data, item.id);
-        result.push(newItem);
-      }
-    });
-    return result;
-  }
-
-  function getNestedData(data, parentId) {
-    const result = [];
-    data.forEach((item) => {
-      if (item.parent === parentId) {
-        const children = getNestedData2(data, item.id);
-
-        let newDate = new Date();
-        let date = newDate.getDate();
-        let day = newDate.getDay();
-        let month = newDate.getMonth() + 1;
-        let year = newDate.getFullYear();
-        let hours = newDate.getHours() + 1;
-        let currentmin = newDate.getMinutes();
-        let sec = newDate.getSeconds();
-        const mydate = new Date(item.lastu);
-        let LastUpdateMin = mydate.getMinutes();
-        let currenttime = currentmin - LastUpdateMin;
-
-        // console.log("currenttime", Math.abs(currenttime));
-        const targetDateTime = new Date(item.lastu);
-
-        const timeDiff = Math.abs(targetDateTime - currentTime);
-        const minutesDiff = Math.floor(timeDiff / (1000 * 60));
-        const secondsDiff = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-        // console.log("item.typeveh", item.typeveh);
-        if (item.typeveh == "CHARIOT") {
+    if(data){
+      const result = [];
+      data.forEach((item) => {
+        if (item.parent === parentId) {
+          const children = null;
+  
+          let newDate = new Date();
+          let date = newDate.getDate();
+          let day = newDate.getDay();
+          let month = newDate.getMonth() + 1;
+          let year = newDate.getFullYear();
+          let hours = newDate.getHours() + 1;
+          let currentmin = newDate.getMinutes();
+          let sec = newDate.getSeconds();
+  
+          // "2023-05-15T15:33:04"
+          // let time = `${year}-${month<10?`0${month}`:`${month}`}-${date}T:${hours <10?`0${hours}`:`${hours}` }-${min <10?`0${min}`:`${min}` }-${sec <10?`0${sec}`:`${sec}` }`
+          // String.fromCodePoint(parseInt(2699,16))
+          const mydate = new Date(item.lastu);
+          let LastUpdateMin = mydate.getMinutes();
+  
+          const targetDateTime = new Date(item.lastu);
+  
+          const timeDiff = Math.abs(targetDateTime - currentTime);
+          const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+          const secondsDiff = Math.floor((timeDiff % (1000 * 60)) / 1000);
+  
           const newItem = {
             value: item.id,
             label:
-              ValueCheckedRadio === "vehicul"
-                ? minutesDiff <= 60
-                  ? item.name + iconGreen.symbol
-                  : minutesDiff > 60 && minutesDiff <= 180
-                  ? item.name + iconyello.symbol
-                  : item.name + iconRed.symbol
-                : "",
+              item.typeveh != "rien" && item.typeveh == "CHARIOT"
+                ? ValueCheckedRadio === "vehicul"
+                  ? minutesDiff < 60
+                    ? item.name + iconGreen.symbol
+                    : minutesDiff > 24 * 60
+                    ? item.name + iconRed.symbol
+                    : item.name + iconyello.symbol
+                  : item.name
+                : minutesDiff <= 60 && item.typeveh != "rien"
+                ? Math.abs(item.lacc) == 1
+                  ? item.vitesse > 0
+                    ? item.name + Lighti.symbol // endif vitesse>0
+                    : item.name + Lightningi.symbol
+                  : Math.abs(item.lacc) === 0 // else if acc = 1
+                  ? item.name + Warningi.symbol
+                  : item.name
+                : minutesDiff < 60 && item.typeveh != "rien"
+                ? item.name + parkingi.symbol
+                : item.typeveh != "rien"
+                ? item.name + sosi.symbol
+                : item.name,
+  
             lastu: item.lastu,
+  
             // parent: item.parent,
             //  children: children.length > 0 ? children : null,
           };
-          result.push(newItem);
-        } else if (item.typeveh != "CHARIOT" && item.typeveh != "rien") {
-          const newItem = {
-            value: item.id,
-            label:
-              ValueCheckedRadio === "vehicul"
-                ? minutesDiff <= 60
-                  ? Math.abs(item.lacc) == 1
-                    ? item.vitesse > 0
-                      ? item.name + Lighti.symbol // endif vitesse>0
-                      : item.name + Lightningi.symbol
-                    : Math.abs(item.lacc) === 0 // else if acc = 1
-                    ? item.name + Warningi.symbol
-                    : item.name
-                  : minutesDiff < 60
-                  ? item.name + parkingi.symbol
-                  : item.name + sosi.symbol
-                : "",
-            lastu: item.lastu,
-          };
-          result.push(newItem);
-        } else {
-          const newItem = {
-            value: item.id,
-            label: item.name,
-            lastu: item.lastu,
-            // parent: item.parent,
-            children: children.length > 0 ? children : null,
-          };
+  
+          if (item.type === "group")
+            newItem.children = getNestedData(data, item.id);
           result.push(newItem);
         }
-      }
-    });
-    return result;
+      });
+      return result;
+    }
+   
+  }
+
+  function getNestedData(data, parentId) {
+    if(data) {
+      const result = [];
+      data.forEach((item) => {
+        if (item.parent === parentId) {
+          const children = getNestedData2(data, item.id);
+         
+          let newDate = new Date();
+          let date = newDate.getDate();
+          let day = newDate.getDay();
+          let month = newDate.getMonth() + 1;
+          let year = newDate.getFullYear();
+          let hours = newDate.getHours() + 1;
+          let currentmin = newDate.getMinutes();
+          let sec = newDate.getSeconds();
+          const mydate = new Date(item.lastu);
+          let LastUpdateMin = mydate.getMinutes();
+          let currenttime = currentmin - LastUpdateMin;
+  
+          // console.log("currenttime", Math.abs(currenttime));
+          const targetDateTime = new Date(item.lastu);
+  
+          const timeDiff = Math.abs(targetDateTime - currentTime);
+          const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+          const secondsDiff = Math.floor((timeDiff % (1000 * 60)) / 1000);
+  
+          // console.log("item.typeveh", item.typeveh);
+          if (item.typeveh == "CHARIOT") {
+            const newItem = {
+              value: item.id,
+              label:
+                ValueCheckedRadio === "vehicul"
+                  ? minutesDiff <= 60
+                    ? item.name + iconGreen.symbol
+                    : minutesDiff > 60 && minutesDiff <= 180
+                    ? item.name + iconyello.symbol
+                    : item.name + iconRed.symbol
+                  : "",
+              lastu: item.lastu,
+              // parent: item.parent,
+              //  children: children.length > 0 ? children : null,
+            };
+            result.push(newItem);
+          } else if (item.typeveh != "CHARIOT" && item.typeveh != "rien") {
+            const newItem = {
+              value: item.id,
+              label:
+                ValueCheckedRadio === "vehicul"
+                  ? minutesDiff <= 60
+                    ? Math.abs(item.lacc) == 1
+                      ? item.vitesse > 0
+                        ? item.name + Lighti.symbol // endif vitesse>0
+                        : item.name + Lightningi.symbol
+                      : Math.abs(item.lacc) === 0 // else if acc = 1
+                      ? item.name + Warningi.symbol
+                      : item.name
+                    : minutesDiff < 60
+                    ? item.name + parkingi.symbol
+                    : item.name + sosi.symbol
+                  : "",
+              lastu: item.lastu,
+            };
+            result.push(newItem);
+          } else {
+            const newItem = {
+              value: item.id,
+              label: item.name,
+              lastu: item.lastu,
+              // parent: item.parent,
+              children: children.length > 0 ? children : null,
+            };
+            result.push(newItem);
+          }
+        }
+      });
+      return result;
+    }
+   
   }
 
   const handleChangedate = (e) => {
@@ -279,11 +295,12 @@ function Tree() {
   useEffect(() => {
     if (ValueCheckedRadio == "vehicul") {
       setDataFromServer(null)
+      getNestedData(null , null)
       setSelectedRadioValue("vehicul");
       if (vh != null) {
 
         setdisplayCheckBox(true);
-
+      
         const nestedData = getNestedData(vh, null);
         console.log(vh, "vh");
         setDataFromServer(nestedData);
@@ -291,7 +308,7 @@ function Tree() {
     }
     if (ValueCheckedRadio == "circuit") {
       setDataFromServer(null)
-
+      getNestedData(null , null)
       setdisplayCheckBox(false);
       setSelectedRadioValue("circuit");
       if (ci != null) {
@@ -302,7 +319,7 @@ function Tree() {
     }
     if (ValueCheckedRadio == "conducteur") {
       setDataFromServer(null)
-
+      getNestedData(null , null)
       setSelectedRadioValue("conducteur");
       if (ci != null) {
         const nestedData = getNestedData(ci, null);
@@ -310,7 +327,7 @@ function Tree() {
         setDataFromServer(nestedData);
       }
     }
-  }, [vh, ci, ValueCheckedRadio, RadioChange]);
+  }, [vh, ci, ValueCheckedRadio, RadioChange ,SelectedRadioValue]);
 
   const [Allids, SetAllids] = useState([]);
   const [devicesP, setDevicesP] = useState([]);
@@ -568,6 +585,8 @@ function Tree() {
     };
   }, [ValueCheckedRadio, ContextShowtTee]);
 
+
+
   // useEffect(() => {
   //   const intervalCall = setInterval(() => {
   //     if (Array.isArray(id) && id.length !== 0) {
@@ -641,15 +660,16 @@ function Tree() {
             </div> */}
             {dataFromServer ? (
               <div>
-                <ReactDropdownTreeSelectMemoized
-                  data={dataFromServer}
-                  onChange={handleChange}
-                  inlineSearchInput
-                  showDropdown="always"
-                  className={
-                    displayCheckBox ? "mdl-demo" : "mdl-demoDisplayedNone"
-                  }
-                />
+              {<ReactDropdownTreeSelectMemoized
+                key={refreshKey}
+                data={dataFromServer  }
+                onChange={handleChange}
+                inlineSearchInput
+                showDropdown="always"
+                className={
+                  displayCheckBox ? "mdl-demo" : "mdl-demoDisplayedNone"
+                }
+              />}
               </div>
             ) : (
               "LOADING.."

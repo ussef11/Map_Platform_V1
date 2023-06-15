@@ -198,21 +198,41 @@ const Map = () => {
     setActiveMarker(null);
   }, [SelectedRadioTree]);
 
-  useEffect(() => {
-    // setmycenterlng(-5.833954);
-    // setmycenterlat(35.759465);
-  }, [ContextShowtTee]);
-  useEffect(() => {
-    // console.log("SelectedRadioTree1", zoomy);
-  }, [SelectedRadioTree]);
+  const [appliedZoom , setappliedZoom] = useState(true)
+  const [position, setPosition] = useState({
+    lat: 35.759465,
+    lng: -5.833954,
+  });
+
+
+
+  useEffect(()=>{
+    setIdMark(null)
+    if(ContextShowtTee == "close All"  ){
+     
+      setappliedZoom(false)
+      setdefaultzoom(false)
+      setPosition({
+        lat: 35.759465,
+        lng: -5.833954,
+      })
+    }
+    console.log( "ssssss", SelectedRadioValue)
+  } ,[ContextShowtTee , SelectedRadioValue] )
+
 
   useEffect(() => {
+
+
+   
+    
     setPolyLine();
     polyLine.push();
     setShowPloyLine(false);
     setshowerrMsg(false);
     setdefaultzoom(true)
-  }, [SelectedRadioValue]);
+    setappliedZoom(false)
+  }, [SelectedRadioValue,ContextShowtTee]);
 
   const polygonCoords1 = [];
   const polygonCoords2 = [];
@@ -444,10 +464,7 @@ const Map = () => {
       }
     }
   }, [lat_lng, ContextShowtTee, IdMark]);
-  const [position, setPosition] = useState({
-    lat: 35.759465,
-    lng: -5.833954,
-  });
+
   useEffect(() => {
     setPosition()
     const fetchData = async () => {
@@ -474,7 +491,7 @@ const Map = () => {
             // console.log("position", position);
             // console.log("mycenterlng", mycenterlng);
             setdefaultzoom(false);
-          
+            setappliedZoom(false)
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -489,7 +506,7 @@ const Map = () => {
     // setInterval(() => {
     //   fetchData();
     // }, 5000);
-  }, [lat_lng, ContextShowtTee, IdMark]);
+  }, [lat_lng, IdMark]);
 
   const onLoad = useCallback(
     function callback(map) {
@@ -502,7 +519,7 @@ const Map = () => {
 
      
     },
-    [IdMark]
+    []
   );
 
   useEffect(() => {
@@ -528,14 +545,14 @@ const Map = () => {
               fullscreenControl: false,
 
               zoom:
-              IdMark === null ? null :
-              SelectedRadioValue === "circuit" ?
-                     null
-                       : defaultzoom
-                           ? 12
-                              : 18,
+             IdMark != null ? appliedZoom === false ? SelectedRadioValue === "circuit" ?
+              null
+                : defaultzoom
+                    ? 12
+                       : 18 : null  : 12
+              ,
 
-            //  position && center: new window.google.maps.LatLng(position),
+            center: new window.google.maps.LatLng(position),
               
             }}
             center={position}

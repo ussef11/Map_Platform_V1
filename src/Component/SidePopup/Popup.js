@@ -9,7 +9,8 @@ const AccordionItem = (props) => {
   const { handleToggle, active, faq } = props;
   const { displaybacs, setdisplaybacs } = useContext(ContextID);
   const { IdMark, setIdMark } = useContext(ContextID);
-  
+  const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
+
   const [ showAllbacs, setshowAllbacs]  = useState('');
   const { deleteAllbaks, setdeleteAllbaks } = useState('');
  
@@ -101,7 +102,7 @@ const AccordionItem = (props) => {
 
   const [showRIFDinfo, setshowRIFDinfo] = useState(false);
   const [showAllinfo, setshowAllinfo] = useState(true);
-
+  const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const handleDispalyInfo = () => {
     if (showAllinfo === false) {
       setshowRIFDinfo(false);
@@ -169,6 +170,13 @@ const AccordionItem = (props) => {
     }
     console.log("active" ,active)
   },[active])
+
+
+
+  // useEffect(()=>{
+    
+  //   console.log("SelectedRadioValue" , SelectedRadioValue)
+  // },[SelectedRadioValue])
 
   useEffect(()=>{
 
