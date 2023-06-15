@@ -480,14 +480,14 @@ const Map = () => {
             const { lat, lon } = result[0];
             setmycenterlat(lat);
             setmycenterlng(lon);
-            const center = {
-              lat: lat,
-              lng: lon,
-            };
+          
+            if(lat != null && lon  != null)
             setPosition({
               lat: lat,
               lng: lon,
             });
+
+            
             // console.log("position", position);
             // console.log("mycenterlng", mycenterlng);
             setdefaultzoom(false);
@@ -552,7 +552,7 @@ const Map = () => {
                        : 18 : null  : 12
               ,
 
-            center: new window.google.maps.LatLng(position),
+            // center: new window.google.maps.LatLng(position),
               
             }}
             center={position}
