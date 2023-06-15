@@ -493,9 +493,12 @@ const Map = () => {
 
   const onLoad = useCallback(
     function callback(map) {
-      const bounds = new window.google.maps.LatLngBounds(position);
-      bounds.extend(new window.google.maps.LatLng(position));
-      map.fitBounds(bounds);
+      if(position){
+        const bounds = new window.google.maps.LatLngBounds(position);
+        bounds.extend(new window.google.maps.LatLng(position));
+        map.fitBounds(bounds);
+      }
+    
 
      
     },
@@ -532,7 +535,7 @@ const Map = () => {
                            ? 12
                               : 18,
 
-              center: new window.google.maps.LatLng(position),
+            //  position && center: new window.google.maps.LatLng(position),
               
             }}
             center={position}

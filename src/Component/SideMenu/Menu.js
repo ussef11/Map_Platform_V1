@@ -79,7 +79,7 @@ function MenuSide({ handleMenuClick }) {
       console.log("iwant to close the menu")
     } else if (ContextShowtTee === "HISTORIQUE") {
       SetHideMenuSide(false)
-      console.log("iwant to close the menu")
+      console.log("HISTORIQUE")
     } else if ("close All") {
       SetHideMenuSide(true)
           console.log("iwant to open the menu")
