@@ -71,6 +71,8 @@ function MenuSide({ handleMenuClick }) {
   const [devicesP, setDevicesP] = useState([]);
 
 
+
+
   const [HideMenuSide, SetHideMenuSide] = useState(true);
 
   useEffect(() => {
@@ -80,7 +82,14 @@ function MenuSide({ handleMenuClick }) {
     } else if (ContextShowtTee === "HISTORIQUE") {
       SetHideMenuSide(false)
       console.log("HISTORIQUE")
-    } else if ("close All") {
+    } 
+    else if (ContextShowtTee === "DIAGNOSTIQUE") {
+      SetHideMenuSide(false)
+      console.log("DIAGNOSTIQUE")
+    } 
+    
+    
+    else if ("close All") {
       SetHideMenuSide(true)
           console.log("iwant to open the menu")
   
@@ -112,8 +121,10 @@ function MenuSide({ handleMenuClick }) {
   };
   // menu listener
   function handleMenuClick(item) {
+  
+    console.log(`you clicked on ${item.label}`);
     if (item.label === "DIAGNOSTIQUE") {
-      console.log(`you clicked on ${item.label}`);
+     
       SetContextShowtTree("");
       SetContextShowtTree(item.label);
     } else if (item.label === "TEMPS REEL") {

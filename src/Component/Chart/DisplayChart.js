@@ -24,31 +24,9 @@ function DisplayChart() {
   Chart.register(LineController, LineElement, PointElement, LinearScale, Title);
 
   const { Data } = useFetch(
-    "http://tanger.geodaki.com:3000/rpc/data?idsdevice=1888&dtb=20/06/2023%2000:00:00&dtf=20/06/2023%2023:59:00"
+    "http://tanger.geodaki.com:3000/rpc/data?idsdevice=1898&dtb=20/06/2023%2004:40:00&dtf=20/06/2023%2012:59:00"
   );
 
-  useEffect(() => {
-    const capt = Data && Data.map((item) => item.capteur);
-
-    // console.log(capt)
-  }, [Data]);
-
-  // const startDate = moment("13/06/2023 08:00:00", "DD/MM/YYYY HH:mm:ss");
-  // const endDate = moment("13/06/2023 23:00:00", "DD/MM/YYYY HH:mm:ss");
-
-  // const duration = moment.duration(endDate.diff(startDate));
-  // const minutes = duration.asSeconds();
-
-  // const datesAndTimes = [];
-
-  // for (let i = 0; i <= minutes; i++) {
-  //   const dateTime = startDate.clone().add(i, "second");
-  //   const formattedTime = dateTime.format("DD/MM/YYYY HH:mm:ss");
-  //   const jsonObject = {
-  //     time: formattedTime,
-  //   };
-  //   datesAndTimes.push(jsonObject);
-  // }
 
   const timeData = Data && Data.map((item) => item.date);
   const accData = Data && Data.map((item) => item.acc);
@@ -261,11 +239,11 @@ function DisplayChart() {
   ];
 
   const [listComp, setListCom] = useState([]);
-  const [listComp2, setllistComp2] = useState([]);
+  const [CompleteData, setCompleteData] = useState(false);
   const [listcallcap, setlistcallcap] = useState([]);
   const [listcallcan, setlistcallcan] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
+    
       try {
         let mylist = [];
         let mylist2 = [];
@@ -314,7 +292,7 @@ function DisplayChart() {
             if (itemCan.length > 0) {
               setlistcallcan(itemCan);
             }
-            //  console.log(listcallcan)
+            
 
             canCaptData.capteur.split("").map((captValue, subIndex) => {
               const codeItem = codeData.find(
@@ -339,16 +317,17 @@ function DisplayChart() {
           });
 
           setListCom(mylist);
+          setCompleteData(true)
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    };
+    
 
-    fetchData();
 
-    //
-  }, [Data]);
+
+    
+  }, [Data ,CompleteData]);
 
   const labelss = Array.from(
     { length: DATA_COUNT },
@@ -1315,7 +1294,7 @@ function DisplayChart() {
         onClick={onClick}
         options={{
           plugins: {
-            annotation: {}, // Enable the chartjs-plugin-annotation plugin
+            annotation: {}, 
           },
 
           scales: {
@@ -1439,7 +1418,7 @@ function DisplayChart() {
           data={configComp.data}
           options={configComp.options}
         />
-      ) : null}
+          ) : null}
 
       {listComp.some((item) => item.intitule === "Cycle LC") ? (
         <Line

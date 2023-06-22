@@ -212,10 +212,11 @@
       /* background: #ffffff; */
       border-top: 1px solid rgba(0,0,0,.05);
       box-shadow: 0 5px 8px rgba(0,0,0,.15);
-     /* width: 27vw;  */
+      width: 336px;
       margin-left: 4px;
       border-radius: 5px;
       box-shadow: none;
+      height: 589px;
      
     }
     
@@ -296,13 +297,13 @@
     }
   
   .infinite-scroll-component {
-      height: auto;
+    
       overflow-y: auto;
       overflow-x: hidden;
-      max-height: 800px;
+      /* max-height: 800px; */
       width: 26vw;  
-        text-align: left;
-    
+      text-align: left;
+      /* height: 80vh !important; */
       margin-left: 12px;
      
   }
@@ -445,9 +446,12 @@ width: 24vw;
   }
   
   .Radiocontainer label{
+    font-size: 14px;
     position: relative;
     top: -2px;
-    color: rgb(0, 0, 0);
+    color: #5d5d5d;
+    font-family: system-ui;
+    margin-left: 2px;
   }
   .Radiocontainer input{
     position: relative;
@@ -471,13 +475,16 @@ width: 24vw;
   }
   
   .react-dropdown-tree-select .dropdown .dropdown-content ul{
-    height: 77vh;  }
+    max-height: 501px;
+    padding-bottom: 20px;
+    display: flex;
+    height: auto; }
 
 
   /* DisplayedNone */
-  .mdl-demoDisplayedNone .react-dropdown-tree-select{
+  /* .mdl-demoDisplayedNone .react-dropdown-tree-select{
     width: 24vw;
-      }
+      } */
     
     .mdl-demoDisplayedNone .dropdown-trigger > span:after {
       font-size: 12px;
@@ -540,3 +547,36 @@ width: 24vw;
       border-color: #2196f3;
     }
     /* endDisplayedNone */
+
+
+    ::-webkit-inner-spin-button { 
+      display:none;
+    }
+    ::-webkit-calendar-picker-indicator { background-color:white}
+    input[type=date]{
+      font-size: 17px;
+    }
+    ::-webkit-datetime-edit-text { color:#555555}
+    ::-webkit-datetime-edit-month-field { color:#555555 }
+    ::-webkit-datetime-edit-day-field { color: #555555; }
+    ::-webkit-datetime-edit-year-field { color:#555555; }
+    /* ::-webkit-calendar-picker-indicator{ 
+      background-image: url(http://icons.iconarchive.com/icons/dakirby309/simply-styled/256/Calendar-icon.png);
+          background-position:center;
+           background-size:20px 20px;
+           background-repeat:no-repeat;
+          color:rgba(204,204,204,0);
+    } */
+
+
+    .dateDiv{
+          /* margin: 14px; */
+    margin-top: 10px;
+    margin-left: 21px;
+    margin-bottom: 5px;
+    }
+
+
+    .dropdown{
+      margin-top: -20px;
+    }

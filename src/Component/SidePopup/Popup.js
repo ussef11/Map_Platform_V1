@@ -102,7 +102,6 @@ const AccordionItem = (props) => {
 
   const [showRIFDinfo, setshowRIFDinfo] = useState(false);
   const [showAllinfo, setshowAllinfo] = useState(true);
-  const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const handleDispalyInfo = () => {
     if (showAllinfo === false) {
       setshowRIFDinfo(false);
@@ -442,6 +441,66 @@ const AccordionItem = (props) => {
 
 const Popup = () => {
   const { resultForpopup, setresultForpopup } = useContext(ContextID);
+  const {DeviceId , setDeviceId} = useContext(ContextID);
+  const [DataForDiagpopup , setDataForDiagpopup] = useState()
+  const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
+  const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
+  useEffect(() => { 
+   
+    
+    setActive(null)
+    setDeviceId(null)
+    setresultForpopup(null)
+ 
+  }, [SelectedRadioValue,ContextShowtTee]);
+  
+  useEffect(()=>{
+    if(ContextShowtTee == "close All"  ){
+      setSelectedRadioValue("vehicul")
+      setActive(null)
+      setDeviceId(null)
+      setresultForpopup(null) 
+    }
+    console.log( "ssssss", SelectedRadioValue)
+  } ,[ContextShowtTee , SelectedRadioValue] )
+
+ useEffect(()=>{
+
+let result 
+result = null
+const fetchData = async()=>{
+  var requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+  try {
+    if(DeviceId){
+      if(ContextShowtTee === "DIAGNOSTIQUE"){
+        let res;
+        res = await fetch(
+          `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${DeviceId}}&uid=71`,
+          requestOptions
+        );
+        result = await res.json();
+        setDataForDiagpopup(result)
+        // console.log( "vvvv", resultForpopup)
+      }
+     
+    }
+   
+  } catch (error) {
+    console.log("error", error);
+  }
+}
+
+fetchData()
+
+},[DeviceId,ContextShowtTee,SelectedRadioValue])
+
+useEffect(()=>{
+  
+  console.log("vvvv",  ContextShowtTee)
+},[ContextShowtTee])
   
   console.log("resultForpopup From PopUp", resultForpopup);
   const [active, setActive] = useState(null);
@@ -458,7 +517,20 @@ const Popup = () => {
 
   return (
     <article>
-      {resultForpopup &&
+      {  ContextShowtTee === "DIAGNOSTIQUE" ?  DataForDiagpopup &&
+        DataForDiagpopup.map((faq, index) => {
+          return (
+            <AccordionItem
+              key={index}
+              active={active}
+              handleToggle={handleToggle}
+              faq={faq}
+            />
+          );
+        })  
+      
+      : 
+      resultForpopup &&
         resultForpopup.map((faq, index) => {
           return (
             <AccordionItem
@@ -468,7 +540,8 @@ const Popup = () => {
               faq={faq}
             />
           );
-        })}
+        })  
+      }
     </article>
   );
 };

@@ -53,6 +53,7 @@ const Map = () => {
   const [zoomy, setzoomy] = useState(12);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
   const { IdMark, setIdMark } = useContext(ContextID);
+  const { resultForpopup, setresultForpopup } = useContext(ContextID);
 
   const [mycenterlng, setmycenterlng] = useState(-5.833954);
   const [mycenterlat, setmycenterlat] = useState(35.759465);
@@ -216,6 +217,9 @@ const Map = () => {
         lat: 35.759465,
         lng: -5.833954,
       })
+      setmarkersBacs([]);
+      setdisplaybacs(false)
+      setresultForpopup()
     }
     console.log( "ssssss", SelectedRadioValue)
   } ,[ContextShowtTee , SelectedRadioValue] )
@@ -223,9 +227,10 @@ const Map = () => {
 
   useEffect(() => {
 
-
-   
     
+    setresultForpopup()
+    setmarkersBacs([]);
+    setdisplaybacs(false)
     setPolyLine();
     polyLine.push();
     setShowPloyLine(false);
@@ -545,11 +550,8 @@ const Map = () => {
               fullscreenControl: false,
 
               zoom:
-             IdMark != null ? appliedZoom === false ? SelectedRadioValue === "circuit" ?
-              null
-                : defaultzoom
-                    ? 12
-                       : 18 : null  : 12
+              SelectedRadioValue === "circuit" ? null :     IdMark != null ? (appliedZoom === false ? (defaultzoom ? 12 : 19) : null) : 12
+
               ,
 
             // center: new window.google.maps.LatLng(position),

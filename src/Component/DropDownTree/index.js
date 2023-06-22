@@ -27,6 +27,8 @@ function Tree() {
   const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
   const { SelectedRadioTree, setSelectedRadioTree } = useContext(ContextID);
+  const {DeviceId , setDeviceId} = useContext(ContextID);
+
   const { SelectedValueTreeNointerval, setSelectedValueTreeNointerval } =
     useContext(ContextID);
   const { resultForpopup, setresultForpopup } = useContext(ContextID);
@@ -44,42 +46,69 @@ function Tree() {
     };
   }, []);
 
+  useEffect(()=>{
+    console.log("ValueCheckedRadiosss",  ValueCheckedRadio)
+  },[ValueCheckedRadio])
+
   const handlechangeRadio = (e) => {
     setValueCheckedRadio();
+ 
     setValueCheckedRadio(e.target.value);
-    console.log(ValueCheckedRadio);
+    console.log( ValueCheckedRadio);
 
     SetsetRadioChange((prev) => !prev, RadioChange);
     console.log(RadioChange);
   };
+  useEffect(()=>{
+    
+    setValueCheckedRadio("vehicul");
+    console.log("ddddddddd" ,ContextShowtTee , ValueCheckedRadio);
+  },[ContextShowtTee])
   const [ShowTempreel, SetShowTempreel] = useState(false);
-  const [ShowHISTORIQUE, SetShowHISTORIQUE] = useState(false);
-
+ const [showTimeDate , setShowTimeDate] = useState(false)
 
   
   useEffect(() => {
     if (ContextShowtTee === "TEMPS REEL") {
-      SetShowHISTORIQUE(false);
+      
       SetShowTempreel(true);
       console.log(ShowTempreel);
-    } else if (ContextShowtTee === "HISTORIQUE") {
+      setShowTimeDate(false)
+      setdisplayCheckBox(true);
+
+    } 
+    
+    else if (ContextShowtTee === "HISTORIQUE") {
+      SetShowTempreel(true);
+    } 
+    
+    else if (ContextShowtTee === "DIAGNOSTIQUE") {
+      setresultForpopup(null)
+      SetShowTempreel(true);
+      setShowTimeDate(true)
+      setdisplayCheckBox(false);
+    } 
+    
+    
+    else if (ContextShowtTee === "close All") {
+      
+
       SetShowTempreel(false);
-      SetShowHISTORIQUE(true);
-    } else if (ContextShowtTee === "close All") {
-      SetShowTempreel(false);
-      SetShowHISTORIQUE(false);
+      setSelectedRadioValue(null)
       Setlat_lng([]);
       setSelectedRadioValue([]);
       setSelectedRadioTree([]);
       setresultForpopup([]);
       setSelectedValueTreeNointerval([]);
+      setresultForpopup(null)
     }
-
+    setSelectedRadioValue("vehicul")
   }, [ContextShowtTee, SelectedRadioValue]);
 
   const [refreshKey, setRefreshKey] = useState(0);
   useEffect(() => {
     setRefreshKey((prevKey) => prevKey + 1); 
+    setSelectedRadioValue("vehicul")
   }, [ContextShowtTee, SelectedRadioValue]); 
 
 
@@ -239,7 +268,7 @@ function Tree() {
               label:
                 ValueCheckedRadio === "vehicul"
                   ? minutesDiff <= 60
-                    ? item.name + iconGreen.symbol
+                    ? item.name + iconGreen.symbol +"dd"
                     : minutesDiff > 60 && minutesDiff <= 180
                     ? item.name + iconyello.symbol
                     : item.name + iconRed.symbol
@@ -388,10 +417,10 @@ function Tree() {
       id = [];
       deviceid = [];
       let Lat_lng = [];
-      console.log("currentNode currentNode", currentNode);
+      console.log("currentNode currentNode", currentNode.value);
+      setDeviceId(currentNode.value)
       console.log("selectedValues", selectedValues);
       let currentNodeArrey = [currentNode];
-
       if (ValueCheckedRadio === "vehicul") {
         
         selectedValues.map((item) => {
@@ -409,7 +438,7 @@ function Tree() {
         });
       }
 
-      console.log("idff", idcenter);
+   
       try {
         let res;
         res = await fetch(
@@ -426,6 +455,9 @@ function Tree() {
       }
 
       console.log("deviceid", deviceid);
+      
+
+
       console.log("idd", id);
 
       var requestOptions = {
@@ -454,7 +486,7 @@ function Tree() {
 
         const result = await response.json();
 
-        console.log("result", result);
+        console.log("resultddd", result);
 
         setresultForpopup(result);
         result.map((x) => {
@@ -534,7 +566,7 @@ function Tree() {
 
           const result = await response.json();
 
-          console.log("resultddd", result);
+          
 
           setresultForpopup(result);
           result.map((x) => {
@@ -586,26 +618,79 @@ function Tree() {
   }, [ValueCheckedRadio, ContextShowtTee]);
 
 
+  const { startDate, setStartDate} = useContext(ContextID);
+  const { startTime, setStartTime} = useContext(ContextID);
+  const { endDate, setEndDate} = useContext(ContextID);
+  const { endTime, setEndTime} = useContext(ContextID);
 
-  // useEffect(() => {
-  //   const intervalCall = setInterval(() => {
-  //     if (Array.isArray(id) && id.length !== 0) {
-  //       console.log("ids", id);
-  //     }
-  //   }, 5000);
 
-  //   return () => {
-  //     // Clean up the interval when the component unmounts
-  //     clearInterval(intervalCall);
-  //   };
-  // }, []);
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value);
+  };
+
+  const handleStartTimeChange = (event) => {
+    setStartTime(event.target.value);
+  };
+
+  const handleEndDateChange = (event) => {
+    setEndDate(event.target.value);
+  };
+
+  const handleEndTimeChange = (event) => {
+    setEndTime(event.target.value);
+  };
+
 
   return (
     <>
       {ShowTempreel && (
         <div className="theTreediv">
+
+{showTimeDate && (
+        <div style={{ marginBottom: '14px' }}>
+          
+          <div style={{ display: 'flex' }}>
+            <div className="dateDiv">
+              <label htmlFor="startDate">Du:</label>
+              <input
+                className="startDate"
+                type="date"
+                value={startDate}
+                onChange={handleStartDateChange}
+              />
+            </div>
+            <div className="dateDiv">
+              <input
+                type="time"
+                value={startTime}
+                onChange={handleStartTimeChange}
+              />
+            </div>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <div className="dateDiv">
+              <label htmlFor="endDate">Au:</label>
+              <input
+                className="endDate"
+                type="date"
+                value={endDate}
+                onChange={handleEndDateChange}
+              />
+            </div>
+            <div className="dateDiv">
+              <input
+                type="time"
+                value={endTime}
+                onChange={handleEndTimeChange}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+
           <div className="dddd">
-            <div className="Radiocontainer" onChange={handlechangeRadio}>
+            <div className="Radiocontainer"  onChange={handlechangeRadio}>
               <div className="radioDivVh">
                 <div className="vhinput">
                   {" "}
@@ -667,12 +752,12 @@ function Tree() {
                 inlineSearchInput
                 showDropdown="always"
                 className={
-                  displayCheckBox ? "mdl-demo" : "mdl-demoDisplayedNone"
+                  ContextShowtTee === "DIAGNOSTIQUE" ?  "mdl-demoDisplayedNone" :    displayCheckBox ? "mdl-demo" : "mdl-demoDisplayedNone"
                 }
               />}
               </div>
             ) : (
-              "LOADING.."
+             <label>LOADING....</label> 
             )}
           </div>
         </div>

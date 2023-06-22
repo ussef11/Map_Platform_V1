@@ -7,6 +7,9 @@ import { ContextShowtTee } from "../Helper/ContextShowtTee";
 import Navbar from "../NavBAR/NavBar";
 import Popup from "../Component/SidePopup/Popup";
 
+import MapDiagnos from "../Component/mapDiagnos/MapDiagnos";
+import DisplayChart from "../Component/Chart/DisplayChart"
+
 import "./Home.css";
 const Home = () => {
   const [lat_lng, Setlat_lng] = useState();
@@ -19,6 +22,16 @@ const Home = () => {
   const [IdMark, setIdMark] = useState();
 
 
+  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+  const [startTime, setStartTime] = useState("00:00");
+  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
+  const [endTime, setEndTime] = useState("23:59");
+
+
+
+
+
+  const [DeviceId , setDeviceId] = useState()
   return (
     <ContextID.Provider
       value={{
@@ -37,20 +50,39 @@ const Home = () => {
         SelectedValueTreeNointerval,
         setSelectedValueTreeNointerval,
         IdMark,
-        setIdMark
+        setIdMark,
 
-      }}
-    >
+        startDate,
+        setStartDate,
+        startTime,
+        setStartTime,
+        endDate,
+        setEndDate,
+        endTime,
+        setEndTime,
+
+        DeviceId,
+        setDeviceId,
+
+
+
+        
+
+
+      }}>
       <>
-        {" "}
+        
         <Navbar />
         <div className="Container">
           <Menu />
           <Tree />
           <div className="mapPopupContainer">
-            {" "}
-            <Map />
+          {  ContextShowtTee === "TEMPS REEL" ? <Map /> :
+             ContextShowtTee === "DIAGNOSTIQUE" ? <MapDiagnos/>  :
+  <Map />
+} 
             <Popup />
+            { ContextShowtTee === "DIAGNOSTIQUE" ? <DisplayChart/> : null}
           </div>
         </div>
       </>
