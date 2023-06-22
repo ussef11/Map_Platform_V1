@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Bar, getElementAtEvent, Line } from "react-chartjs-2";
 import "chartjs-plugin-annotation";
 import zoomPlugin from "chartjs-plugin-zoom";
+import "./chart.css"
 import {
   CategoryScale,
   BarElement,
@@ -1220,7 +1221,7 @@ function DisplayChart() {
       <div style={{ cursor: "grab" }} className="chart">
         <Bar
           width={100}
-          height={12}
+          height={14}
           ref={chartrefbar}
           data={data}
           onClick={onClickb}

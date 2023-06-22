@@ -102,10 +102,10 @@ const MapDiagnos = () => {
 
   return (
     <>
-    <div className="mapdiv">
+    <div  className="mapdivdiag">
       
       {isLoaded ? (
-        <GoogleMap
+        <GoogleMap 
           mapContainerStyle={{ width: "100%", height: "100%" }}
           options={{
             zoomControl: true,
@@ -113,7 +113,7 @@ const MapDiagnos = () => {
             mapTypeControl: true,
             fullscreenControl: false,
 
-            zoom:12      
+            zoom:11   
           }}
           center={position}
           onUnmount={onUnmount}
