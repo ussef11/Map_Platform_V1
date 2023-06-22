@@ -202,7 +202,9 @@
    
     }
     
-  
+  .theTreediv{
+    width: 493px;
+  }
     
     
     .react-dropdown-tree-select .dropdown .dropdown-content {
@@ -212,7 +214,7 @@
       /* background: #ffffff; */
       border-top: 1px solid rgba(0,0,0,.05);
       box-shadow: 0 5px 8px rgba(0,0,0,.15);
-      width: 336px;
+      width: 351px;
       margin-left: 4px;
       border-radius: 5px;
       box-shadow: none;
@@ -469,7 +471,7 @@ width: 24vw;
   
   .dddd{
     background-color: white;
-    width: 344px;
+    width: 357px;
     /* border-right: 1px solid black; */
   
   }

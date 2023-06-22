@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Bar, getElementAtEvent, Line } from "react-chartjs-2";
 import "chartjs-plugin-annotation";
 import zoomPlugin from "chartjs-plugin-zoom";
@@ -18,15 +18,56 @@ import Chart from "chart.js/auto";
 import useFetch from "../../Hook/UseFetch";
 
 import "chartjs-adapter-date-fns";
+import { ContextID } from "../../Helper/ContextID";
 
 function DisplayChart() {
   Chart.register(CategoryScale);
   Chart.register(zoomPlugin);
   Chart.register(LineController, LineElement, PointElement, LinearScale, Title);
 
-  const { Data } = useFetch(
-    "http://tanger.geodaki.com:3000/rpc/data?idsdevice=1898&dtb=20/06/2023%2004:40:00&dtf=20/06/2023%2012:59:00"
-  );
+  const { startDate, setStartDate} = useContext(ContextID);
+  const { startTime, setStartTime} = useContext(ContextID);
+  const { endDate, setEndDate} = useContext(ContextID);
+  const { endTime, setEndTime} = useContext(ContextID);
+  const {DeviceId , setDeviceId} = useContext(ContextID);
+
+const [Data , setData] = useState()
+
+  useEffect(()=>{
+    console.log( startDate ,startTime ,endDate,endTime ,"deviceddID" ,DeviceId )
+
+  },[startDate ,startTime,endDate,endTime ,DeviceId])
+
+  useEffect(()=>{
+
+  
+    const fetchData = async()=>{
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      try {
+        if(DeviceId){
+            let res = await fetch(
+              `http://tanger.geodaki.com:3000/rpc/data?idsdevice=${DeviceId}&dtb=${startDate}%20${startTime}:00&dtf=${endDate}%20${endTime}:00`,
+              requestOptions
+            );
+            let result = await res.json();
+            setData(result)
+        }
+       
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    
+    fetchData()
+    
+  },[startDate ,startTime,endDate,endTime ,DeviceId])
+
+  // const { Data } = useFetch(
+  //   `http://tanger.geodaki.com:3000/rpc/data?idsdevice=${DeviceId}&dtb=${startDate}%20${startTime}:00&dtf=${endDate}%20${endTime}:00`
+  // );
 
 
   const timeData = Data && Data.map((item) => item.date);

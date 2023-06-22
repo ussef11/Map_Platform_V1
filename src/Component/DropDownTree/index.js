@@ -609,12 +609,18 @@ function Tree() {
         }
       }
     };
+    if(ContextShowtTee === "TEMPS REEL"){
+      const intervalCall = setInterval(fetchData, 10000);
+      return () => {
+        clearInterval(intervalCall);
+      };
 
-    const intervalCall = setInterval(fetchData, 5000);
+    }else{
+      fetchData()
+    }
 
-    return () => {
-      clearInterval(intervalCall);
-    };
+
+ 
   }, [ValueCheckedRadio, ContextShowtTee]);
 
 
