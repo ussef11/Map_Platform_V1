@@ -64,7 +64,7 @@ function Tree() {
     setValueCheckedRadio("vehicul");
     console.log("ddddddddd" ,ContextShowtTee , ValueCheckedRadio);
   },[ContextShowtTee])
-  const [ShowTempreel, SetShowTempreel] = useState(false);
+ const [ShowTempreel, SetShowTempreel] = useState(false);
  const [showTimeDate , setShowTimeDate] = useState(false)
 
   
@@ -750,7 +750,7 @@ function Tree() {
             
             </div> */}
             {dataFromServer ? (
-              <div>
+              <div className="theTreediv">
               {<ReactDropdownTreeSelectMemoized
                 key={refreshKey}
                 data={dataFromServer  }

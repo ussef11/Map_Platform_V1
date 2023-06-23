@@ -202,10 +202,10 @@
    
     }
     
-  .theTreediv{
+  /* .theTreediv{
     width: 493px;
   }
-    
+     */
     
     .react-dropdown-tree-select .dropdown .dropdown-content {
       overflow-x: hidden;
@@ -445,6 +445,7 @@ width: 24vw;
   .Radiocontainer{
     margin-left: 7px;
     display: flex;
+    height: 5vh;
   }
   
   .Radiocontainer label{
@@ -580,7 +581,7 @@ width: 24vw;
 
 
 
-    @media screen and (max-width: 668px) {
+    /* @media screen and (max-width: 668px) {
       .dropdown{
         height: 75vh;
       }
@@ -588,6 +589,24 @@ width: 24vw;
 
     @media screen and (min-width: 668px) {
       .dropdown{
-        height: 77vh;
+        height: 91vh;
       }
+    } */
+    .dropdown{
+      height: 91vh;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Set the height of the parent elements to 100% */
+    #root {
+      height: 100%;
+    }
+    
+    /* Set the height of the tree container to 100% */
+    .theTreediv {
+      height: 100%;
     }
