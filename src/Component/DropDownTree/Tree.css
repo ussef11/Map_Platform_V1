@@ -218,7 +218,7 @@
       margin-left: 4px;
       border-radius: 5px;
       box-shadow: none;
-      /* height: 589px; */
+      height: 100%;
      
     }
     
@@ -477,7 +477,7 @@ width: 24vw;
   }
   
   .react-dropdown-tree-select .dropdown .dropdown-content ul{
-    max-height: 501px;
+    max-height: 100%;
     padding-bottom: 20px;
     display: flex;
     height: auto; }
@@ -579,6 +579,15 @@ width: 24vw;
     }
 
 
-    .dropdown{
-      margin-top: -20px;
+
+    @media screen and (max-width: 668px) {
+      .dropdown{
+        height: 75vh;
+      }
+    }
+
+    @media screen and (min-width: 668px) {
+      .dropdown{
+        height: 77vh;
+      }
     }
