@@ -1340,7 +1340,7 @@ const [Data , setData] = useState()
     
     function onMouseMove(mouseMoveEvent) {
       setSize(currentSize => ({ 
-        x: startSize.x + mouseMoveEvent.pageX - startPosition.x, 
+        // x: startSize.x + mouseMoveEvent.pageX - startPosition.x, 
         y: startSize.y - mouseMoveEvent.pageY + startPosition.y 
       }));
     }
@@ -1360,9 +1360,9 @@ const [Data , setData] = useState()
   
   return ( 
     <>  
-  { DeviceId &&   <div     className="charts" style={{height: size.y }} onMouseDown={handler}  >
-  
-    <span style={{cursor:"grabbing"}} class="material-symbols-outlined">
+  {  DeviceId &&   <div     className="charts" style={{height: size.y }}   >
+
+    <span  onMouseDown={handler} style={{cursor:"grabbing"}} class="material-symbols-outlined">
 drag_handle
 </span>
       <div  className="chart">

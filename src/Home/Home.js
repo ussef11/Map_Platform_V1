@@ -9,7 +9,7 @@ import Popup from "../Component/SidePopup/Popup";
 
 import MapDiagnos from "../Component/mapDiagnos/MapDiagnos";
 import DisplayChart from "../Component/Chart/DisplayChart";
-import ResizePanel from "react-resize-panel";
+import PopupDiag from "../Component/SidePopup/PopupDiag";
 import "./Home.css";
 const Home = () => {
   const [lat_lng, Setlat_lng] = useState();
@@ -25,11 +25,11 @@ const Home = () => {
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
-  const [startTime, setStartTime] = useState("00:00");
+  const [startTime, setStartTime] = useState("08:00");
   const [endDate, setEndDate] = useState(
     new Date().toISOString().split("T")[0]
   );
-  const [endTime, setEndTime] = useState("23:59");
+  const [endTime, setEndTime] = useState("14:59");
 
   const [hidden, show] = useState("flex");
   const [drawer_hidden, drawer_show] = useState("1");
@@ -99,7 +99,9 @@ const Home = () => {
         ) : (
           <Map />
         )}
-        <Popup />
+{ 
+ContextShowtTee === "TEMPS REEL" ? 
+        <Popup /> : <PopupDiag/>}
   
         {ContextShowtTee === "DIAGNOSTIQUE" ? (
           
