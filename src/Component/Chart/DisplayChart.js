@@ -587,7 +587,13 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
-      },
+      },      elements:{
+            point:{
+              radius:1,
+              hoverRadius:2,
+              borderWidth:1
+            }
+          },
       scales: {
         x: {
           parsing: false,
@@ -645,6 +651,13 @@ const [Data , setData] = useState()
           text: "Stacked scales",
         },
       },
+      elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
+      },
       scales: {
         x: {
           parsing: false,
@@ -701,6 +714,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -758,6 +777,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -815,6 +840,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -872,6 +903,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -928,6 +965,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -984,6 +1027,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -1040,6 +1089,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -1097,6 +1152,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -1153,6 +1214,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -1209,6 +1276,12 @@ const [Data , setData] = useState()
           display: true,
           text: "Stacked scales",
         },
+      },  elements:{
+        point:{
+          radius:1,
+          hoverRadius:2,
+          borderWidth:1
+        }
       },
       scales: {
         x: {
@@ -1338,6 +1411,13 @@ const [Data , setData] = useState()
           plugins: {
             annotation: {}, 
           },
+          elements:{
+            point:{
+              radius:1,
+              hoverRadius:2,
+              borderWidth:1
+            }
+          },
 
           scales: {
             x: {
@@ -1404,6 +1484,13 @@ const [Data , setData] = useState()
           options={{
             plugins: {
               annotation: {},
+            },
+            elements:{
+              point:{
+                radius:1,
+                hoverRadius:2,
+                borderWidth:1
+              }
             },
             scales: {
               x: {
