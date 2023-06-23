@@ -19,6 +19,7 @@ import useFetch from "../../Hook/UseFetch";
 
 import "chartjs-adapter-date-fns";
 import { ContextID } from "../../Helper/ContextID";
+import ResizePanel from "react-resize-panel";
 
 function DisplayChart() {
   Chart.register(CategoryScale);
@@ -1330,8 +1331,33 @@ const [Data , setData] = useState()
     },
   };
 
-  return (
-    <div className="charts">
+
+  const [size, setSize] = useState({ x: 400, y: 300 });
+
+  const handler = (mouseDownEvent) => {
+    const startSize = size;
+    const startPosition = { x: mouseDownEvent.pageX, y: mouseDownEvent.pageY };
+    
+    function onMouseMove(mouseMoveEvent) {
+      setSize(currentSize => ({ 
+        x: startSize.x + mouseMoveEvent.pageX - startPosition.x, 
+        y: startSize.y - mouseMoveEvent.pageY + startPosition.y 
+      }));
+    }
+    
+    function onMouseUp() {
+      document.body.removeEventListener("mousemove", onMouseMove);
+    }
+    
+    document.body.addEventListener("mousemove", onMouseMove);
+    document.body.addEventListener("mouseup", onMouseUp, { once: true });
+  };
+  
+  return ( 
+    
+    <div  className="charts" style={{height: size.y }} onMouseDown={handler}  >
+    <div> 
+      <p> {size.y } </p>
       <div style={{ cursor: "grab" }} className="chart">
         <Bar
           width={100}
@@ -1651,7 +1677,10 @@ const [Data , setData] = useState()
           options={configBrossegauche.options}
         />
       ) : null}
+
+</div>
     </div>
+    
   );
 }
 

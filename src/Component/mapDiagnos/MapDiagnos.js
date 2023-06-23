@@ -18,6 +18,8 @@ import {
   Polyline,
   InfoWindow,
 } from "@react-google-maps/api";
+import ResizePanel from "react-resize-panel";
+
 import { ContextID } from "../../Helper/ContextID";
 import useFetch from "../../Hook/UseFetch";
 const MapDiagnos = () => {
@@ -102,6 +104,7 @@ const MapDiagnos = () => {
 
   return (
     <>
+        
     <div  className="mapdivdiag">
       
       {isLoaded ? (
@@ -136,6 +139,7 @@ const MapDiagnos = () => {
         <p> Please wait </p>
       )}
     </div>
+   
   </>
   )
 }
