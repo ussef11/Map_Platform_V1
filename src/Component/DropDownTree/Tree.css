@@ -592,9 +592,9 @@ width: 24vw;
         height: 91vh;
       }
     } */
-    .dropdown{
+    /* .dropdown{
       height: 91vh;
-    }
+    } */
     html, body {
       height: 100%;
       margin: 0;
@@ -604,9 +604,18 @@ width: 24vw;
     /* Set the height of the parent elements to 100% */
     #root {
       height: 100%;
+     
+    }
+
+    :root{
+      --time-date-height: 84px;
     }
     
     /* Set the height of the tree container to 100% */
     .theTreediv {
       height: 100%;
+    }
+
+    .divtimedate{
+      height: var(--hex-parent-height);
     }

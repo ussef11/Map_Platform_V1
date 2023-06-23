@@ -67,6 +67,21 @@ function Tree() {
  const [ShowTempreel, SetShowTempreel] = useState(false);
  const [showTimeDate , setShowTimeDate] = useState(false)
 
+
+ 
+  if (document.getElementsByClassName("dropdown")[0] !== undefined) {
+   
+    if (ContextShowtTee === "TEMPS REEL") {
+      document.getElementsByClassName("dropdown")[0].style.height = "91vh";
+    }else{
+      document.getElementsByClassName("dropdown")[0].style.height = "82vh";
+    }
+ 
+    
+    
+  }
+
+
   
   useEffect(() => {
     if (ContextShowtTee === "TEMPS REEL") {
@@ -75,7 +90,7 @@ function Tree() {
       console.log(ShowTempreel);
       setShowTimeDate(false)
       setdisplayCheckBox(true);
-
+   
     } 
     
     else if (ContextShowtTee === "HISTORIQUE") {
@@ -87,6 +102,9 @@ function Tree() {
       SetShowTempreel(true);
       setShowTimeDate(true)
       setdisplayCheckBox(false);
+      if( document.getElementsByClassName("dropdown")[0] != undefined){
+        document.getElementsByClassName("dropdown")[0].style.height= "83vh"
+      }
     } 
     
     
@@ -333,6 +351,7 @@ function Tree() {
         const nestedData = getNestedData(vh, null);
         console.log(vh, "vh");
         setDataFromServer(nestedData);
+       
       }
     }
     if (ValueCheckedRadio == "circuit") {
@@ -646,6 +665,13 @@ function Tree() {
     setEndTime(event.target.value);
   };
 
+  if(document.getElementsByClassName("search")[0] != undefined){
+    document.getElementsByClassName("search")[0].placeholder="Search collection";
+  }
+
+
+ 
+  
 
   return (
     <>
@@ -653,7 +679,7 @@ function Tree() {
         <div className="theTreediv">
 
 {showTimeDate && (
-        <div style={{ marginBottom: '14px' }}>
+        <div className="divtimedate" >
           
           <div style={{ display: 'flex' }}>
             <div className="dateDiv">
@@ -752,6 +778,7 @@ function Tree() {
             {dataFromServer ? (
               <div className="theTreediv">
               {<ReactDropdownTreeSelectMemoized
+                
                 key={refreshKey}
                 data={dataFromServer  }
                 onChange={handleChange}
