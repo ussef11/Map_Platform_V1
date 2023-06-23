@@ -1354,14 +1354,14 @@ const [Data , setData] = useState()
   };
 
   useEffect(() => {
-  
+   console.log("dddfr" , DeviceId)
     setListCom([])
   }, [DeviceId]); 
   
   return ( 
-    
-    <div     className="charts" style={{height: size.y }} onMouseDown={handler}  >
-    <div> 
+    <>  
+  { DeviceId &&   <div     className="charts" style={{height: size.y }} onMouseDown={handler}  >
+  
     <span style={{cursor:"grabbing"}} class="material-symbols-outlined">
 drag_handle
 </span>
@@ -1685,9 +1685,9 @@ drag_handle
         />
       ) : null}
 
-</div>
-    </div>
-    
+</div>}
+   
+    </>
   );
 }
 
