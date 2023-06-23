@@ -97,14 +97,9 @@ const Home = () => {
         <div className="Container">
           <Menu />
           <Tree />
-          <div style={ContextShowtTee === "DIAGNOSTIQUE" ?{
-       
-          height: "500px",
-          border: "1px solid black",
-          display: "flex",
-          flexDirection: "column"
-        }
-         : {display:"flex"}} className="mapPopupContainer">
+
+          <div  className="mapPopupContainer"  >
+            
           {  ContextShowtTee === "TEMPS REEL" ? <Map /> :
 
 

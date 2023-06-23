@@ -74,7 +74,7 @@ function Tree() {
     if (ContextShowtTee === "TEMPS REEL") {
       document.getElementsByClassName("dropdown")[0].style.height = "91vh";
     }else{
-      document.getElementsByClassName("dropdown")[0].style.height = "82vh";
+      document.getElementsByClassName("dropdown")[0].style.height = "80vh";
     }
  
     
@@ -666,7 +666,7 @@ function Tree() {
   };
 
   if(document.getElementsByClassName("search")[0] != undefined){
-    document.getElementsByClassName("search")[0].placeholder="Search collection";
+    document.getElementsByClassName("search")[0].placeholder="Rechercher un véhicule";
   }
 
 
