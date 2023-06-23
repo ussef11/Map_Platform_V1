@@ -22,9 +22,9 @@ const Home = () => {
   const [IdMark, setIdMark] = useState();
 
 
-  const [startDate, setStartDate] = useState(new Date().toISOString().replaceAll("-","/").split('T')[0]);
+  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [startTime, setStartTime] = useState("00:00");
-  const [endDate, setEndDate] = useState(new Date().toISOString().replaceAll("-","/").split('T')[0]);
+  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   const [endTime, setEndTime] = useState("23:59");
 
   const [hidden, show] = useState('flex');
