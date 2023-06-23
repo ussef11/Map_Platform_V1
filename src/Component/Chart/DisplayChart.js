@@ -1352,13 +1352,20 @@ const [Data , setData] = useState()
     document.body.addEventListener("mousemove", onMouseMove);
     document.body.addEventListener("mouseup", onMouseUp, { once: true });
   };
+
+  useEffect(() => {
+  
+    setListCom([])
+  }, [DeviceId]); 
   
   return ( 
     
-    <div  className="charts" style={{height: size.y }} onMouseDown={handler}  >
+    <div     className="charts" style={{height: size.y }} onMouseDown={handler}  >
     <div> 
-      <p> {size.y } </p>
-      <div style={{ cursor: "grab" }} className="chart">
+    <span style={{cursor:"grabbing"}} class="material-symbols-outlined">
+drag_handle
+</span>
+      <div  className="chart">
         <Bar
           width={100}
           height={14}
@@ -1427,7 +1434,7 @@ const [Data , setData] = useState()
         />
       </div>
 
-      <Line
+      <Line 
         width={100}
         height={15}
         ref={chartref}
