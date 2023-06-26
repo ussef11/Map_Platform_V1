@@ -225,7 +225,7 @@ const AccordionItem = (props) => {
           <i className="fa-solid fa-caret-down"></i>
         </span>
       </header>
-      <div  key={active}
+      <div 
         ref={contentEl}
         className={`collapse ${active === id ? "show" : ""}`}
         style={
@@ -298,7 +298,7 @@ const AccordionItem = (props) => {
     </div>
   ))
 ) : (
-  <p>No data available</p>
+  <p style={{height:"212px"}}>No data available</p>
 )}
 
 
