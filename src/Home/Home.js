@@ -31,31 +31,16 @@ const Home = () => {
   );
   const [endTime, setEndTime] = useState("14:59");
 
-  const [hidden, show] = useState("flex");
-  const [drawer_hidden, drawer_show] = useState("1");
-  const [pannel_hidden, pannel_show] = useState("4");
-  const [pannel_height, setpannel_height] = useState("400px");
 
-  const drawer_hide = () => {
-    let on = hidden;
+  const [ActionDiag , setActionDiag] = useState("");
+  
 
-    if (on === "flex") {
-      pannel_show("1");
-      show("none");
-      drawer_show("0");
-      setpannel_height("590px");
-    } else {
-      pannel_show("4");
-      setpannel_height("400px");
-      show("flex");
-      drawer_show("1");
-    }
-  };
 
   const [DeviceId, setDeviceId] = useState();
   return (
     <ContextID.Provider
       value={{
+       
         lat_lng,
         Setlat_lng,
         ContextShowtTee,
@@ -84,6 +69,10 @@ const Home = () => {
 
         DeviceId,
         setDeviceId,
+
+        ActionDiag,
+        setActionDiag,
+     
       }}
     ><>
     <Navbar />

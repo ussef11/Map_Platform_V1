@@ -11,11 +11,12 @@ const AccordionItem = (props) => {
   const { IdMark, setIdMark } = useContext(ContextID);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
 
-  const [ showAllbacs, setshowAllbacs]  = useState('');
-  const { deleteAllbaks, setdeleteAllbaks } = useState('');
- 
+  const [showAllbacs, setshowAllbacs] = useState("");
+  const { deleteAllbaks, setdeleteAllbaks } = useState("");
 
-  
+ 
+  const {ActionDiag , setActionDiag} =  useContext(ContextID);
+
   const {
     name,
     id,
@@ -45,27 +46,25 @@ const AccordionItem = (props) => {
 
   const { Data } = useFetch("http://tanger.geodaki.com:3000/rpc/position_capt");
 
-
-
   const [listCan, setListCan] = useState([]);
   const [listCap, setListCap] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      setListCap([])
+      setListCap([]);
       if (Data) {
         if (typevehicule != "CHARIOT" && can_capteurs != "VIDE") {
           const [binaryCan, binaryCap] = can_capteurs.split("_");
-  
+
           const newListCan = [];
           for (let i = 0; i < binaryCan.length; i++) {
             const charlastCap = last_capteurs.charAt(i);
-  
+
             const char = binaryCan.charAt(i);
             const position = i + 1;
-  
+
             const item = Data.find((obj) => obj.code === String(position));
-  
+
             if (item && char === "1") {
               newListCan.push({
                 intitule: item.intitule,
@@ -75,14 +74,14 @@ const AccordionItem = (props) => {
             }
           }
           setListCan(newListCan);
-  
+
           const newListCap = [];
           for (let i = 0; i < binaryCap.length; i++) {
             const char = binaryCap.charAt(i);
             const position = i + 1;
-  
+
             const item = Data.find((obj) => obj.code === String(position));
-  
+
             if (item && char === "1") {
               newListCap.push(item.intitule);
             }
@@ -90,19 +89,14 @@ const AccordionItem = (props) => {
           setListCap(binaryCap);
         }
       }
-    }
-    fetchData()
-   
-    
-  }, [Data,lastupdate]);
+    };
+    fetchData();
+  }, [Data, lastupdate]);
 
-  
-
-
-  const { startDate, setStartDate} = useContext(ContextID);
-  const { startTime, setStartTime} = useContext(ContextID);
-  const { endDate, setEndDate} = useContext(ContextID);
-  const { endTime, setEndTime} = useContext(ContextID);
+  const { startDate, setStartDate } = useContext(ContextID);
+  const { startTime, setStartTime } = useContext(ContextID);
+  const { endDate, setEndDate } = useContext(ContextID);
+  const { endTime, setEndTime } = useContext(ContextID);
 
   const [showRIFDinfo, setshowRIFDinfo] = useState(false);
   const [showAllinfo, setshowAllinfo] = useState(true);
@@ -116,24 +110,22 @@ const AccordionItem = (props) => {
     if (showRIFDinfo === false) {
       setshowRIFDinfo(true);
       setshowAllinfo(false);
-      console.log( "mytagdata" ,tagdata)
+      console.log("mytagdata", tagdata);
     }
   };
 
+  const handleclickShowBacs = () => {
+    setshowAllbacs("show");
+  };
+  const handleclickhideBacs = () => {
+    setshowAllbacs("hide");
+  };
 
-  const handleclickShowBacs = ()=>{
-    setshowAllbacs("show")
-  }
-  const handleclickhideBacs = ()=>{
-    setshowAllbacs("hide")
-  }
-
-  const [tagdata , settagdata] = useState();
-
+  const [tagdata, settagdata] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
-      if(active != null){
+      if (active != null) {
         const requestOptions = {
           method: "GET",
           redirect: "follow",
@@ -150,12 +142,9 @@ const AccordionItem = (props) => {
           console.log("error", error);
         }
       }
-      
     };
-  
-    fetchData()
-  
 
+    fetchData();
   }, [active, lastupdate]);
   const [Infovh, setInfovh] = useState([]);
 
@@ -167,7 +156,7 @@ const AccordionItem = (props) => {
             method: "GET",
             redirect: "follow",
           };
-  
+
           const res = await fetch(
             `http://tanger.geodaki.com:3000/rpc/data2?dt=15/06/2023&deviceid=${active}`,
             requestOptions
@@ -179,40 +168,32 @@ const AccordionItem = (props) => {
         console.log("error", error);
       }
     };
-  
+
     fetchData();
   }, [active]);
-  
+
   const [refreshKey, setRefreshKey] = useState(0);
   useEffect(() => {
-    setRefreshKey((prevKey) => prevKey + 1); 
-    
-  }, [active]); 
+    setRefreshKey((prevKey) => prevKey + 1);
+  }, [active]);
 
-  useEffect(()=>{
-    if(active == null){
-      setdisplaybacs(false)
-      setshowAllbacs("hide")
-      
-    }else{
-      setIdMark(active)
+  useEffect(() => {
+    if (active == null) {
+      setdisplaybacs(false);
+      setshowAllbacs("hide");
+    } else {
+      setIdMark(active);
     }
-    console.log("active" ,active)
-  },[active])
+    console.log("active", active);
+  }, [active]);
 
-
-
-
-
-  useEffect(()=>{
-
-    if(showAllbacs == "show"){
-      setdisplaybacs(true)
-    }else{
-      setdisplaybacs(false)
+  useEffect(() => {
+    if (showAllbacs == "show") {
+      setdisplaybacs(true);
+    } else {
+      setdisplaybacs(false);
     }
-
-  },[showAllbacs])
+  }, [showAllbacs]);
 
   return (
     <div className="rc-accordion-card">
@@ -225,7 +206,7 @@ const AccordionItem = (props) => {
           <i className="fa-solid fa-caret-down"></i>
         </span>
       </header>
-      <div 
+      <div
         ref={contentEl}
         className={`collapse ${active === id ? "show" : ""}`}
         style={
@@ -240,6 +221,24 @@ const AccordionItem = (props) => {
             : { height: "0px" }
         }
       >
+        <div className="divInfocercuit">
+          <button onClick={()=>{setActionDiag("Displaypoint")}}>
+            
+            <span class="material-symbols-outlined">my_location</span>
+          </button>
+          <button  onClick={()=>{setActionDiag("showbacs")}}>
+            
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+          <button  onClick={()=>{setActionDiag("circuitth")}}>
+            
+            <span class="material-symbols-outlined">add_road</span>
+          </button>
+          <button  onClick={()=>{setActionDiag("cancel")}}>
+            
+            <span class="material-symbols-outlined">cancel</span>
+          </button>
+        </div>
         <div className="divButtoninfo">
           <button
             style={
@@ -265,51 +264,53 @@ const AccordionItem = (props) => {
           ) : null}
         </div>
         {showAllinfo && (
-          <div  key={refreshKey}>
-          
-            
+          <div key={refreshKey}>
+            {Infovh.length > 0 ? (
+              Infovh.map((x, index) => (
+                <div key={index}>
+                  <div className="divone">
+                    <p>
+                      {x.vehicule} {vehicule}
+                    </p>
+                    <p style={{ fontSize: "14px", color: "#7c7c7c" }}>
+                      Du : {startDate}
+                      {startTime} AU :{endDate}
+                      {endTime}
+                    </p>
+                  </div>
+                  <div className="divInfoContent">
+                    <table className="tablenfo">
+                      <tbody>
+                        <tr>
+                          <th>
+                            <strong>Véhicule</strong>
+                          </th>
+                          <th>
+                            <strong>DIST (KM)</strong>
+                          </th>
+                          <th>
+                            <strong>VIT MOY</strong>
+                          </th>
+                          <th>
+                            <strong>DATE</strong>
+                          </th>
+                        </tr>
+                        <tr>
+                          <td>{x.vehicule}</td>
+                          <td>{x.distance}</td>
+                          <td>{x.vitissemax}</td>
+                          <td>{x.dataj}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p style={{ height: "212px" }}>No data available</p>
+            )}
 
-
-          {Infovh.length > 0 ? (
-  Infovh.map((x, index) => (
-    <div key={index}>
-      <div className="divone">
-        <p>{x.vehicule} {vehicule}</p>
-        <p style={{ fontSize: "14px", color: "#7c7c7c" }}>Du : {startDate}{startTime} AU :{endDate}{endTime}</p>
-      </div>
-      <div className="divInfoContent">
-        <table className="tablenfo">
-          <tbody>
-            <tr>
-              <th><strong>Véhicule</strong></th>
-              <th><strong>DIST (KM)</strong></th>
-              <th><strong>VIT MOY</strong></th>
-              <th><strong>DATE</strong></th>
-            </tr>
-            <tr>
-              <td>{x.vehicule}</td>
-              <td>{x.distance}</td>
-              <td>{x.vitissemax}</td>
-              <td>{x.dataj}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  ))
-) : (
-  <p style={{height:"212px"}}>No data available</p>
-)}
-
-
-
-
-      
-
-
-         
             <div>
-
               {/* <div className="divone">
                 <p>{lastupdate}</p>
               </div>
@@ -321,10 +322,8 @@ const AccordionItem = (props) => {
                   <p> Route de Tétouan</p>
                 </div>
               </div> */}
-     
             </div>
-            
-            </div>
+          </div>
         )}
 
         {capteur.includes("RFID")
@@ -359,9 +358,6 @@ const AccordionItem = (props) => {
                     </div>
                   </div>
                 </div>
-
-             
-    
               </div>
             )
           : null}
@@ -372,67 +368,58 @@ const AccordionItem = (props) => {
 
 const Popup = () => {
   const { resultForpopup, setresultForpopup } = useContext(ContextID);
-  const {DeviceId , setDeviceId} = useContext(ContextID);
-  const [DataForDiagpopup , setDataForDiagpopup] = useState()
+  const { DeviceId, setDeviceId } = useContext(ContextID);
+  const [DataForDiagpopup, setDataForDiagpopup] = useState();
   const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
-  useEffect(() => { 
-   
-    
-    setActive(null)
-    setDeviceId(null)
-    setresultForpopup(null)
- 
-  }, [SelectedRadioValue,ContextShowtTee]);
-  
-  useEffect(()=>{
-    if(ContextShowtTee == "close All"  ){
-      setSelectedRadioValue("vehicul")
-      setActive(null)
-      setDeviceId(null)
-      setresultForpopup(null) 
+  useEffect(() => {
+    setActive(null);
+    setDeviceId(null);
+    setresultForpopup(null);
+  }, [SelectedRadioValue, ContextShowtTee]);
+
+  useEffect(() => {
+    if (ContextShowtTee == "close All") {
+      setSelectedRadioValue("vehicul");
+      setActive(null);
+      setDeviceId(null);
+      setresultForpopup(null);
     }
-    console.log( "ssssss", SelectedRadioValue)
-  } ,[ContextShowtTee , SelectedRadioValue] )
+    console.log("ssssss", SelectedRadioValue);
+  }, [ContextShowtTee, SelectedRadioValue]);
 
- useEffect(()=>{
-
-let result 
-result = null
-const fetchData = async()=>{
-  var requestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
-  try {
-    if(DeviceId){
-      if(ContextShowtTee === "DIAGNOSTIQUE"){
-        let res;
-        res = await fetch(
-          `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${DeviceId}}&uid=71`,
-          requestOptions
-        );
-        result = await res.json();
-        setDataForDiagpopup(result)
-        
+  useEffect(() => {
+    let result;
+    result = null;
+    const fetchData = async () => {
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      try {
+        if (DeviceId) {
+          if (ContextShowtTee === "DIAGNOSTIQUE") {
+            let res;
+            res = await fetch(
+              `http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${DeviceId}}&uid=71`,
+              requestOptions
+            );
+            result = await res.json();
+            setDataForDiagpopup(result);
+          }
+        }
+      } catch (error) {
+        console.log("error", error);
       }
-     
-    }
-   
-  } catch (error) {
-    console.log("error", error);
-  }
-}
+    };
 
-fetchData()
+    fetchData();
+  }, [DeviceId, ContextShowtTee, SelectedRadioValue]);
 
-},[DeviceId,ContextShowtTee,SelectedRadioValue])
+  useEffect(() => {
+    console.log("vvvv", ContextShowtTee);
+  }, [ContextShowtTee]);
 
-useEffect(()=>{
-  
-  console.log("vvvv",  ContextShowtTee)
-},[ContextShowtTee])
-  
   console.log("resultForpopup From PopUp", resultForpopup);
   const [active, setActive] = useState(null);
 
@@ -444,11 +431,9 @@ useEffect(()=>{
     }
   };
 
-
-
   return (
     <article>
-      {   DataForDiagpopup &&
+      {DataForDiagpopup &&
         DataForDiagpopup.map((faq, index) => {
           return (
             <AccordionItem
@@ -456,13 +441,9 @@ useEffect(()=>{
               active={active}
               handleToggle={handleToggle}
               faq={faq}
-          
-          
             />
           );
-        })  
-      
-      }
+        })}
     </article>
   );
 };

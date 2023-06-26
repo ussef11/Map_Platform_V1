@@ -194,3 +194,26 @@
       border-top: 1px solid transparent;
      
   }
+  .divInfocercuit{
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 8px;
+    margin-left: 14px;
+  }
+  .divInfocercuit button{
+    width: 41px;
+    height: 37px;
+    margin-right: 11px;
+    background-color:#2036ff;
+    border-radius: 7px;
+  }
+  .divInfocercuit button:hover{
+    
+    background-color:#0014c6;
+
+  }
+  .divInfocercuit button span{
+    color: white;
+    font-size: 25px;
+    font-weight: 800;
+  }

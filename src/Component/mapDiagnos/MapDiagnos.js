@@ -29,7 +29,12 @@ const MapDiagnos = () => {
   const [triangleCoords1, setTriangleCoords1] = useState();
   const { ContextShowtTee, SetContextShowtTree } = useContext(ContextID);
   const { lat_lng, Setlat_lng } = useContext(ContextID);
-
+  const [ShowPloyLine, setShowPloyLine] = useState(false);
+  const { startDate, setStartDate } = useContext(ContextID);
+  const { startTime, setStartTime } = useContext(ContextID);
+  const { endDate, setEndDate } = useContext(ContextID);
+  const { endTime, setEndTime } = useContext(ContextID);
+  const {ActionDiag , setActionDiag} =  useContext(ContextID);
   const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [libraries] = useState(["places"]);
   const [position, setPosition] = useState({
@@ -42,6 +47,12 @@ const MapDiagnos = () => {
     libraries,
     region: "MA",
   });
+
+
+useEffect(()=>{
+
+ console.log(ActionDiag ,"ActionDiag");
+},[ActionDiag])
   
 
   const onUnmount = React.useCallback(function callback(map) {
@@ -102,6 +113,113 @@ const MapDiagnos = () => {
     }
   }, [ContextShowtTee ,tangerPolygon]);
 
+const [showCercuitTeorique , setshowCercuitTeorique] =  useState()
+
+const [polyLines, setPolyLine] = useState([]);
+
+
+ async function showPolyLine(url) {
+  setPolyLine([])
+  try {
+    if(ActionDiag === "circuitth"){
+      const response = await fetch(url);
+      const result = await response.json();
+      //  let res1 = [result[0]]
+      result.forEach((polygon) => {
+        const coordinates = polygon.geom
+          .replace("MULTILINESTRING((", "")
+          .replace("))", "");
+        const pairs = coordinates.split("),(");
+  
+        const coordinatesArray = pairs.map((pair) => {
+          const coordinates = pair.replace("(", "").replace(")", "").split(",");
+          return coordinates.map((coord) => {
+            const [lng, lat] = coord.trim().split(" ");
+            return { lat: parseFloat(lat), lng: parseFloat(lng) };
+          });
+        });
+  
+     
+       
+        setPolyLine((current)=>[...current,coordinatesArray] );
+        console.log("coordinatesArray", polyLines)
+      });
+    }
+  } catch (error) {
+    console.log("error", error);
+  }
+}
+
+useEffect(() => {
+  showPolyLine(`http://tanger.geodaki.com:3000/rpc/circuit_by_deviceid?ids={${DeviceId}}`);
+}, [DeviceId,ActionDiag]);
+
+
+const host = process.env.REACT_APP_HOST;
+
+
+const [Markers ,setmarkers] = useState([])
+const [Data , setData] = useState();
+useEffect(() => {
+  const fetchData = async () => {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    try {
+      if (DeviceId) {
+        let res = await fetch(
+          `http://tanger.geodaki.com:3000/rpc/data?idsdevice=${DeviceId}&dtb=${startDate}%20${startTime}:00&dtf=${endDate}%20${endTime}:00`,
+          requestOptions
+        );
+        let result = await res.json();
+        setData(result.map((x) => ({ lat: x.lat, lng: x.lon })));
+        const icons = result.map((x) =>
+        x.vitesse > 0 ? host + "/images/redpoint.svg" : host + "/images/greenpoint.svg"
+      );
+        if (ActionDiag === "Displaypoint") {
+        
+        
+          const markers = result.map((item, index) => {
+            return new window.google.maps.Marker({
+              position: { lat: item.lat, lng: item.lon },
+              icon: {
+                url: icons[index],
+                strokeColor: "#00ff4cd5",
+                scaledSize: { width: 32, height: 32 },
+                anchor: new window.google.maps.Point(0, 0),
+              },
+              key: index,
+            });
+          });
+        
+          setmarkers((current) => [...current, ...markers]);
+        }
+
+
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  
+  fetchData();
+}, [startDate, startTime, endDate, endTime, DeviceId ,ActionDiag]);
+
+
+
+
+
+useEffect(()=>{
+  if(Array.isArray(Data)){
+    console.log("Datafff", Data)
+  }
+
+},[Data])
+
+
+const colors = ["#8200ff", "#835600", "green", "yellow"]; 
+
   return (
     <>
         
@@ -134,6 +252,47 @@ const MapDiagnos = () => {
                   }}
                 />
               ))}
+
+              
+{polyLines.map((array, index) => (
+      <React.Fragment key={index}>
+        {array.map((x, subIndex) => (
+          <Polyline
+            key={`${index}-${subIndex}`}
+            path={x}
+            geodesic={true}
+            options={{
+              strokeColor: colors[index % colors.length],
+
+              strokeOpacity: 2.0,
+              strokeWeight: 4,
+            }}
+          />
+        ))}
+      </React.Fragment>
+    ))}
+
+  <Polyline
+   
+    path={ Data }
+    geodesic={true}
+    options={{
+      strokeColor: "green",
+      strokeOpacity: 2.0,
+      strokeWeight: 4,
+    }}
+  />
+
+{Markers &&
+              Markers.map((x, index) => (
+                <Marker
+                  position={x.position}
+                  icon={x.icon}
+                  key={index}
+                  draggable={true}
+                ></Marker>
+              ))}
+    
         </GoogleMap>
       ) : (
         <p> Please wait </p>
