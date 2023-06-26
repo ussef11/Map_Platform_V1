@@ -96,6 +96,14 @@ const AccordionItem = (props) => {
     
   }, [Data,lastupdate]);
 
+  
+
+
+  const { startDate, setStartDate} = useContext(ContextID);
+  const { startTime, setStartTime} = useContext(ContextID);
+  const { endDate, setEndDate} = useContext(ContextID);
+  const { endTime, setEndTime} = useContext(ContextID);
+
   const [showRIFDinfo, setshowRIFDinfo] = useState(false);
   const [showAllinfo, setshowAllinfo] = useState(true);
   const handleDispalyInfo = () => {
@@ -149,6 +157,32 @@ const AccordionItem = (props) => {
   
 
   }, [active, lastupdate]);
+  const [Infovh, setInfovh] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (active) {
+          const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+          };
+  
+          const res = await fetch(
+            `http://tanger.geodaki.com:3000/rpc/data2?dt=15/06/2023&deviceid=${active}`,
+            requestOptions
+          );
+          const result = await res.json();
+          setInfovh(result);
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+  
+    fetchData();
+  }, [active]);
+  
   
 
   useEffect(()=>{
@@ -228,8 +262,53 @@ const AccordionItem = (props) => {
         </div>
         {showAllinfo && (
           <>
+          
+            
+
+
+        
+{Infovh && Infovh.map((x)=>(
+  <> 
+ <div className="divone">
+ <p>{x.vehicule} </p>
+ <p style={{fontSize:"14px" , color:"#7c7c7c"}}>Du : {startDate}{startTime} AU :{endDate}{endTime} </p>
+</div>
+<div className="divInfoContent">
+<table className="tablenfo "> 
+<tbody>
+<tr>
+
+<th rowspan="1"><strong>Véhicule</strong></th>
+<th colspan="1"><strong>DIST (KM) </strong></th>
+<th colspan="1"><strong>VIT MOY </strong></th>
+<th colspan="1"><strong>DATE</strong></th>
+</tr>
+<tr>
+
+</tr>
+<tr>
+<td>{x.vehicule}</td>
+<td>{x.distance} </td>
+<td>{x.vitissemax}</td>
+  <td>{x.dataj} </td>
+</tr>
+
+
+</tbody>
+</table>
+     </div>
+     </> 
+))}
+
+
+
+      
+
+
+         
             <div>
-              <div className="divone">
+
+              {/* <div className="divone">
                 <p>{lastupdate}</p>
               </div>
               <div className="divInfoContent">
@@ -239,7 +318,7 @@ const AccordionItem = (props) => {
                 <div>
                   <p> Route de Tétouan</p>
                 </div>
-              </div>
+              </div> */}
      
             </div>
             
@@ -333,7 +412,7 @@ const fetchData = async()=>{
         );
         result = await res.json();
         setDataForDiagpopup(result)
-        // console.log( "vvvv", resultForpopup)
+        
       }
      
     }
@@ -363,11 +442,11 @@ useEffect(()=>{
     }
   };
 
- 
+
 
   return (
     <article>
-      {  ContextShowtTee === "DIAGNOSTIQUE" ?  DataForDiagpopup &&
+      {   DataForDiagpopup &&
         DataForDiagpopup.map((faq, index) => {
           return (
             <AccordionItem
@@ -375,22 +454,12 @@ useEffect(()=>{
               active={active}
               handleToggle={handleToggle}
               faq={faq}
+          
+          
             />
           );
         })  
       
-      : 
-      resultForpopup &&
-        resultForpopup.map((faq, index) => {
-          return (
-            <AccordionItem
-              key={index}
-              active={active}
-              handleToggle={handleToggle}
-              faq={faq}
-            />
-          );
-        })  
       }
     </article>
   );

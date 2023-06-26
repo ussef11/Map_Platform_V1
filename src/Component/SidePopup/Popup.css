@@ -166,4 +166,31 @@
 
   }
 
+  .tablenfo {
+    border-collapse: collapse;
+    width: 100%;
+    height: 91px;
+  }
   
+  .tablenfo  td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+
+  }
+  .tablenfo  tr th {
+   border: 1px solid #dddddd;
+    text-align: center;
+   
+    background-color: #2036ff;
+    color:#fff;
+  }
+  
+  .tablenfo  tr:hover {
+    background-color: #dddddd;
+    cursor: pointer;
+  }
+  
+  .content td, .content th {
+      border-top: 1px solid transparent;
+     
+  }
