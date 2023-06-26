@@ -225,7 +225,7 @@ const AccordionItem = (props) => {
           <i className="fa-solid fa-caret-down"></i>
         </span>
       </header>
-      <div
+      <div  key={active}
         ref={contentEl}
         className={`collapse ${active === id ? "show" : ""}`}
         style={
