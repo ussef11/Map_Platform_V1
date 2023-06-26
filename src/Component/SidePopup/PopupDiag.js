@@ -183,7 +183,11 @@ const AccordionItem = (props) => {
     fetchData();
   }, [active]);
   
-  
+  const [refreshKey, setRefreshKey] = useState(0);
+  useEffect(() => {
+    setRefreshKey((prevKey) => prevKey + 1); 
+    
+  }, [active]); 
 
   useEffect(()=>{
     if(active == null){
@@ -261,44 +265,42 @@ const AccordionItem = (props) => {
           ) : null}
         </div>
         {showAllinfo && (
-          <>
+          <div  key={refreshKey}>
           
             
 
 
-        
-{Infovh && Infovh.map((x)=>(
-  <> 
- <div className="divone">
- <p>{x.vehicule} </p>
- <p style={{fontSize:"14px" , color:"#7c7c7c"}}>Du : {startDate}{startTime} AU :{endDate}{endTime} </p>
-</div>
-<div className="divInfoContent">
-<table className="tablenfo "> 
-<tbody>
-<tr>
+          {Infovh.length > 0 ? (
+  Infovh.map((x, index) => (
+    <div key={index}>
+      <div className="divone">
+        <p>{x.vehicule} {vehicule}</p>
+        <p style={{ fontSize: "14px", color: "#7c7c7c" }}>Du : {startDate}{startTime} AU :{endDate}{endTime}</p>
+      </div>
+      <div className="divInfoContent">
+        <table className="tablenfo">
+          <tbody>
+            <tr>
+              <th><strong>Véhicule</strong></th>
+              <th><strong>DIST (KM)</strong></th>
+              <th><strong>VIT MOY</strong></th>
+              <th><strong>DATE</strong></th>
+            </tr>
+            <tr>
+              <td>{x.vehicule}</td>
+              <td>{x.distance}</td>
+              <td>{x.vitissemax}</td>
+              <td>{x.dataj}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  ))
+) : (
+  <p>No data available</p>
+)}
 
-<th rowspan="1"><strong>Véhicule</strong></th>
-<th colspan="1"><strong>DIST (KM) </strong></th>
-<th colspan="1"><strong>VIT MOY </strong></th>
-<th colspan="1"><strong>DATE</strong></th>
-</tr>
-<tr>
-
-</tr>
-<tr>
-<td>{x.vehicule}</td>
-<td>{x.distance} </td>
-<td>{x.vitissemax}</td>
-  <td>{x.dataj} </td>
-</tr>
-
-
-</tbody>
-</table>
-     </div>
-     </> 
-))}
 
 
 
@@ -322,7 +324,7 @@ const AccordionItem = (props) => {
      
             </div>
             
-          </>
+            </div>
         )}
 
         {capteur.includes("RFID")

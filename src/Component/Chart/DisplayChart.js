@@ -602,7 +602,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -666,7 +666,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -729,7 +729,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -792,7 +792,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -855,7 +855,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -918,7 +918,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -980,7 +980,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -1042,7 +1042,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -1104,7 +1104,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -1167,7 +1167,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -1229,7 +1229,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         },
@@ -1291,7 +1291,7 @@ const [Data , setData] = useState()
           time: {
             unit: "minute",
             displayFormats: {
-              minute: "HH:mm:ss",
+              minute: "HH:mm",
             },
           },
         }, 
@@ -1360,7 +1360,7 @@ const [Data , setData] = useState()
   
   return ( 
     <>  
-  {  DeviceId &&   <div     className="charts" style={{height: size.y }}   >
+  {  DeviceId &&   <div className="charts" style={{height: size.y }}   >
 
     <span  onMouseDown={handler} style={{cursor:"grabbing"}} class="material-symbols-outlined">
 drag_handle
@@ -1386,7 +1386,7 @@ drag_handle
                 time: {
                   unit: "minute",
                   displayFormats: {
-                    minute: "HH:mm:ss",
+                    minute: "HH:mm",
                   },
                 },
               },
@@ -1459,7 +1459,7 @@ drag_handle
               time: {
                 unit: "minute",
                 displayFormats: {
-                  minute: "HH:mm:ss",
+                  minute: "HH:mm",
                 },
               },
             },
@@ -1532,7 +1532,7 @@ drag_handle
                 time: {
                   unit: "minute",
                   displayFormats: {
-                    minute: "HH:mm:ss",
+                    minute: "HH:mm",
                   },
                 },
               },
