@@ -1,4 +1,4 @@
-import "./MapDiagnos.css"
+import "./MapDiagnos.css";
 import React, {
   useRef,
   useEffect,
@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import truck from "../../media/images/garbage-truck.svg";
 import {
+  MarkerClusterer,
   Marker,
   useJsApiLoader,
   GoogleMap,
@@ -18,12 +19,13 @@ import {
   Polyline,
   InfoWindow,
 } from "@react-google-maps/api";
-import ResizePanel from "react-resize-panel";
-
+// import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import CustomMarker from "./CustomMarker";
 import { ContextID } from "../../Helper/ContextID";
 import useFetch from "../../Hook/UseFetch";
+
 const MapDiagnos = () => {
-  const {DeviceId , setDeviceId} = useContext(ContextID);
+  const { DeviceId, setDeviceId } = useContext(ContextID);
 
   const [poly, setpoly] = useState(false);
   const [triangleCoords1, setTriangleCoords1] = useState();
@@ -34,7 +36,7 @@ const MapDiagnos = () => {
   const { startTime, setStartTime } = useContext(ContextID);
   const { endDate, setEndDate } = useContext(ContextID);
   const { endTime, setEndTime } = useContext(ContextID);
-  const {ActionDiag , setActionDiag} =  useContext(ContextID);
+  const { ActionDiag, setActionDiag } = useContext(ContextID);
   const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [libraries] = useState(["places"]);
   const [position, setPosition] = useState({
@@ -48,32 +50,26 @@ const MapDiagnos = () => {
     region: "MA",
   });
 
-
-const [crth , setCrth] = useState(false);
-const [point , setpoint] = useState(false);
-// const [cancel , setcancel] = useState(false);
-const [showbacs , sethowbacs] = useState(false);
-const [crEncour ,setcrEncour ] = useState(true)
-
-
-
+  const [crth, setCrth] = useState(false);
+  const [point, setpoint] = useState(false);
+  // const [cancel , setcancel] = useState(false);
+  const [showbacs, sethowbacs] = useState(false);
+  const [crEncour, setcrEncour] = useState(true);
   
 
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
   }, []);
 
-  const onLoad = useCallback(
-    function callback(map) {
+  const onLoad = useCallback(function callback(map) {
 
-    },
-    []
-  );
+    setMap(map)
 
+  }, []);
 
-  useEffect(()=>{
-    console.log( "lDeviceId", DeviceId)
-  },[DeviceId])
+  useEffect(() => {
+    console.log("lDeviceId", DeviceId);
+  }, [DeviceId]);
 
   const {
     Data: tangerPolygon,
@@ -115,17 +111,15 @@ const [crEncour ,setcrEncour ] = useState(true)
       setTriangleCoords1([polygonCoords1, polygonCoords2]);
       setpoly(true);
     }
-  }, [ContextShowtTee ,tangerPolygon]);
+  }, [ContextShowtTee, tangerPolygon]);
 
-const [showCercuitTeorique , setshowCercuitTeorique] =  useState()
+  const [showCercuitTeorique, setshowCercuitTeorique] = useState();
 
-const [polyLines, setPolyLine] = useState([]);
+  const [polyLines, setPolyLine] = useState([]);
 
-
- async function showPolyLine(url) {
-  setPolyLine([])
-  try {
-   
+  async function showPolyLine(url) {
+    setPolyLine([]);
+    try {
       const response = await fetch(url);
       const result = await response.json();
       //  let res1 = [result[0]]
@@ -134,7 +128,7 @@ const [polyLines, setPolyLine] = useState([]);
           .replace("MULTILINESTRING((", "")
           .replace("))", "");
         const pairs = coordinates.split("),(");
-  
+
         const coordinatesArray = pairs.map((pair) => {
           const coordinates = pair.replace("(", "").replace(")", "").split(",");
           return coordinates.map((coord) => {
@@ -142,147 +136,164 @@ const [polyLines, setPolyLine] = useState([]);
             return { lat: parseFloat(lat), lng: parseFloat(lng) };
           });
         });
-  
-     
-       
-        setPolyLine((current)=>[...current,coordinatesArray] );
-        console.log("coordinatesArray", polyLines)
+
+        setPolyLine((current) => [...current, coordinatesArray]);
+        console.log("coordinatesArray", polyLines);
       });
-   
-  } catch (error) {
-    console.log("error", error);
-  }
-}
-
-useEffect(() => {
-  if(crth){
-  showPolyLine(`http://tanger.geodaki.com:3000/rpc/circuit_by_deviceid?ids={${DeviceId}}`);
-}
-}, [DeviceId,ActionDiag,crth]);
-
-
-const host = process.env.REACT_APP_HOST;
-
-
-const [Markers ,setmarkers] = useState([])
-const [Data , setData] = useState();
-useEffect(() => {
-  const fetchData = async () => {
-    var requestOptions = {
-      method: "GET",
-      redirect: "follow",
-    };
-    try {
- 
-      
-      if (DeviceId) {
-        let res = await fetch(
-          `http://tanger.geodaki.com:3000/rpc/data?idsdevice=${DeviceId}&dtb=${startDate}%20${startTime}:00&dtf=${endDate}%20${endTime}:00`,
-          requestOptions
-        );
-        let result = await res.json();
-       
-
-        if(crEncour)
-        {
-          setData(result.map((x) => ({ lat: x.lat, lng: x.lon })));
-        }
-
-        const icons = result.map((x) =>
-        x.vitesse > 0 ? host + "/images/pt.svg" : host + "/images/ptr.svg"
-      );
-        
-        if (point) {
-      
-          const markers = result.map((item, index) => {
-            return new window.google.maps.Marker({
-              position: { lat: item.lat, lng: item.lon },
-              icon: {
-                url: icons[index],
-                strokeColor: "#00ff4cd5",
-                scaledSize: { width: 32, height: 32 },
-                anchor: new window.google.maps.Point(0, 0),
-                size : { width: 32, height: 32 },
-              },
-              key: index,
-            });
-          });
-        
-          setmarkers((current) => [...current, ...markers]);
-        }
-
-
-      }
     } catch (error) {
       console.log("error", error);
     }
-  };
+  }
+
+  useEffect(() => {
+    if (crth) {
+      showPolyLine(
+        `http://tanger.geodaki.com:3000/rpc/circuit_by_deviceid?ids={${DeviceId}}`
+      );
+    }
+  }, [DeviceId, ActionDiag, crth]);
+
+  const host = process.env.REACT_APP_HOST;
+
+  const [Markers, setmarkers] = useState([]);
+  const [Data, setData] = useState();
+  const [Databacs, setDatabacs] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      try {
+        if (DeviceId) {
+          let res = await fetch(
+            `http://tanger.geodaki.com:3000/rpc/data?idsdevice=${DeviceId}&dtb=${startDate}%20${startTime}:00&dtf=${endDate}%20${endTime}:00`,
+            requestOptions
+          );
+          let result = await res.json();
+          if (crEncour) {
+            setData(result.map((x) => ({ lat: x.lat, lng: x.lon })));
+          }
+
+          let resbacs = await fetch(
+            `http://tanger.geodaki.com:3000/rpc/Bacs?dd=${startDate}%20${startTime}&df=${endDate}%20${endTime}:00&deviceid=${DeviceId}`
+          )
+          let resultbacs = await resbacs.json()
+
+          
+
+       
+          const icons = result.map((x) =>
+            x.vitesse > 0 ? host + "/images/pt.svg" : host + "/images/ptr.svg"
+          );
+
+          if (point) {
+            const markers = result.map((item, index) => {
+              return new window.google.maps.Marker({
+                position: { lat: item.lat, lng: item.lon },
+                icon: {
+                  url: icons[index],
+                  scaledSize: { width: 30, height: 30 },
+                  anchor: new window.google.maps.Point(0, 0),
+                },
+                key: index,
+              });
+            });
+
+            setmarkers((current) => [...current, ...markers]);
+          }
+          if (showbacs) {
+            const markers = resultbacs.map((item, index) => {
+              return new window.google.maps.Marker({
+                position: { lat: item.latitude, lng: item.longitude },
+                icon: {
+                  url: host + "/images/bacmetal_vert.png",
+                  scaledSize: { width: 30, height: 30 },
+                  anchor: new window.google.maps.Point(0, 0),
+                },
+                key: index,
+              });
+            });
+            console.log(markers);
+            setDatabacs((current) => [...current, ...markers]);
+          }
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    fetchData();
+  }, [
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    DeviceId,
+    ActionDiag,
+    point,
+    crEncour,
+    showbacs
+  ]);
+
   
-  fetchData();
-}, [startDate, startTime, endDate, endTime, DeviceId ,ActionDiag , point,crEncour ]);
 
-
-
-
-
-useEffect(()=>{
-  if(Array.isArray(Data)){
-    console.log("Datafff", Data)
-  }
-
-},[Data])
-
-
-
-useEffect(()=>{
-
-  if(ActionDiag === "cancel"){
-    setmarkers([])
-    setPolyLine([])
-    setData([])
-    setCrth(false)
-    setpoint(false)
-    sethowbacs(false)
-    setcrEncour(false)
-  }
-  else if(ActionDiag === "Displaypoint"){
-    setpoint(true)
-  }
+  useEffect(() => {
+    if (Databacs && Databacs.length > 0 && map) {
+      const googleMarkers = Databacs.map(({ position, icon, key }) => (
+        new window.google.maps.Marker({
+          position,
+          icon,
+          key,
+        })
+      ));
   
-  else if(ActionDiag === "showbacs"){
-    sethowbacs(true)
-  }else if(ActionDiag === "circuitth"){ 
-    setCrth(true)
-  }
-  
+      new MarkerClusterer(map, googleMarkers, {
+        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+      });
+    }
+  }, [Databacs, showbacs, crEncour, map]);
 
- console.log(ActionDiag ,"ActionDiag");
-},[ActionDiag])
+  useEffect(() => {
+    if (ActionDiag === "cancel") {
+      setmarkers([]);
+      setPolyLine([]);
+      setData([]);
+      setCrth(false);
+      setpoint(false);
+      sethowbacs(false);
+      setcrEncour(false);
+    } else if (ActionDiag === "Displaypoint") {
+      setpoint(true);
+    } else if (ActionDiag === "showbacs") {
+      sethowbacs(true);
+    } else if (ActionDiag === "circuitth") {
+      setCrth(true);
+    }
 
+    console.log(ActionDiag, "ActionDiag");
+  }, [ActionDiag]);
 
-const colors = ["#8200ff", "#835600", "green", "yellow"]; 
+  const colors = ["#8200ff", "#835600", "green", "yellow"];
 
   return (
     <>
-        
-    <div  className="mapdivdiag">
-      
-      {isLoaded ? (
-        <GoogleMap 
-          mapContainerStyle={{ width: "100%", height: "100%" }}
-          options={{
-            zoomControl: true,
-            streetViewControl: true,
-            mapTypeControl: true,
-            fullscreenControl: false,
-
-            zoom:11   
-          }}
-          center={position}
-          onUnmount={onUnmount}
-          onLoad={onLoad}
-        >
-              {poly &&
+      <div className="mapdivdiag">
+        {isLoaded ? (
+          <GoogleMap
+            mapContainerStyle={{ width: "100%", height: "100%" }}
+            options={{
+              zoomControl: true,
+              streetViewControl: true,
+              mapTypeControl: true,
+              fullscreenControl: false,
+              zoom: 11,
+            }}
+            center={position}
+            onUnmount={onUnmount}
+            onLoad={onLoad}
+          >
+            {poly &&
               triangleCoords1.map((x, index) => (
                 <Polygon
                   key={index}
@@ -295,55 +306,81 @@ const colors = ["#8200ff", "#835600", "green", "yellow"];
                 />
               ))}
 
-              
-{ crth &&  polyLines.map((array, index) => (
-      <React.Fragment key={index}>
-        {array.map((x, subIndex) => (
-          <Polyline
-            key={`${index}-${subIndex}`}
-            path={x}
-            geodesic={true}
-            options={{
-              strokeColor: colors[index % colors.length],
+            {crth &&
+              polyLines.map((array, index) => (
+                <React.Fragment key={index}>
+                  {array.map((x, subIndex) => (
+                    <Polyline
+                      key={`${index}-${subIndex}`}
+                      path={x}
+                      geodesic={true}
+                      options={{
+                        strokeColor: colors[index % colors.length],
 
-              strokeOpacity: 2.0,
-              strokeWeight: 4,
-            }}
-          />
-        ))}
-      </React.Fragment>
-    ))}
+                        strokeOpacity: 2.0,
+                        strokeWeight: 4,
+                      }}
+                    />
+                  ))}
+                </React.Fragment>
+              ))}
 
-{crEncour && <Polyline
-  
-  path={ Data }
-  geodesic={true}
-  options={{
-    strokeColor: "green",
-    strokeOpacity: 2.0,
-    strokeWeight: 4,
-  }}
-/>}
+            {crEncour && (
+              <Polyline
+                path={Data}
+                geodesic={true}
+                options={{
+                  strokeColor: "green",
+                  strokeOpacity: 2.0,
+                  strokeWeight: 4,
+                }}
+              />
+            )}
 
-{ point&& 
- Markers &&
+            {point &&
+              Markers &&
               Markers.map((x, index) => (
                 <Marker
                   position={x.position}
                   icon={x.icon}
                   key={index}
-                  draggable={true}
                 ></Marker>
               ))}
-    
-        </GoogleMap>
-      ) : (
-        <p> Please wait </p>
-      )}
-    </div>
-   
-  </>
-  )
-}
 
-export default MapDiagnos
+
+    {/* {showbacs && Databacs && (
+   
+        Databacs.map((x, index) => (
+          <Marker
+            position={x.position}
+            icon={x.icon}
+            key={index}
+          />
+        ))
+    
+    )} */}
+{showbacs && Databacs && (
+<MarkerClusterer>
+          {clusterer =>
+            Databacs.map( (x , index) => (
+              <CustomMarker
+                position={x.position}
+                icon={x.icon}
+                key={index}
+                clusterer={clusterer}
+              />
+            ))
+          }
+        </MarkerClusterer>
+ )}
+              
+          </GoogleMap>
+        ) : (
+          <p> Please wait </p>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default MapDiagnos;
