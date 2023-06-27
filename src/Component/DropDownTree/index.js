@@ -15,6 +15,9 @@ import {
 import { ContextID } from "../../Helper/ContextID";
 import axios from "axios";
 
+
+
+
 function Tree() {
   const [ShowLive, setShowLive] = useState(true);
   const [dataFromServer, setDataFromServer] = useState();
@@ -218,7 +221,7 @@ function Tree() {
               item.typeveh != "rien" && item.typeveh == "CHARIOT"
                 ? ValueCheckedRadio === "vehicul"
                   ? minutesDiff < 60
-                    ? item.name + iconGreen.symbol
+                    ? item.name + iconGreen.symbol   //dddd
                     : minutesDiff > 24 * 60
                     ? item.name + iconRed.symbol
                     : item.name + iconyello.symbol
@@ -238,6 +241,8 @@ function Tree() {
                 : item.name,
   
             lastu: item.lastu,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/LetterA.svg/2000px-LetterA.svg.png" 
+
   
             // parent: item.parent,
             //  children: children.length > 0 ? children : null,
@@ -286,7 +291,7 @@ function Tree() {
               label:
                 ValueCheckedRadio === "vehicul"
                   ? minutesDiff <= 60
-                    ? item.name + iconGreen.symbol +"dd"
+                    ? item.name + iconGreen.symbol
                     : minutesDiff > 60 && minutesDiff <= 180
                     ? item.name + iconyello.symbol
                     : item.name + iconRed.symbol
@@ -304,7 +309,7 @@ function Tree() {
                   ? minutesDiff <= 60
                     ? Math.abs(item.lacc) == 1
                       ? item.vitesse > 0
-                        ? item.name + Lighti.symbol // endif vitesse>0
+                        ? item.name + Lighti.symbol  // endif vitesse>0
                         : item.name + Lightningi.symbol
                       : Math.abs(item.lacc) === 0 // else if acc = 1
                       ? item.name + Warningi.symbol
@@ -668,6 +673,9 @@ function Tree() {
   if(document.getElementsByClassName("search")[0] != undefined){
     document.getElementsByClassName("search")[0].placeholder="Rechercher un véhicule";
   }
+  // if(document.getElementsByClassName("node-label")[0] != undefined){
+  //   document.getElementsByClassName("node-label")[0].innerHTML='<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/LetterA.svg/2000px-LetterA.svg.png" />';
+  // }
 
 
  

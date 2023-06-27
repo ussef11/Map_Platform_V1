@@ -49,10 +49,14 @@ const MapDiagnos = () => {
   });
 
 
-useEffect(()=>{
+const [crth , setCrth] = useState(false);
+const [point , setpoint] = useState(false);
+// const [cancel , setcancel] = useState(false);
+const [showbacs , sethowbacs] = useState(false);
+const [crEncour ,setcrEncour ] = useState(true)
 
- console.log(ActionDiag ,"ActionDiag");
-},[ActionDiag])
+
+
   
 
   const onUnmount = React.useCallback(function callback(map) {
@@ -121,7 +125,7 @@ const [polyLines, setPolyLine] = useState([]);
  async function showPolyLine(url) {
   setPolyLine([])
   try {
-    if(ActionDiag === "circuitth"){
+   
       const response = await fetch(url);
       const result = await response.json();
       //  let res1 = [result[0]]
@@ -144,15 +148,17 @@ const [polyLines, setPolyLine] = useState([]);
         setPolyLine((current)=>[...current,coordinatesArray] );
         console.log("coordinatesArray", polyLines)
       });
-    }
+   
   } catch (error) {
     console.log("error", error);
   }
 }
 
 useEffect(() => {
+  if(crth){
   showPolyLine(`http://tanger.geodaki.com:3000/rpc/circuit_by_deviceid?ids={${DeviceId}}`);
-}, [DeviceId,ActionDiag]);
+}
+}, [DeviceId,ActionDiag,crth]);
 
 
 const host = process.env.REACT_APP_HOST;
@@ -167,19 +173,27 @@ useEffect(() => {
       redirect: "follow",
     };
     try {
+ 
+      
       if (DeviceId) {
         let res = await fetch(
           `http://tanger.geodaki.com:3000/rpc/data?idsdevice=${DeviceId}&dtb=${startDate}%20${startTime}:00&dtf=${endDate}%20${endTime}:00`,
           requestOptions
         );
         let result = await res.json();
-        setData(result.map((x) => ({ lat: x.lat, lng: x.lon })));
+       
+
+        if(crEncour)
+        {
+          setData(result.map((x) => ({ lat: x.lat, lng: x.lon })));
+        }
+
         const icons = result.map((x) =>
-        x.vitesse > 0 ? host + "/images/redpoint.svg" : host + "/images/greenpoint.svg"
+        x.vitesse > 0 ? host + "/images/pt.svg" : host + "/images/ptr.svg"
       );
-        if (ActionDiag === "Displaypoint") {
         
-        
+        if (point) {
+      
           const markers = result.map((item, index) => {
             return new window.google.maps.Marker({
               position: { lat: item.lat, lng: item.lon },
@@ -188,6 +202,7 @@ useEffect(() => {
                 strokeColor: "#00ff4cd5",
                 scaledSize: { width: 32, height: 32 },
                 anchor: new window.google.maps.Point(0, 0),
+                size : { width: 32, height: 32 },
               },
               key: index,
             });
@@ -204,7 +219,7 @@ useEffect(() => {
   };
   
   fetchData();
-}, [startDate, startTime, endDate, endTime, DeviceId ,ActionDiag]);
+}, [startDate, startTime, endDate, endTime, DeviceId ,ActionDiag , point,crEncour ]);
 
 
 
@@ -216,6 +231,33 @@ useEffect(()=>{
   }
 
 },[Data])
+
+
+
+useEffect(()=>{
+
+  if(ActionDiag === "cancel"){
+    setmarkers([])
+    setPolyLine([])
+    setData([])
+    setCrth(false)
+    setpoint(false)
+    sethowbacs(false)
+    setcrEncour(false)
+  }
+  else if(ActionDiag === "Displaypoint"){
+    setpoint(true)
+  }
+  
+  else if(ActionDiag === "showbacs"){
+    sethowbacs(true)
+  }else if(ActionDiag === "circuitth"){ 
+    setCrth(true)
+  }
+  
+
+ console.log(ActionDiag ,"ActionDiag");
+},[ActionDiag])
 
 
 const colors = ["#8200ff", "#835600", "green", "yellow"]; 
@@ -254,7 +296,7 @@ const colors = ["#8200ff", "#835600", "green", "yellow"];
               ))}
 
               
-{polyLines.map((array, index) => (
+{ crth &&  polyLines.map((array, index) => (
       <React.Fragment key={index}>
         {array.map((x, subIndex) => (
           <Polyline
@@ -272,18 +314,19 @@ const colors = ["#8200ff", "#835600", "green", "yellow"];
       </React.Fragment>
     ))}
 
-  <Polyline
-   
-    path={ Data }
-    geodesic={true}
-    options={{
-      strokeColor: "green",
-      strokeOpacity: 2.0,
-      strokeWeight: 4,
-    }}
-  />
+{crEncour && <Polyline
+  
+  path={ Data }
+  geodesic={true}
+  options={{
+    strokeColor: "green",
+    strokeOpacity: 2.0,
+    strokeWeight: 4,
+  }}
+/>}
 
-{Markers &&
+{ point&& 
+ Markers &&
               Markers.map((x, index) => (
                 <Marker
                   position={x.position}
