@@ -306,7 +306,7 @@ const MapDiagnos = () => {
               streetViewControl: true,
               mapTypeControl: true,
               fullscreenControl: false,
-              zoom: 13,
+              zoom: 11,
             }}
             center={position}
             onUnmount={onUnmount}
@@ -380,7 +380,7 @@ const MapDiagnos = () => {
     
     )} */}
 {showbacs && Databacs && (
-<MarkerClusterer  options={{ minimumClusterSize: 18 }}>
+<MarkerClusterer  options={{ minimumClusterSize: 5 }}>
           {clusterer =>
             Databacs.map( (x , index) => (
               <CustomMarker
