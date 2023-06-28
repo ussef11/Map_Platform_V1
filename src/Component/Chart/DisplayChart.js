@@ -1362,9 +1362,9 @@ const [Data , setData] = useState()
     <>  
   {  DeviceId &&   <div className="charts" style={{height: size.y }}   >
 
-    <span  onMouseDown={handler} style={{cursor:"grabbing"}} class="material-symbols-outlined">
+   <button  className="buttondrag" onMouseDown={handler} style={{cursor:"grabbing"}} ><span  class="material-symbols-outlined">
 drag_handle
-</span>
+</span> </button> 
       <div  className="chart">
         <Bar
           width={100}

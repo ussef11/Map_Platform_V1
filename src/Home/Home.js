@@ -92,11 +92,11 @@ const Home = () => {
 ContextShowtTee === "TEMPS REEL" ? 
         <Popup /> : <PopupDiag/>}
   
-        {/* {ContextShowtTee === "DIAGNOSTIQUE" ? (
+        {ContextShowtTee === "DIAGNOSTIQUE" ? (
           
             <DisplayChart />
          
-        ) : null} */}
+        ) : null}
       </div>
     </div>
   </>

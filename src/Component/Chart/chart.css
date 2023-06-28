@@ -17,3 +17,15 @@
   
 }
 
+.buttondrag{
+    background: none;
+    cursor: grabbing;
+    border: none;
+}
+
+.buttondrag:hover{
+    background: #d4d4d4;
+
+    border-radius: 18px
+}
+
