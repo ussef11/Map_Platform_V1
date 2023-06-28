@@ -1511,7 +1511,7 @@ drag_handle
       ) ? (
         <Line
           width={100}
-          height={13}
+          height={8}
           data={dataLineNveau}
           onClick={onClick}
           options={{
@@ -1576,7 +1576,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Compaction") ? (
         <Line
           width={100}
-          height={13}
+          height={8}
           data={configComp.data}
           options={configComp.options}
         />
@@ -1585,7 +1585,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Cycle LC") ? (
         <Line
           width={100}
-          height={13}
+          height={8}
           data={configCycleLC.data}
           options={configCycleLC.options}
         />
@@ -1596,7 +1596,7 @@ drag_handle
       ) ? (
         <Line
           width={100}
-          height={13}
+          height={8}
           data={configporteArr.data}
           options={configporteArr.options}
         />
@@ -1605,7 +1605,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Activation de la pompe") ? (
         <Line
           width={100}
-          height={13}
+          height={8}
           data={configActivPomp.data}
           options={configActivPomp.options}
         />
@@ -1614,7 +1614,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Levée du caisson") ? (
         <Line
           width={100}
-          height={13}
+          height={8}
           data={configDataLeveecaisson.data}
           options={configDataLeveecaisson.options}
         />
@@ -1623,7 +1623,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Aspirateur central") ? (
         <Line
           width={100}
-          height={13}
+          height={8}
           data={configAspiraCentral.data}
           options={configAspiraCentral.options}
         />
@@ -1632,7 +1632,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Brosse centrale") ? (
         <Line
           width={100}
-          height={13}
+          height={8}
           data={configBrossecentrale.data}
           options={configBrossecentrale.options}
         />
@@ -1641,7 +1641,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Karsher") ? (
         <Line
           width={100}
-          height={10}
+          height={8}
           data={configKarsher.data}
           options={configKarsher.options}
         />
@@ -1650,7 +1650,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Aspirateur gauche") ? (
         <Line
           width={100}
-          height={10}
+          height={8}
           data={configAspirateurgauche.data}
           options={configAspirateurgauche.options}
         />
@@ -1659,7 +1659,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Aspirateur droit") ? (
         <Line
           width={100}
-          height={10}
+          height={8}
           data={configAspirateurdroit.data}
           options={configAspirateurdroit.options}
         />
@@ -1670,7 +1670,7 @@ drag_handle
       ) ? (
         <Line
           width={100}
-          height={10}
+          height={8}
           data={configAspirateurmanuelarr.data}
           options={configAspirateurmanuelarr.options}
         />
@@ -1679,7 +1679,7 @@ drag_handle
       {listComp.some((item) => item.intitule === "Brosse gauche") ? (
         <Line
           width={100}
-          height={10}
+          height={8}
           data={configBrossegauche.data}
           options={configBrossegauche.options}
         />
