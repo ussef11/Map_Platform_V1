@@ -313,6 +313,7 @@ const MapDiagnos = () => {
     showbacs
   ]);
 
+  const[tess , settess] = useState(0)
 
   useEffect(()=>{
     const fetchData = async ()=>{
@@ -327,7 +328,23 @@ const MapDiagnos = () => {
             requestOptions
           );
           let result = await res.json();
-          console.log("ress" , result.length)
+         
+
+          const interval = setTimeout(() => {
+            settess((current)=>current+1)
+            console.log("ress", tess);
+          
+            if (tess > 3) {
+              clearInterval(interval);
+              clearTimeout(interval);
+            }
+          }, 1000);
+          if (tess > 3) {
+            clearInterval(interval);
+            clearTimeout(interval);
+          }
+
+
         }} catch (error) {
           console.log("error", error);
         }
@@ -335,7 +352,7 @@ const MapDiagnos = () => {
 
     fetchData()
    
-  })
+  },[tess ,ActionDiag])
 
   useEffect(()=>{
     setcrEncour(true);
