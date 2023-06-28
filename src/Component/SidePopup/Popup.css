@@ -216,4 +216,6 @@
     color: white;
     font-size: 25px;
     font-weight: 800;
+    position: relative;
+    top: 2px;
   }
