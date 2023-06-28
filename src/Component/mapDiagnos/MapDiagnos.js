@@ -65,6 +65,7 @@ const MapDiagnos = () => {
   const onLoad = useCallback(function callback(map) {
 
     setMap(map)
+    map.setZoom(13)
 
   }, []);
 
@@ -385,7 +386,7 @@ const MapDiagnos = () => {
               streetViewControl: true,
               mapTypeControl: true,
               fullscreenControl: false,
-              zoom: 11,
+              // zoom: 11,
             }}
             center={position}
             onUnmount={onUnmount}

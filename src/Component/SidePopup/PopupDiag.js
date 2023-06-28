@@ -384,7 +384,9 @@ const Popup = () => {
       setActive(null);
       setDeviceId(null);
       setresultForpopup(null);
+      setDataForDiagpopup()
     }
+    setDataForDiagpopup()
     console.log("ssssss", SelectedRadioValue);
   }, [ContextShowtTee, SelectedRadioValue]);
 
