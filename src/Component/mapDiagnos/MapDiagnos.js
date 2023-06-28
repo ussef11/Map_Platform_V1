@@ -159,10 +159,23 @@ const MapDiagnos = () => {
   const [Markers, setmarkers] = useState([]);
   const [Data, setData] = useState();
   const [Databacs, setDatabacs] = useState([]);
+  const [CurrentPos , setCurrentPos] = useState([])
+
+
+  const [activeMarker, setActiveMarker] = useState(null);
+
+  const handleActiveMarker = (id) => {
+    if (id === activeMarker) {
+      return;
+    }
+    setActiveMarker(id);
+  };
+
   useEffect(() => {
     setDatabacs([])
     setData([])
     setmarkers([])
+    setCurrentPos([])
     const fetchData = async () => {
       var requestOptions = {
         method: "GET",
@@ -184,8 +197,9 @@ const MapDiagnos = () => {
           )
           let resultbacs = await resbacs.json()
 
-          
 
+          let resCurrentpos =  await fetch(`http://tanger.geodaki.com:3000/rpc/tempsreel?ids={${DeviceId}}&uid=71`)
+          let resultCurrentpos = await resCurrentpos.json()
        
           const icons = result.map((x) =>
             x.vitesse > 0 ? host + "/images/pt.svg" : host + "/images/ptr.svg"
@@ -223,10 +237,66 @@ const MapDiagnos = () => {
             console.log(markers);
             setDatabacs((current) => [...current, ...markers]);
           }
+
+
+
+          for (let i = 0; i < resultCurrentpos.length; i++) {
+           console.log("ddeeee" , resultCurrentpos.length)
+            let status = "vert";
+            const icons = {
+              url:
+                host +
+                `/images/${resultCurrentpos[i].typevehicule
+                  .replaceAll(" ", "")
+                  .toLowerCase()}-${status}.png`,
+              strokeColor: "#00ff4cd5",
+              scaledSize: { width: 32, height: 32 },
+              anchor: new window.google.maps.Point(0, 0),
+            };
+  
+            let position = {
+              lat: resultCurrentpos[i].lat,
+              lng: resultCurrentpos[i].lon,
+            };   
+            console.log("ddeeee" , position )    
+            const marker = new window.google.maps.Marker({
+              position: position,
+              icon: icons,
+              name: resultCurrentpos[i].name,
+              id: resultCurrentpos[i].id,
+              typevehicule: resultCurrentpos[i].typevehicule,
+              lastupdate: resultCurrentpos[i].lastupdate,
+              batterie: resultCurrentpos[i].batterie,
+              vehicule: resultCurrentpos[i].vehicule,
+              capteur: resultCurrentpos[i].capteur,
+              immatriculation: resultCurrentpos[i].immatriculation,
+              datems: resultCurrentpos[i].datems,
+              lastacc: resultCurrentpos[i].lastacc,
+              fonction: resultCurrentpos[i].fonction,
+              marque: resultCurrentpos[i].marque,
+              kilometrage: resultCurrentpos[i].kilometrage,
+              heures: resultCurrentpos[i].heures,
+              consomation_total: resultCurrentpos[i].consomation_total,
+              temp_refroi: resultCurrentpos[i].temp_refroi,
+              last_capteurs: resultCurrentpos[i].last_capteurs,
+              can_capteurs: resultCurrentpos[i].can_capteurs,
+              nombre_bac: resultCurrentpos[i].nombre_bac,
+              fin_rfid: resultCurrentpos[i].fin_rfid,
+              debut_rfid: resultCurrentpos[i].debut_rfid,
+              vitesse: resultCurrentpos[i].vitesse,
+            });
+            setCurrentPos((current) => [...current, marker]);
+          }
+
+
+
         }
       } catch (error) {
         console.log("error", error);
       }
+
+
+
     };
 
     fetchData();
@@ -265,7 +335,6 @@ const MapDiagnos = () => {
   }, [ActionDiag]);
 
   const colors = ["#8200ff", "#835600", "green", "yellow"];
-
 
 
 
@@ -367,18 +436,6 @@ const MapDiagnos = () => {
                 ></Marker>
               ))}
 
-
-    {/* {showbacs && Databacs && (
-   
-        Databacs.map((x, index) => (
-          <Marker
-            position={x.position}
-            icon={x.icon}
-            key={index}
-          />
-        ))
-    
-    )} */}
 {showbacs && Databacs && (
 <MarkerClusterer  options={{ minimumClusterSize: 5 }}>
           {clusterer =>
@@ -394,6 +451,84 @@ const MapDiagnos = () => {
           }
         </MarkerClusterer>
  )}
+
+{CurrentPos &&
+              CurrentPos.map((x, index) => (
+                <Marker
+                  position={x.position}
+                  icon={x.icon}
+                  key={index}
+                  onClick={() => {
+                    handleActiveMarker(index);
+                  }}
+                >
+                  {activeMarker === index ? (
+                    <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                      <div>
+                        <div style={{ textAlign: "left" }} className="labelDiv">
+                          <div>
+                            <span>N° Parc : </span>
+                            {x.name}
+                          </div>
+                          <div>
+                            <span>Type : </span>
+                            {x.typevehicule}
+                          </div>
+                          <div>
+                            <span>ID : </span>
+                            {x.id}
+                          </div>
+                          <div>
+                            <span>Conducteur : </span>
+                          </div>
+                          <div>
+                            <span>DATE : </span>
+                            {x.datems}
+                          </div>
+                          <div>
+                            <span>BATTERIE : </span>
+                            {x.batterie}
+                          </div>
+                          {x.marque && (
+                            <div>
+                              <span>Marque : </span>
+                              {x.marque}
+                            </div>
+                          )}
+
+                          {x.kilometrage && (
+                            <div>
+                              <span>kilométrage : </span>
+                              {x.kilometrage}
+                            </div>
+                          )}
+
+                          {x.heures && (
+                            <div>
+                              <span>Nombre Heure : </span>
+                              {x.heures}
+                            </div>
+                          )}
+
+                          {
+                            <div>
+                              <span>Vitesse : </span>
+                              {x.vitesse}
+                            </div>
+                          }
+                          {x.datems && (
+                            <div>
+                              <span>Date mise en services : </span>
+                              {x.datems}
+                            </div>
+                          )}
+                        </div>
+                        <div className="borderDiv"></div>
+                      </div>
+                    </InfoWindow>
+                  ) : null}
+                </Marker>
+              ))}
               
           </GoogleMap>
         ) : (

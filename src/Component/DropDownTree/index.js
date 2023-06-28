@@ -241,7 +241,7 @@ function Tree() {
                 : item.name,
   
             lastu: item.lastu,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/LetterA.svg/2000px-LetterA.svg.png" 
+           
 
   
             // parent: item.parent,
