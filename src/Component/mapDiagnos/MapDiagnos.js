@@ -23,6 +23,7 @@ import {
 import CustomMarker from "./CustomMarker";
 import { ContextID } from "../../Helper/ContextID";
 import useFetch from "../../Hook/UseFetch";
+import { v4 as uuidv4 } from "uuid";
 
 const MapDiagnos = () => {
   const { DeviceId, setDeviceId } = useContext(ContextID);
@@ -159,6 +160,9 @@ const MapDiagnos = () => {
   const [Data, setData] = useState();
   const [Databacs, setDatabacs] = useState([]);
   useEffect(() => {
+    setDatabacs([])
+    setData([])
+    setmarkers([])
     const fetchData = async () => {
       var requestOptions = {
         method: "GET",
@@ -188,6 +192,7 @@ const MapDiagnos = () => {
           );
 
           if (point) {
+            setDatabacs([])
             const markers = result.map((item, index) => {
               return new window.google.maps.Marker({
                 position: { lat: item.lat, lng: item.lon },
@@ -203,6 +208,7 @@ const MapDiagnos = () => {
             setmarkers((current) => [...current, ...markers]);
           }
           if (showbacs) {
+            setDatabacs([])
             const markers = resultbacs.map((item, index) => {
               return new window.google.maps.Marker({
                 position: { lat: item.latitude, lng: item.longitude },
@@ -237,23 +243,6 @@ const MapDiagnos = () => {
   ]);
 
   
-
-  useEffect(() => {
-    if (Databacs && Databacs.length > 0 && map) {
-      const googleMarkers = Databacs.map(({ position, icon, key }) => (
-        new window.google.maps.Marker({
-          position,
-          icon,
-          key,
-        })
-      ));
-  
-      new MarkerClusterer(map, googleMarkers, {
-        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-      });
-    }
-  }, [Databacs, showbacs, crEncour, map]);
-
   useEffect(() => {
     if (ActionDiag === "cancel") {
       setmarkers([]);
@@ -266,6 +255,7 @@ const MapDiagnos = () => {
     } else if (ActionDiag === "Displaypoint") {
       setpoint(true);
     } else if (ActionDiag === "showbacs") {
+      
       sethowbacs(true);
     } else if (ActionDiag === "circuitth") {
       setCrth(true);
@@ -275,6 +265,35 @@ const MapDiagnos = () => {
   }, [ActionDiag]);
 
   const colors = ["#8200ff", "#835600", "green", "yellow"];
+
+
+
+
+
+
+
+
+  
+  // const [toggle, setToggle] = useState(false);
+
+  // React.useEffect(() => {
+  //   if (map) {
+  //     // map.panTo(...)
+  //     mapFitBounds();
+  //   }
+  // }, [map]);
+
+  // function mapFitBounds() {
+  //   // console.log("mapFitBounds:map> ", map);
+  //   if (!map) return;
+
+  //   const bounds = new window.google.maps.LatLngBounds();
+  //   Databacs.map((x) => {
+  //     bounds.extend(new window.google.maps.LatLng(x.position));
+  //   });
+
+  //   map.fitBounds(bounds);
+  // }
 
   return (
     <>
@@ -287,7 +306,7 @@ const MapDiagnos = () => {
               streetViewControl: true,
               mapTypeControl: true,
               fullscreenControl: false,
-              zoom: 11,
+              zoom: 13,
             }}
             center={position}
             onUnmount={onUnmount}
@@ -344,6 +363,7 @@ const MapDiagnos = () => {
                   position={x.position}
                   icon={x.icon}
                   key={index}
+                 
                 ></Marker>
               ))}
 
@@ -360,7 +380,7 @@ const MapDiagnos = () => {
     
     )} */}
 {showbacs && Databacs && (
-<MarkerClusterer>
+<MarkerClusterer  options={{ minimumClusterSize: 18 }}>
           {clusterer =>
             Databacs.map( (x , index) => (
               <CustomMarker
@@ -368,6 +388,7 @@ const MapDiagnos = () => {
                 icon={x.icon}
                 key={index}
                 clusterer={clusterer}
+                draggable={true}
               />
             ))
           }
