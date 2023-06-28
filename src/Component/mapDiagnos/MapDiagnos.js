@@ -312,6 +312,16 @@ const MapDiagnos = () => {
     showbacs
   ]);
 
+  useEffect(()=>{
+    setcrEncour(true);
+    setmarkers([]);
+    setPolyLine([]);
+    setData([]);
+    setCrth(false);
+    setpoint(false);
+    sethowbacs(false);
+  } ,[DeviceId])
+
   
   useEffect(() => {
     if (ActionDiag === "cancel") {
