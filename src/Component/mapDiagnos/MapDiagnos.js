@@ -161,6 +161,7 @@ const MapDiagnos = () => {
   const [Data, setData] = useState();
   const [Databacs, setDatabacs] = useState([]);
   const [CurrentPos , setCurrentPos] = useState([])
+  const[DataAnimation  , setDataAnimation] = useState();
 
 
   const [activeMarker, setActiveMarker] = useState(null);
@@ -189,6 +190,7 @@ const MapDiagnos = () => {
             requestOptions
           );
           let result = await res.json();
+          
           if (crEncour) {
             setData(result.map((x) => ({ lat: x.lat, lng: x.lon })));
           }
@@ -214,12 +216,11 @@ const MapDiagnos = () => {
                 icon: {
                   url: icons[index],
                   scaledSize: { width: 30, height: 30 },
-                  anchor: new window.google.maps.Point(0, 0),
+                  anchor: new window.google.maps.Point(15, 15),
                 },
                 key: index,
               });
             });
-
             setmarkers((current) => [...current, ...markers]);
           }
           if (showbacs) {
@@ -230,7 +231,7 @@ const MapDiagnos = () => {
                 icon: {
                   url: host + "/images/bacmetal_vert.png",
                   scaledSize: { width: 30, height: 30 },
-                  anchor: new window.google.maps.Point(0, 0),
+                  anchor: new window.google.maps.Point(15, 15),
                 },
                 key: index,
               });
@@ -251,8 +252,8 @@ const MapDiagnos = () => {
                   .replaceAll(" ", "")
                   .toLowerCase()}-${status}.png`,
               strokeColor: "#00ff4cd5",
-              scaledSize: { width: 32, height: 32 },
-              anchor: new window.google.maps.Point(0, 0),
+              scaledSize: { width: 30, height: 30 },
+              anchor: new window.google.maps.Point(15, 15),
             };
   
             let position = {
@@ -295,10 +296,9 @@ const MapDiagnos = () => {
       } catch (error) {
         console.log("error", error);
       }
-
-
-
     };
+
+
 
     fetchData();
   }, [
@@ -312,6 +312,30 @@ const MapDiagnos = () => {
     crEncour,
     showbacs
   ]);
+
+
+  useEffect(()=>{
+    const fetchData = async ()=>{
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      try {
+        if (DeviceId) {
+          let res = await fetch(
+            `http://tanger.geodaki.com:3000/rpc/data?idsdevice=${DeviceId}&dtb=${startDate}%20${startTime}:00&dtf=${endDate}%20${endTime}:00`,
+            requestOptions
+          );
+          let result = await res.json();
+          console.log("ress" , result.length)
+        }} catch (error) {
+          console.log("error", error);
+        }
+    }
+
+    fetchData()
+   
+  })
 
   useEffect(()=>{
     setcrEncour(true);

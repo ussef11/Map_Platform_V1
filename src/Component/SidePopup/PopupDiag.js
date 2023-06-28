@@ -263,6 +263,24 @@ const AccordionItem = (props) => {
             </button>
           ) : null}
         </div>
+
+
+        <div className="divInfocercuittow">
+          <button onClick={()=>{setActionDiag("Displaypoint")}}>
+            
+          <span class="material-symbols-outlined">play_arrow</span>
+          </button>
+          <button  onClick={()=>{setActionDiag("showbacs")}}>
+            
+          <span class="material-symbols-outlined">pause</span>
+          </button>
+          <button  style={{backgroundColor:"red"}} onClick={()=>{setActionDiag("circuitth")}}>
+            
+          <span class="material-symbols-outlined">stop_circle</span>
+          </button>
+        </div>
+
+
         {showAllinfo && (
           <div key={refreshKey}>
             {Infovh.length > 0 ? (
@@ -325,6 +343,8 @@ const AccordionItem = (props) => {
             </div>
           </div>
         )}
+
+        
 
         {capteur.includes("RFID")
           ? showRIFDinfo && (
