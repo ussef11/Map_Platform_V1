@@ -1368,7 +1368,7 @@ drag_handle
       <div  className="chart">
         <Bar
           width={100}
-          height={14}
+          height={8}
           ref={chartrefbar}
           data={data}
           onClick={onClickb}
@@ -1436,7 +1436,7 @@ drag_handle
 
       <Line 
         width={100}
-        height={15}
+        height={8}
         ref={chartref}
         data={dataLine}
         onClick={onClick}
