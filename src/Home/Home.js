@@ -33,6 +33,7 @@ const Home = () => {
 
 
   const [ActionDiag , setActionDiag] = useState("");
+  const [ActionPlay , setActionPlay] = useState('')
   
 
 
@@ -72,6 +73,9 @@ const Home = () => {
 
         ActionDiag,
         setActionDiag,
+
+        ActionPlay,
+        setActionPlay,
      
       }}
     ><>

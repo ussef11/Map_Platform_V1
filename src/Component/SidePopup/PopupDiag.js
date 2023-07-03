@@ -14,7 +14,8 @@ const AccordionItem = (props) => {
   const [showAllbacs, setshowAllbacs] = useState("");
   const { deleteAllbaks, setdeleteAllbaks } = useState("");
 
- 
+  const { ActionPlay, setActionPlay } = useContext(ContextID);
+
   const {ActionDiag , setActionDiag} =  useContext(ContextID);
 
   const {
@@ -266,15 +267,15 @@ const AccordionItem = (props) => {
 
 
         <div className="divInfocercuittow">
-          <button onClick={()=>{setActionDiag("Displaypoint")}}>
+          <button onClick={()=>{setActionPlay("play")}}>
             
           <span class="material-symbols-outlined">play_arrow</span>
           </button>
-          <button  onClick={()=>{setActionDiag("showbacs")}}>
+          <button  onClick={()=>{setActionPlay("pause")}}>
             
           <span class="material-symbols-outlined">pause</span>
           </button>
-          <button  style={{backgroundColor:"red"}} onClick={()=>{setActionDiag("circuitth")}}>
+          <button  style={{backgroundColor:"red"}} onClick={()=>{setActionPlay("stop")}}>
             
           <span class="material-symbols-outlined">stop_circle</span>
           </button>
@@ -291,8 +292,8 @@ const AccordionItem = (props) => {
                       {x.vehicule} {vehicule}
                     </p>
                     <p style={{ fontSize: "14px", color: "#7c7c7c" }}>
-                      Du : {startDate}
-                      {startTime} AU :{endDate}
+                      Du : {startDate} -
+                      {startTime} AU :{endDate}-
                       {endTime}
                     </p>
                   </div>

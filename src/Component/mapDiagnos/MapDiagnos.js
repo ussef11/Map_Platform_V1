@@ -38,6 +38,7 @@ const MapDiagnos = () => {
   const { endDate, setEndDate } = useContext(ContextID);
   const { endTime, setEndTime } = useContext(ContextID);
   const { ActionDiag, setActionDiag } = useContext(ContextID);
+  const { ActionPlay, setActionPlay } = useContext(ContextID);
   const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [libraries] = useState(["places"]);
   const [position, setPosition] = useState({
@@ -243,7 +244,7 @@ const MapDiagnos = () => {
 
 
           for (let i = 0; i < resultCurrentpos.length; i++) {
-           console.log("ddeeee" , resultCurrentpos.length)
+          //  console.log("ddeeee" , resultCurrentpos.length)
             let status = "vert";
             const icons = {
               url:
@@ -260,7 +261,7 @@ const MapDiagnos = () => {
               lat: resultCurrentpos[i].lat,
               lng: resultCurrentpos[i].lon,
             };   
-            console.log("ddeeee" , position )    
+        
             const marker = new window.google.maps.Marker({
               position: position,
               icon: icons,
@@ -313,10 +314,13 @@ const MapDiagnos = () => {
     showbacs
   ]);
 
-  const[tess , settess] = useState(0)
+  const[Counter , setCounter] = useState(0)
+  const [DataAninmation , setDataAninmation] = useState([])
+  const [Pourcentage , setPourcentage] = useState(0)
 
-  useEffect(()=>{
-    const fetchData = async ()=>{
+  useEffect(() => {
+    console.log("ActionPlay", ActionPlay);
+    const fetchData = async () => {
       var requestOptions = {
         method: "GET",
         redirect: "follow",
@@ -328,31 +332,82 @@ const MapDiagnos = () => {
             requestOptions
           );
           let result = await res.json();
-         
+          if(ActionPlay !== "stop" && ActionPlay ===  "play"){
+            setDataAninmation([])
+            console.log("sdfoewpfk", result[Counter]);
+            let status = "vert";
+            const icons = {
+              url:
+                host +
+                `/images/${result[Counter].typevehicule
+                  .replaceAll(" ", "")
+                  .toLowerCase()}-${status}.png`,
+              strokeColor: "#00ff4cd5",
+              scaledSize: { width: 30, height: 30 },
+              anchor: new window.google.maps.Point(15, 15),
+            };
+  
+            let position = {
+              lat: result[Counter].lat,
+              lng: result[Counter].lon,
+            };   
+            console.log("ddeeee" , position )   
+            const marker = new window.google.maps.Marker({
+              position: position,
+              icon: icons,
+            
+            });
+            setDataAninmation((current) => [...current, marker]);
 
-          const interval = setTimeout(() => {
-            settess((current)=>current+1)
-            console.log("ress", tess);
-          
-            if (tess > 3) {
-              clearInterval(interval);
-              clearTimeout(interval);
-            }
-          }, 1000);
-          if (tess > 3) {
-            clearInterval(interval);
-            clearTimeout(interval);
           }
 
 
-        }} catch (error) {
-          console.log("error", error);
-        }
-    }
 
-    fetchData()
-   
-  },[tess ,ActionDiag])
+
+
+
+          console.log("ress",  result.length );
+
+          
+         
+  
+          let interval;
+  
+          if (ActionPlay === "play") {
+            interval = setTimeout(() => {
+              if (Counter < result.length - 1) {
+                setCounter((current) => current + 1);
+                if(Pourcentage === 100  ){ 
+                  clearTimeout(interval);
+                  clearInterval(interval);
+                }
+                let pourcentage  = Math.floor((Counter/ 20)*100)
+                setPourcentage(pourcentage)
+                console.log("pourcentage", pourcentage)
+              }
+            }, 500);
+          } else if (ActionPlay === "pause" || Counter === result.length - 1) {
+            console.log("pause", Counter);
+            clearTimeout(interval);
+            clearInterval(interval);
+          } else if (ActionPlay === "stop") {
+            setCounter(0);
+            console.log("stop", Counter);
+            clearTimeout(interval);
+            return;
+          }
+  
+          return () => clearTimeout(interval);
+        }
+
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+  
+    fetchData();
+  }, [Counter, ActionPlay, DeviceId, startDate, startTime, endDate, endTime]);
+  
 
   useEffect(()=>{
     setcrEncour(true);
@@ -581,6 +636,18 @@ const MapDiagnos = () => {
                   ) : null}
                 </Marker>
               ))}
+
+              {DataAninmation && DataAninmation.map((x,index) =>(
+ <Marker
+ position={x.position}
+ icon={x.icon}
+ key={index}
+ 
+></Marker>
+
+               )
+
+              )}
               
           </GoogleMap>
         ) : (
