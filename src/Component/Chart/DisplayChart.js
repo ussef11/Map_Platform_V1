@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState , useMemo } from "react";
 import { Bar, getElementAtEvent, Line } from "react-chartjs-2";
 import "chartjs-plugin-annotation";
 import zoomPlugin from "chartjs-plugin-zoom";
@@ -16,6 +16,7 @@ import {
 
 import Chart from "chart.js/auto";
 import useFetch from "../../Hook/UseFetch";
+import { MaterialReactTable } from 'material-react-table';
 
 import "chartjs-adapter-date-fns";
 import { ContextID } from "../../Helper/ContextID";
@@ -31,6 +32,186 @@ function DisplayChart() {
   const { endDate, setEndDate} = useContext(ContextID);
   const { endTime, setEndTime} = useContext(ContextID);
   const {DeviceId , setDeviceId} = useContext(ContextID);
+  const [SelctedButton , setSelctedButton] = useState(true)
+const [GRAPH , setGRAPH] = useState(true)
+const [DONNEES , setDONNEES] = useState(false)
+const [SHIFTS , setSHIFTS] = useState(false)
+const [BACS , setBACS] = useState(false)
+
+useEffect(()=>{
+  if(SelctedButton === "DONNEES"){
+    setDONNEES(true)
+    setGRAPH(false)
+    setSHIFTS(false)
+    setBACS(false)
+  }
+  if(SelctedButton === "SHIFTS"){
+    setDONNEES(false)
+    setGRAPH(false)
+    setSHIFTS(true)
+    setBACS(false)
+  }
+  if(SelctedButton === "BACS"){
+    setDONNEES(false)
+    setGRAPH(false)
+    setSHIFTS(false)
+    setBACS(true)
+  }
+  if(SelctedButton === "GRAPH"){
+    setDONNEES(false)
+    setGRAPH(true)
+    setSHIFTS(false)
+    setBACS(false)
+  }
+
+},[SelctedButton])
+
+const dataas = [
+  {
+    name: {
+      firstName: 'John',
+      lastName: 'Doe',
+    },
+    address: '261 Erdman Ford',
+    city: 'East Daphne',
+    state: 'Kentucky',
+  },
+  {
+    name: {
+      firstName: 'Jane',
+      lastName: 'Doe',
+    },
+    address: '769 Dominic Grove',
+    city: 'Columbus',
+    state: 'Ohio',
+  },
+  {
+    name: {
+      firstName: 'Joe',
+      lastName: 'Doe',
+    },
+    address: '566 Brakus Inlet',
+    city: 'South Linda',
+    state: 'West Virginia',
+  },
+  {
+    name: {
+      firstName: 'Kevin',
+      lastName: 'Vandy',
+    },
+    address: '722 Emie Stream',
+    city: 'Lincoln',
+    state: 'Nebraska',
+  },
+  {
+    name: {
+      firstName: 'Joshua',
+      lastName: 'Rolluffs',
+    },
+    address: '32188 Larkin Turnpike',
+    city: 'Charleston',
+    state: 'South Carolina',
+  },
+];
+// "date": "2023-07-03T12:26:53",
+//         "lat": 35.755272,
+//         "lon": -5.830626,
+//         "vitesse": 0,
+//         "distance": 0,
+//         "acc": 0,
+//         "odo": null,
+//         "hr": null,
+//         "gas": null,
+//         "gas_total": null,
+//         "temperateur": null,
+//         "niv_eau": null,
+//         "can10": null,
+//         "adresse": null,
+//         "capteur": null,
+//         "can_capt": "VIDE",
+//         "typevehicule": "CHARIOT",
+//         "name": "ARTA9101"
+const columns = useMemo(
+  () => [
+    {
+      accessorKey: 'date', 
+      header: 'DATE',
+      size: 200,
+    },
+    {
+      accessorKey: 'lat',
+      header: 'LATITUDE',
+      size: 200,
+    },
+    {
+      accessorKey: 'lon', 
+      header: 'LONGITUDE',
+      size: 200,
+    },
+    {
+      accessorKey: 'vitesse',
+      header: 'VITESSE',
+      size: 100,
+    },
+    {
+      accessorKey: 'distance',
+      header: 'DIST (KM)',
+      size: 100,
+    },
+    {
+      accessorKey: 'acc',
+      header: 'ACC',
+      size: 100,
+    },
+    {
+      accessorKey: 'odo',
+      header: 'ODO',
+      size: 100,
+    },
+    {
+      accessorKey: 'hr',
+      header: 'HR',
+      size: 100,
+    },
+    {
+      accessorKey: 'gas',
+      header: 'GAS',
+      size: 100,
+    },
+    {
+      accessorKey: 'gas_total',
+      header: 'GAS TOT',
+      size: 100,
+    },
+    {
+      accessorKey: 'temperateur',
+      header: 'TEMPERATEUR',
+      size: 100,
+    },
+    {
+      accessorKey: 'niv_eau',
+      header: 'NIV EAU',
+      size: 100,
+    },
+    {
+      accessorKey: 'can10',
+      header: 'CAN 10',
+      size: 100,
+    },
+    {
+      accessorKey: 'capteur',
+      header: 'CAPT',
+      size: 100,
+    },
+    {
+      accessorKey: 'adresse',
+      header: 'ADRESSE',
+      size: 100,
+    },
+  ],
+  [],
+);
+
 
 const [Data , setData] = useState()
 
@@ -280,6 +461,7 @@ const [Data , setData] = useState()
       code: "43",
     },
   ];
+  
 
   const [listComp, setListCom] = useState([]);
   const [CompleteData, setCompleteData] = useState(false);
@@ -1365,6 +1547,14 @@ const [Data , setData] = useState()
    <button  className="buttondrag" onMouseDown={handler} style={{cursor:"grabbing"}} ><span  class="material-symbols-outlined">
 drag_handle
 </span> </button> 
+<div className="navigbutton">  
+  <button onClick={()=>{setSelctedButton('GRAPH')}}> GRAPH  </button>
+  <button onClick={()=>{setSelctedButton('DONNEES')}}> DONNEES  </button>
+  <button onClick={()=>{setSelctedButton('SHIFTS')}}> SHIFTS  </button>
+  <button onClick={()=>{setSelctedButton('BACS')}}> BACS  </button>
+  
+   </div>
+  { <div style={GRAPH === false ? {display:"none"} : {display:"grid"}}>   
       <div  className="chart">
         <Bar
           width={100}
@@ -1684,6 +1874,11 @@ drag_handle
           options={configBrossegauche.options}
         />
       ) : null}
+</div>}
+
+{DONNEES && <MaterialReactTable columns={columns} data={Data}  />}
+
+
 
 </div>}
    

@@ -313,7 +313,7 @@ const AccordionItem = (props) => {
 
       
 
-{ ActionPlay == "play" || ActionPlay == "pause"  && <div className="probar"> 
+{ ActionPlay == "play"   && <div className="probar"> 
  <button  className="buttonspeed" onClick={handleSpeed}> 
         <p className="numSpeed"> {NumSpeed} </p><span class="material-symbols-outlined">close</span> 
         {/* <span class="material-symbols-outlined">close</span>  */}

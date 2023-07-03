@@ -106,42 +106,16 @@ const Home = () => {
 ContextShowtTee === "TEMPS REEL" ? 
         <Popup /> : <PopupDiag/>}
   
-        {/* {ContextShowtTee === "DIAGNOSTIQUE" ? (
+        {ContextShowtTee === "DIAGNOSTIQUE" ? (
           
             <DisplayChart />
          
-        ) : null} */}
+        ) : null}
       </div>
     </div>
   </>
   
-      {/* <>
-        <Navbar />
-        <div className="Container">
-          <div>  
-          <Menu />
-          <Tree />
 
-          <div className="mapPopupContainer">
-            {ContextShowtTee === "TEMPS REEL" ? (
-              <Map />
-            ) : ContextShowtTee === "DIAGNOSTIQUE" ? (
-              <MapDiagnos />
-            ) : (
-              <Map />
-            )}
-            <Popup />
-
-        
-              
-              {ContextShowtTee === "DIAGNOSTIQUE" ? (
-                <ResizePanel direction="n">     <DisplayChart /> </ResizePanel>
-              ) : null}
-            
-          </div>
-          </div>
-        </div>
-      </> */}
     </ContextID.Provider>
   );
 };

@@ -29,3 +29,28 @@
     border-radius: 18px
 }
 
+.navigbutton{
+    border-bottom: 0.5px solid #808080b5;
+    text-align: left;
+}
+.navigbutton button{
+    height: 40px;
+    border-color: #bfbfbfbd;
+    width: 90px;
+    margin-right: -8px;
+    border-bottom: 0.5px;
+    margin-left: 22px;
+    background-color: transparent;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    font-weight: 600;
+    font-family: system-ui;
+    font-size: 17px;
+}
+/* .css-1vlry5a-MuiTableContainer-root{
+    width: 100%!important;
+    overflow-x: auto!important;
+    max-width: 100%!important;
+    overflow: inherit !important;
+} */
+
