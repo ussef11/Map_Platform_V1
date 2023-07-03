@@ -1877,7 +1877,7 @@ drag_handle
 </div>}
 
 {DONNEES && <MaterialReactTable columns={columns} data={Data}  />}
-
+{/* enableColumnResizing */}
 
 
 </div>}

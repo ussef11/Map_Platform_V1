@@ -235,6 +235,7 @@ const AccordionItem = (props) => {
 // },[ActionPlay])
  useEffect(()=>{
   setifplay(false)
+  setNumSpeed(1)
   setActionPlay("stop")
  },[DeviceId])
   return (
