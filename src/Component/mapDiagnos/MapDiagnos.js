@@ -19,6 +19,8 @@ import {
   Polyline,
   InfoWindow,
 } from "@react-google-maps/api";
+import ProgressBar from "@ramonak/react-progress-bar";
+
 // import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import CustomMarker from "./CustomMarker";
 import { ContextID } from "../../Helper/ContextID";
@@ -39,6 +41,11 @@ const MapDiagnos = () => {
   const { endTime, setEndTime } = useContext(ContextID);
   const { ActionDiag, setActionDiag } = useContext(ContextID);
   const { ActionPlay, setActionPlay } = useContext(ContextID);
+  const {Pourcentage , setPourcentage} = useContext(ContextID)
+  const {Speed , setSpeed} = useContext(ContextID)
+  const[Counter , setCounter] = useState(0)
+  const [DataAninmation , setDataAninmation] = useState([])
+ 
   const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [libraries] = useState(["places"]);
   const [position, setPosition] = useState({
@@ -314,9 +321,7 @@ const MapDiagnos = () => {
     showbacs
   ]);
 
-  const[Counter , setCounter] = useState(0)
-  const [DataAninmation , setDataAninmation] = useState([])
-  const [Pourcentage , setPourcentage] = useState(0)
+
 
   useEffect(() => {
     console.log("ActionPlay", ActionPlay);
@@ -377,21 +382,26 @@ const MapDiagnos = () => {
             interval = setTimeout(() => {
               if (Counter < result.length - 1) {
                 setCounter((current) => current + 1);
-                if(Pourcentage === 100  ){ 
+         
+                  let pourcentage  = Math.floor((Counter/ result.length)*100)
+                  setPourcentage(pourcentage)
+                  console.log("pourcentage", Speed)
+                if(pourcentage ===100){
                   clearTimeout(interval);
-                  clearInterval(interval);
+                   return;
                 }
-                let pourcentage  = Math.floor((Counter/ 20)*100)
-                setPourcentage(pourcentage)
-                console.log("pourcentage", pourcentage)
+                
               }
-            }, 500);
+            }, Speed);
           } else if (ActionPlay === "pause" || Counter === result.length - 1) {
             console.log("pause", Counter);
+          
             clearTimeout(interval);
             clearInterval(interval);
+            
           } else if (ActionPlay === "stop") {
             setCounter(0);
+            setPourcentage(0)
             console.log("stop", Counter);
             clearTimeout(interval);
             return;
@@ -406,7 +416,7 @@ const MapDiagnos = () => {
     };
   
     fetchData();
-  }, [Counter, ActionPlay, DeviceId, startDate, startTime, endDate, endTime]);
+  }, [Counter, ActionPlay, DeviceId, startDate, startTime, endDate, endTime , Speed]);
   
 
   useEffect(()=>{

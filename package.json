@@ -6,6 +6,7 @@
     "@ant-design/icons": "^5.1.2",
     "@googlemaps/markerclusterer": "^2.3.1",
     "@googlemaps/markerclustererplus": "^1.2.10",
+    "@ramonak/react-progress-bar": "^5.0.3",
     "@react-google-maps/api": "^2.18.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

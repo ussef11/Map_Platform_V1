@@ -3,6 +3,7 @@ import "./Popup.css";
 import { ContextID } from "../../Helper/ContextID";
 import useFetch from "../../Hook/UseFetch";
 import { useEffect } from "react";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 const AccordionItem = (props) => {
   const contentEl = useRef(null);
@@ -10,12 +11,12 @@ const AccordionItem = (props) => {
   const { displaybacs, setdisplaybacs } = useContext(ContextID);
   const { IdMark, setIdMark } = useContext(ContextID);
   const { SelectedRadioValue, setSelectedRadioValue } = useContext(ContextID);
-
+  const {Pourcentage , setPourcentage} = useContext(ContextID)
+  const {Speed , setSpeed} = useContext(ContextID)
   const [showAllbacs, setshowAllbacs] = useState("");
   const { deleteAllbaks, setdeleteAllbaks } = useState("");
 
   const { ActionPlay, setActionPlay } = useContext(ContextID);
-
   const {ActionDiag , setActionDiag} =  useContext(ContextID);
 
   const {
@@ -196,6 +197,35 @@ const AccordionItem = (props) => {
     }
   }, [showAllbacs]);
 
+  const[NumSpeed , setNumSpeed] = useState(1)
+
+  const handleSpeed = ()=>{
+    setNumSpeed((current)=> current+0.25)
+    if(NumSpeed === 2){
+      setNumSpeed(1)
+    }
+  }
+  useEffect(()=>{
+    if(NumSpeed === 1 ){
+      setSpeed(1000)
+    }
+    if(NumSpeed === 1.25 ){
+      setSpeed(700)
+    }
+    if(NumSpeed === 1.5 ){
+      setSpeed(400)
+    }
+    if(NumSpeed === 1.75 ){
+      setSpeed(200)
+    }
+    if(NumSpeed === 2 ){
+      setSpeed(100)
+    }
+
+  },[NumSpeed])
+
+  
+
   return (
     <div className="rc-accordion-card">
       <header
@@ -267,6 +297,7 @@ const AccordionItem = (props) => {
 
 
         <div className="divInfocercuittow">
+
           <button onClick={()=>{setActionPlay("play")}}>
             
           <span class="material-symbols-outlined">play_arrow</span>
@@ -279,6 +310,22 @@ const AccordionItem = (props) => {
             
           <span class="material-symbols-outlined">stop_circle</span>
           </button>
+
+      
+
+{ ActionPlay == "play" || ActionPlay == "pause"  && <div className="probar"> 
+ <button  className="buttonspeed" onClick={handleSpeed}> 
+        <p className="numSpeed"> {NumSpeed} </p><span class="material-symbols-outlined">close</span> 
+        {/* <span class="material-symbols-outlined">close</span>  */}
+          </button>
+
+ <ProgressBar  labelClassName="lblBar" borderRadius="14px" height="22px" bgColor="#0060ff" completed={Pourcentage} maxCompleted={100} />
+ <label className="labelBar">{Pourcentage}% </label>
+
+
+   </div>}
+          
+          
         </div>
 
 
@@ -293,7 +340,7 @@ const AccordionItem = (props) => {
                     </p>
                     <p style={{ fontSize: "14px", color: "#7c7c7c" }}>
                       Du : {startDate} -
-                      {startTime} AU :{endDate}-
+                      {startTime} AU :{endDate} -
                       {endTime}
                     </p>
                   </div>

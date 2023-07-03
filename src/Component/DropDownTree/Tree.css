@@ -402,9 +402,9 @@ width: 24vw;
   }
   
   
-    .node.focused {
+    /* .node.focused {
       background-color: #8aa8ff;
-  }
+  } */
   
   
   /* DateTimPicker */
@@ -618,4 +618,8 @@ width: 24vw;
 
     .divtimedate{
       height: var(--hex-parent-height);
+    }
+
+    .node-label:hover{
+      background-color: deeppink;
     }

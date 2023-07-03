@@ -241,3 +241,66 @@
     position: relative;
     top: 2px;
   }
+
+  .probar{
+    padding: 8px 24px 6px 11px;
+  }
+
+  .labelBar{
+    color: #ffffff;
+    font-weight: 700;
+        color: #ffffff;
+    font-weight: 700;
+    position: relative;
+    top: -19px;
+    left: -121px;}
+
+.lblBar{
+  display: none;
+}
+  .containerBar{
+
+      background: rgb(206 206 206)!important;
+      border-radius: 14px !important;
+
+  }
+
+  .containerBar div{
+    height: 29px !important;
+    /* width: 100%!important; */
+    background: rgb(19, 54, 250)!important;
+    transition: width 1s ease-in-out 0s!important;
+    border-radius: 14px !important;
+    display: flex!important;
+    align-items: center!important;
+    justify-content: center !important;
+  }
+
+  .numSpeed{
+    font-size: 15px;
+    font-weight: 600;
+    padding: 0;
+    position: relative;
+    top: 5px;
+    color:  #ffffff;
+
+  
+  }
+
+  .buttonspeed{
+    margin-bottom: 6px;
+    text-align: center;
+    background-color: #0029ffed;
+    justify-content: center;
+    display: flex;
+    padding: 2px
+  }
+
+  .buttonspeed span{
+   
+    color: white !important;
+    font-size: 19px!important;
+    font-weight: 700!important;
+    position: relative!important;
+    top: 2px!important;
+  }

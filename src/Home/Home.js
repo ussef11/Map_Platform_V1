@@ -35,6 +35,9 @@ const Home = () => {
   const [ActionDiag , setActionDiag] = useState("");
   const [ActionPlay , setActionPlay] = useState('')
   
+  const [Pourcentage , setPourcentage] = useState(null)
+  const [Speed , setSpeed] = useState(1000)
+  
 
 
   const [DeviceId, setDeviceId] = useState();
@@ -76,6 +79,13 @@ const Home = () => {
 
         ActionPlay,
         setActionPlay,
+        
+        Pourcentage,
+        setPourcentage, 
+
+        Speed,
+        setSpeed
+
      
       }}
     ><>
