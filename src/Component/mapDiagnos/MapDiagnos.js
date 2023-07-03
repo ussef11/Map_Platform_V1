@@ -322,7 +322,7 @@ const MapDiagnos = () => {
   ]);
 
 
-
+  let interval;
   useEffect(() => {
     console.log("ActionPlay", ActionPlay);
     const fetchData = async () => {
@@ -376,7 +376,7 @@ const MapDiagnos = () => {
           
          
   
-          let interval;
+        
   
           if (ActionPlay === "play") {
             interval = setTimeout(() => {
@@ -407,9 +407,9 @@ const MapDiagnos = () => {
             return;
           }
   
-          return () => clearTimeout(interval);
+         
         }
-
+        return () => clearTimeout(interval);
       } catch (error) {
         console.log("error", error);
       }
@@ -417,6 +417,13 @@ const MapDiagnos = () => {
   
     fetchData();
   }, [Counter, ActionPlay, DeviceId, startDate, startTime, endDate, endTime , Speed]);
+  
+  useEffect(()=>{
+    setPourcentage(null)
+    setCounter(0);
+    clearTimeout(interval);
+    return;
+  },[DeviceId])
   
 
   useEffect(()=>{

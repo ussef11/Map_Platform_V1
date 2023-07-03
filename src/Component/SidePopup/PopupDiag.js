@@ -225,7 +225,18 @@ const AccordionItem = (props) => {
   },[NumSpeed])
 
   
+ const [ifplay , setifplay] = useState(false)
+ const { DeviceId, setDeviceId } = useContext(ContextID);
+// useEffect(()=>{
+//   if(ActionPlay === "play"){
+    
+//   }
 
+// },[ActionPlay])
+ useEffect(()=>{
+  setifplay(false)
+  setActionPlay("stop")
+ },[DeviceId])
   return (
     <div className="rc-accordion-card">
       <header
@@ -253,7 +264,7 @@ const AccordionItem = (props) => {
         }
       >
         <div className="divInfocercuit">
-          <button onClick={()=>{setActionDiag("Displaypoint")}}>
+          <button onClick={()=>{setActionDiag("Displaypoint") }}>
             
             <span class="material-symbols-outlined">my_location</span>
           </button>
@@ -298,7 +309,7 @@ const AccordionItem = (props) => {
 
         <div className="divInfocercuittow">
 
-          <button onClick={()=>{setActionPlay("play")}}>
+          <button onClick={()=>{setActionPlay("play");setifplay(true)}}>
             
           <span class="material-symbols-outlined">play_arrow</span>
           </button>
@@ -313,7 +324,7 @@ const AccordionItem = (props) => {
 
       
 
-{ ActionPlay == "play"   && <div className="probar"> 
+{ ifplay  && <div className="probar"> 
  <button  className="buttonspeed" onClick={handleSpeed}> 
         <p className="numSpeed"> {NumSpeed} </p><span class="material-symbols-outlined">close</span> 
         {/* <span class="material-symbols-outlined">close</span>  */}
