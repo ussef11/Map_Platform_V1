@@ -1559,10 +1559,10 @@ const  [DataBacs , setDataBacs] = useState()
 drag_handle
 </span> </button> 
 <div className="navigbutton">  
-  <button onClick={()=>{setSelctedButton('GRAPH')}}> GRAPH  </button>
-  <button onClick={()=>{setSelctedButton('DONNEES')}}> DONNEES  </button>
-  <button onClick={()=>{setSelctedButton('SHIFTS')}}> SHIFTS  </button>
-  { Data[1].typevehicule !== "CHARIOT" && <button onClick={()=>{setSelctedButton('BACS')}}> BACS  </button>}
+  <button style={SelctedButton == "GRAPH"? {backgroundColor:"#759cff"} : {backgroundColor:"#05050500"}}  onClick={()=>{setSelctedButton('GRAPH')}}> GRAPH  </button>
+  <button style={SelctedButton == "DONNEES"? {backgroundColor:"#759cff"} : {backgroundColor:"#05050500"}} onClick={()=>{setSelctedButton('DONNEES')}}> DONNEES  </button>
+  <button style={SelctedButton == "SHIFTS"? {backgroundColor:"#759cff"} : {backgroundColor:"#05050500"}} onClick={()=>{setSelctedButton('SHIFTS')}}> SHIFTS  </button>
+  { Data &&Data[0].typevehicule !== "CHARIOT" && <button style={SelctedButton == "BACS"? {backgroundColor:"#759cff"} : {backgroundColor:"#05050500"}} onClick={()=>{setSelctedButton('BACS')}}> BACS  </button>}
   
    </div>
   { <div style={GRAPH === false ? {display:"none"} : {display:"grid"}}>   
