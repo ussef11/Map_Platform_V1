@@ -32,6 +32,7 @@ function DisplayChart() {
   const { endDate, setEndDate} = useContext(ContextID);
   const { endTime, setEndTime} = useContext(ContextID);
   const {DeviceId , setDeviceId} = useContext(ContextID);
+  const {ClickChartPos , SetClickChartPos} =  useContext(ContextID);
   const [SelctedButton , setSelctedButton] = useState(true)
 const [GRAPH , setGRAPH] = useState(true)
 const [DONNEES , setDONNEES] = useState(false)
@@ -209,7 +210,7 @@ const  [DataBacs , setDataBacs] = useState()
   useEffect(()=>{
 
   
-    const fetchData = async()=>{
+    const fetchData =  async()=>{
       var requestOptions = {
         method: "GET",
         redirect: "follow",
@@ -302,6 +303,8 @@ const  [DataBacs , setDataBacs] = useState()
       console.log("Labels:", Data[datapoint].date);
       console.log("Latitude:", Data[datapoint].lat);
       console.log("Longitude:", Data[datapoint].lon);
+      console.log("typevehicule:", Data[datapoint].typevehicule);
+      SetClickChartPos({ lat:  Data[datapoint].lat , lng :  Data[datapoint].lon ,typevehicule : Data[datapoint].typevehicule })
     }
   };
 
@@ -314,6 +317,9 @@ const  [DataBacs , setDataBacs] = useState()
       console.log("Labels:", Data[datapoint].date);
       console.log("Latitude:", Data[datapoint].lat);
       console.log("Longitude:", Data[datapoint].lon);
+      console.log("typevehicule:", Data[datapoint].typevehicule);
+      SetClickChartPos({ lat:  Data[datapoint].lat , lng :  Data[datapoint].lon ,typevehicule : Data[datapoint].typevehicule })
+
     }
   };
 
@@ -760,6 +766,7 @@ const  [DataBacs , setDataBacs] = useState()
     type: "line",
     data: DataKarsher,
     options: {
+      animation:false,
       responsive: true,
       plugins: {
         title: {
@@ -822,7 +829,8 @@ const  [DataBacs , setDataBacs] = useState()
   const configAspirateurdroit = {
     type: "line",
     data: DataAspirateurdroit,
-    options: {
+   options: {
+      animation:false,
       responsive: true,
       plugins: {
         title: {
@@ -886,7 +894,8 @@ const  [DataBacs , setDataBacs] = useState()
   const configAspirateurgauche = {
     type: "line",
     data: DataAspirateurgauche,
-    options: {
+   options: {
+      animation:false,
       responsive: true,
       plugins: {
         title: {
@@ -949,7 +958,8 @@ const  [DataBacs , setDataBacs] = useState()
   const configAspirateurmanuelarr = {
     type: "line",
     data: DataAspirateurmanuelarr,
-    options: {
+   options: {
+      animation:false,
       responsive: true,
       plugins: {
         title: {
@@ -1012,7 +1022,8 @@ const  [DataBacs , setDataBacs] = useState()
   const configBrossegauche = {
     type: "line",
     data: DataBrossegauche,
-    options: {
+   options: {
+      animation:false,
       responsive: true,
       plugins: {
         title: {
@@ -1075,7 +1086,8 @@ const  [DataBacs , setDataBacs] = useState()
   const configCycleLC = {
     type: "line",
     data: DataCycleLC,
-    options: {
+   options: {
+      animation:false,
       responsive: true,
       plugins: {
         title: {
@@ -1137,7 +1149,8 @@ const  [DataBacs , setDataBacs] = useState()
   const configComp = {
     type: "line",
     data: DataComp,
-    options: {
+   options: {
+      animation:false,
       responsive: true,
       plugins: {
         title: {
@@ -1199,7 +1212,8 @@ const  [DataBacs , setDataBacs] = useState()
   const configporteArr = {
     type: "line",
     data: DataporteArr,
-    options: {
+   options: {
+      animation:false,
       responsive: true,
       plugins: {
         title: {
@@ -1261,7 +1275,8 @@ const  [DataBacs , setDataBacs] = useState()
   const configActivPomp = {
     type: "line",
     data: DataActivPomp,
-    options: {
+   options: {
+      animation:false,
       responsive: true,
       plugins: {
         title: {
@@ -1559,6 +1574,7 @@ drag_handle
           data={data}
           onClick={onClickb}
           options={{
+            animation:false,
             plugins: {
               annotation: {},
             },
@@ -1627,6 +1643,7 @@ drag_handle
         data={dataLine}
         onClick={onClick}
         options={{
+          animation:false,
           plugins: {
             annotation: {}, 
           },
@@ -1701,6 +1718,7 @@ drag_handle
           data={dataLineNveau}
           onClick={onClick}
           options={{
+            animation:false,
             plugins: {
               annotation: {},
             },

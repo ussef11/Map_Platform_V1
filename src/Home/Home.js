@@ -39,6 +39,8 @@ const Home = () => {
   const [Speed , setSpeed] = useState(1000)
   
 
+  const [ClickChartPos , SetClickChartPos] =  useState()
+
 
   const [DeviceId, setDeviceId] = useState();
   return (
@@ -84,7 +86,10 @@ const Home = () => {
         setPourcentage, 
 
         Speed,
-        setSpeed
+        setSpeed,
+
+        ClickChartPos,
+        SetClickChartPos
 
      
       }}

@@ -43,6 +43,8 @@ const MapDiagnos = () => {
   const { ActionPlay, setActionPlay } = useContext(ContextID);
   const {Pourcentage , setPourcentage} = useContext(ContextID)
   const {Speed , setSpeed} = useContext(ContextID)
+  const {ClickChartPos , SetClickChartPos} =  useContext(ContextID);
+
   const[Counter , setCounter] = useState(0)
   const [DataAninmation , setDataAninmation] = useState([])
  
@@ -186,6 +188,8 @@ const MapDiagnos = () => {
     setData([])
     setmarkers([])
     setCurrentPos([])
+    setClickPos([])
+    SetClickChartPos()
     const fetchData = async () => {
       var requestOptions = {
         method: "GET",
@@ -250,13 +254,14 @@ const MapDiagnos = () => {
 
 
 
-          for (let i = 0; i < resultCurrentpos.length; i++) {
-          //  console.log("ddeeee" , resultCurrentpos.length)
+          for (let i = 0; i < result.length; i++) {
+           console.log("ddeeee" , result[i])
+        
             let status = "vert";
             const icons = {
               url:
                 host +
-                `/images/${resultCurrentpos[i].typevehicule
+                `/images/${result[result.length-1].typevehicule
                   .replaceAll(" ", "")
                   .toLowerCase()}-${status}.png`,
               strokeColor: "#00ff4cd5",
@@ -265,8 +270,8 @@ const MapDiagnos = () => {
             };
   
             let position = {
-              lat: resultCurrentpos[i].lat,
-              lng: resultCurrentpos[i].lon,
+              lat: result[result.length-1].lat,
+              lng: result[result.length-1].lon,
             };   
         
             const marker = new window.google.maps.Marker({
@@ -297,16 +302,11 @@ const MapDiagnos = () => {
             });
             setCurrentPos((current) => [...current, marker]);
           }
-
-
-
         }
       } catch (error) {
         console.log("error", error);
       }
     };
-
-
 
     fetchData();
   }, [
@@ -320,6 +320,45 @@ const MapDiagnos = () => {
     crEncour,
     showbacs
   ]);
+
+  const [ClickPos , setClickPos]  = useState([]);
+    useEffect(()=>{
+      setClickPos([])
+     
+      if(ClickChartPos){
+   
+         console.log("ClickChartPos"  , ClickChartPos.typevehicule)
+ 
+       
+           let status = "rouge";
+           const icons = {
+             url:
+               host +
+               `/images/${ClickChartPos.typevehicule
+                 .replaceAll(" ", "")
+                 .toLowerCase()}-${status}.png`,
+             strokeColor: "#00ff4cd5",
+             scaledSize: { width: 30, height: 30 },
+             anchor: new window.google.maps.Point(15, 15),
+           };
+ 
+           let position = {
+             lat:  ClickChartPos.lat,
+             lng:  ClickChartPos.lng,
+           };   
+       
+           const marker = new window.google.maps.Marker({
+             position: position,
+             icon: icons,
+            
+           });
+           setClickPos((current) =>[...current , marker])
+           
+      
+       
+    }
+    },[ClickChartPos,DeviceId])
+
 
 
   let interval;
@@ -655,6 +694,17 @@ const MapDiagnos = () => {
               ))}
 
               {DataAninmation && DataAninmation.map((x,index) =>(
+ <Marker
+ position={x.position}
+ icon={x.icon}
+ key={index}
+ 
+></Marker>
+
+               )
+
+              )}
+              {ClickPos && ClickPos.map((x,index) =>(
  <Marker
  position={x.position}
  icon={x.icon}
