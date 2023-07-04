@@ -231,6 +231,8 @@ const  [DataBacs , setDataBacs] = useState()
             
             }
 
+            console.log("DeviceId" , DataBacs)
+
        
       } catch (error) {
         console.log("error", error);
@@ -239,7 +241,7 @@ const  [DataBacs , setDataBacs] = useState()
     
     fetchData()
     
-  },[startDate ,startTime,endDate,endTime ,DeviceId ,DataBacs])
+  },[startDate ,startTime,endDate,endTime ,DeviceId])
 
   // const { Data } = useFetch(
   //   `http://tanger.geodaki.com:3000/rpc/data?idsdevice=${DeviceId}&dtb=${startDate}%20${startTime}:00&dtf=${endDate}%20${endTime}:00`
@@ -545,6 +547,7 @@ const  [DataBacs , setDataBacs] = useState()
 
           setListCom(mylist);
           setCompleteData(true)
+          console.log("CompleteData" , CompleteData)
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -1562,10 +1565,10 @@ drag_handle
   <button style={SelctedButton == "GRAPH"? {backgroundColor:"#759cff"} : {backgroundColor:"#05050500"}}  onClick={()=>{setSelctedButton('GRAPH')}}> GRAPH  </button>
   <button style={SelctedButton == "DONNEES"? {backgroundColor:"#759cff"} : {backgroundColor:"#05050500"}} onClick={()=>{setSelctedButton('DONNEES')}}> DONNEES  </button>
   <button style={SelctedButton == "SHIFTS"? {backgroundColor:"#759cff"} : {backgroundColor:"#05050500"}} onClick={()=>{setSelctedButton('SHIFTS')}}> SHIFTS  </button>
-  { Data &&Data[0].typevehicule !== "CHARIOT" && <button style={SelctedButton == "BACS"? {backgroundColor:"#759cff"} : {backgroundColor:"#05050500"}} onClick={()=>{setSelctedButton('BACS')}}> BACS  </button>}
+  { Data && Data[0] && Data[0].typevehicule !== "CHARIOT" && <button style={SelctedButton == "BACS"? {backgroundColor:"#759cff"} : {backgroundColor:"#05050500"}} onClick={()=>{setSelctedButton('BACS')}}> BACS  </button>}
   
    </div>
-  { <div style={GRAPH === false ? {display:"none"} : {display:"grid"}}>   
+  {GRAPH && <div>   
       <div  className="chart">
         <Bar
           width={100}

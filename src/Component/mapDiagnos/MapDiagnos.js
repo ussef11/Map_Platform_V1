@@ -130,39 +130,48 @@ const MapDiagnos = () => {
   const [polyLines, setPolyLine] = useState([]);
 
   async function showPolyLine(url) {
-    setPolyLine([]);
-    try {
-      const response = await fetch(url);
-      const result = await response.json();
-      //  let res1 = [result[0]]
-      result.forEach((polygon) => {
-        const coordinates = polygon.geom
-          .replace("MULTILINESTRING((", "")
-          .replace("))", "");
-        const pairs = coordinates.split("),(");
-
-        const coordinatesArray = pairs.map((pair) => {
-          const coordinates = pair.replace("(", "").replace(")", "").split(",");
-          return coordinates.map((coord) => {
-            const [lng, lat] = coord.trim().split(" ");
-            return { lat: parseFloat(lat), lng: parseFloat(lng) };
-          });
-        });
-
-        setPolyLine((current) => [...current, coordinatesArray]);
-        console.log("coordinatesArray", polyLines);
-      });
-    } catch (error) {
-      console.log("error", error);
-    }
+   
   }
 
   useEffect(() => {
-    if (crth) {
-      showPolyLine(
-        `http://tanger.geodaki.com:3000/rpc/circuit_by_deviceid?ids={${DeviceId}}`
-      );
+
+    const fetchData = async ()=>{
+      setPolyLine([]);
+      try {
+        if (crth) {
+          console.log("ddddgggggddd")
+        var requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+        const response = await fetch(`http://tanger.geodaki.com:3000/rpc/circuit_by_deviceid?ids={${DeviceId}}`
+        ,requestOptions);
+        const result = await response.json();
+       
+        result.forEach((polygon) => {
+          const coordinates = polygon.geom
+            .replace("MULTILINESTRING((", "")
+            .replace("))", "");
+          const pairs = coordinates.split("),(");
+  
+          const coordinatesArray = pairs.map((pair) => {
+            const coordinates = pair.replace("(", "").replace(")", "").split(",");
+            return coordinates.map((coord) => {
+              const [lng, lat] = coord.trim().split(" ");
+              return { lat: parseFloat(lat), lng: parseFloat(lng) };
+            });
+          });
+  
+          setPolyLine((current) => [...current, coordinatesArray]);
+          console.log("coordinatesArray", polyLines);
+        });
+      }
+      } catch (error) {
+        console.log("error", error);
+      }
     }
+
+    fetchData()
   }, [DeviceId, ActionDiag, crth]);
 
   const host = process.env.REACT_APP_HOST;
@@ -217,7 +226,7 @@ const MapDiagnos = () => {
           let resultCurrentpos = await resCurrentpos.json()
        
           const icons = result.map((x) =>
-            x.vitesse > 0 ? host + "/images/pt.svg" : host + "/images/ptr.svg"
+            x.vitesse > 0 ? host + "/images/ptr.svg" : host + "/images/pt.svg"
           );
 
           if (point) {
@@ -378,7 +387,6 @@ const MapDiagnos = () => {
           let result = await res.json();
           if(ActionPlay !== "stop" && ActionPlay ===  "play"){
             setDataAninmation([])
-            console.log("sdfoewpfk", result[Counter]);
             let status = "vert";
             const icons = {
               url:
@@ -395,7 +403,6 @@ const MapDiagnos = () => {
               lat: result[Counter].lat,
               lng: result[Counter].lon,
             };   
-            console.log("ddeeee" , position )   
             const marker = new window.google.maps.Marker({
               position: position,
               icon: icons,
@@ -417,38 +424,38 @@ const MapDiagnos = () => {
   
         
   
-          if (ActionPlay === "play") {
-            interval = setTimeout(() => {
-              if (Counter < result.length - 1) {
-                setCounter((current) => current + 1);
+          // if (ActionPlay === "play") {
+          //   interval = setTimeout(() => {
+          //     if (Counter < result.length - 1) {
+          //       setCounter((current) => current + 1);
          
-                  let pourcentage  = Math.floor((Counter/ result.length)*100)
-                  setPourcentage(pourcentage)
-                  console.log("pourcentage", Speed)
-                if(pourcentage ===100){
-                  clearTimeout(interval);
-                   return;
-                }
+          //         let pourcentage  = Math.floor((Counter/ result.length)*100)
+          //         setPourcentage(pourcentage)
+          //         console.log("pourcentage", Speed)
+          //       if(pourcentage ===100){
+          //         clearTimeout(interval);
+          //          return;
+          //       }
                 
-              }
-            }, Speed);
-          } else if (ActionPlay === "pause" || Counter === result.length - 1) {
-            console.log("pause", Counter);
+          //     }
+          //   }, Speed);
+          // } else if (ActionPlay === "pause" || Counter === result.length - 1) {
+          //   console.log("pause", Counter);
           
-            clearTimeout(interval);
-            clearInterval(interval);
+          //   clearTimeout(interval);
+          //   clearInterval(interval);
             
-          } else if (ActionPlay === "stop") {
-            setCounter(0);
-            setPourcentage(0)
-            console.log("stop", Counter);
-            clearTimeout(interval);
-            return;
-          }
+          // } else if (ActionPlay === "stop") {
+          //   setCounter(0);
+          //   setPourcentage(0)
+          //   console.log("stop", Counter);
+          //   clearTimeout(interval);
+          //   return;
+          // }
   
          
         }
-        return () => clearTimeout(interval);
+        // return () => clearTimeout(interval);
       } catch (error) {
         console.log("error", error);
       }
@@ -473,6 +480,7 @@ const MapDiagnos = () => {
     setCrth(false);
     setpoint(false);
     sethowbacs(false);
+    setActionDiag("")
   } ,[DeviceId])
 
   
@@ -492,6 +500,7 @@ const MapDiagnos = () => {
       sethowbacs(true);
     } else if (ActionDiag === "circuitth") {
       setCrth(true);
+      console.log("gggggggggggg",ActionDiag)
     }
 
     console.log(ActionDiag, "ActionDiag");
