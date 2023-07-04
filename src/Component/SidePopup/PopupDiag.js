@@ -269,10 +269,10 @@ const AccordionItem = (props) => {
             
             <span class="material-symbols-outlined">my_location</span>
           </button>
-          <button  onClick={()=>{setActionDiag("showbacs")}}>
+         { typevehicule  != "CHARIOT" && <button  onClick={()=>{setActionDiag("showbacs")}}>
             
             <span class="material-symbols-outlined">delete</span>
-          </button>
+          </button>}
           <button  onClick={()=>{setActionDiag("circuitth")}}>
             
             <span class="material-symbols-outlined">add_road</span>

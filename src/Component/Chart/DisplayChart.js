@@ -1562,7 +1562,7 @@ drag_handle
   <button onClick={()=>{setSelctedButton('GRAPH')}}> GRAPH  </button>
   <button onClick={()=>{setSelctedButton('DONNEES')}}> DONNEES  </button>
   <button onClick={()=>{setSelctedButton('SHIFTS')}}> SHIFTS  </button>
-  <button onClick={()=>{setSelctedButton('BACS')}}> BACS  </button>
+  { Data[1].typevehicule !== "CHARIOT" && <button onClick={()=>{setSelctedButton('BACS')}}> BACS  </button>}
   
    </div>
   { <div style={GRAPH === false ? {display:"none"} : {display:"grid"}}>   
@@ -1890,8 +1890,8 @@ drag_handle
       ) : null}
 </div>}
 
-{DONNEES && <MaterialReactTable columns={columns} data={Data}  />}
-{BACS &&   <MaterialReactTable columns={columnsBacs} data={DataBacs}  />}
+{DONNEES && <MaterialReactTable columns={columns} data={Data}  enableClickToCopy  />}
+{BACS &&   <MaterialReactTable columns={columnsBacs} data={DataBacs}  enableClickToCopy  />}
 {/* enableColumnResizing */}
 
 
