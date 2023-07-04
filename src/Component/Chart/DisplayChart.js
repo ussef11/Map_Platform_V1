@@ -65,72 +65,57 @@ useEffect(()=>{
   }
 
 },[SelctedButton])
+// "NParck": "10772",
+// "adresse": "",
+// "Tag": "e280699500005004f1d931ca",
+// "device": "ARTA5305",
+// "heur": "2023-06-13T14:21:36",
+// "latitude": 35.754036,
+// "longitude": -5.807649,
+// "type": "Bac Galvalisé"
 
-const dataas = [
-  {
-    name: {
-      firstName: 'John',
-      lastName: 'Doe',
+const columnsBacs = useMemo(
+  ()=>[
+    {
+      accessorKey: 'NParck', 
+      header: 'NParck',
+      size: 200,
     },
-    address: '261 Erdman Ford',
-    city: 'East Daphne',
-    state: 'Kentucky',
-  },
-  {
-    name: {
-      firstName: 'Jane',
-      lastName: 'Doe',
+    {
+      accessorKey: 'adresse', 
+      header: 'ADRESSE',
+      size: 200,
     },
-    address: '769 Dominic Grove',
-    city: 'Columbus',
-    state: 'Ohio',
-  },
-  {
-    name: {
-      firstName: 'Joe',
-      lastName: 'Doe',
+    {
+      accessorKey: 'device', 
+      header: 'DEVICE',
+      size: 200,
     },
-    address: '566 Brakus Inlet',
-    city: 'South Linda',
-    state: 'West Virginia',
-  },
-  {
-    name: {
-      firstName: 'Kevin',
-      lastName: 'Vandy',
+    {
+      accessorKey: 'heur', 
+      header: 'HEUR',
+      size: 200,
     },
-    address: '722 Emie Stream',
-    city: 'Lincoln',
-    state: 'Nebraska',
-  },
-  {
-    name: {
-      firstName: 'Joshua',
-      lastName: 'Rolluffs',
+    {
+      accessorKey: 'latitude', 
+      header: 'LATITUDE',
+      size: 200,
     },
-    address: '32188 Larkin Turnpike',
-    city: 'Charleston',
-    state: 'South Carolina',
-  },
-];
-// "date": "2023-07-03T12:26:53",
-//         "lat": 35.755272,
-//         "lon": -5.830626,
-//         "vitesse": 0,
-//         "distance": 0,
-//         "acc": 0,
-//         "odo": null,
-//         "hr": null,
-//         "gas": null,
-//         "gas_total": null,
-//         "temperateur": null,
-//         "niv_eau": null,
-//         "can10": null,
-//         "adresse": null,
-//         "capteur": null,
-//         "can_capt": "VIDE",
-//         "typevehicule": "CHARIOT",
-//         "name": "ARTA9101"
+    {
+      accessorKey: 'longitude', 
+      header: 'LONGITUDE',
+      size: 200,
+    },
+    {
+      accessorKey: 'type', 
+      header: 'TYPE',
+      size: 200,
+    },
+
+  ],[],
+);
+
+
 const columns = useMemo(
   () => [
     {
@@ -214,6 +199,7 @@ const columns = useMemo(
 
 
 const [Data , setData] = useState()
+const  [DataBacs , setDataBacs] = useState()
 
   useEffect(()=>{
     console.log( startDate ,startTime ,endDate,endTime ,"deviceddID" ,DeviceId )
@@ -236,7 +222,14 @@ const [Data , setData] = useState()
             );
             let result = await res.json();
             setData(result)
-        }
+
+             let resBacs =  await fetch(`http://tanger.geodaki.com:3000/rpc/Bacs?dd=13/06/2023%2012:00:00&df=13/06/2023%2016:00:00&deviceid=110016`
+              , requestOptions)
+             let resultBacs = await  resBacs.json()
+             setDataBacs(resultBacs)
+            
+            }
+
        
       } catch (error) {
         console.log("error", error);
@@ -245,7 +238,7 @@ const [Data , setData] = useState()
     
     fetchData()
     
-  },[startDate ,startTime,endDate,endTime ,DeviceId])
+  },[startDate ,startTime,endDate,endTime ,DeviceId ,DataBacs])
 
   // const { Data } = useFetch(
   //   `http://tanger.geodaki.com:3000/rpc/data?idsdevice=${DeviceId}&dtb=${startDate}%20${startTime}:00&dtf=${endDate}%20${endTime}:00`
@@ -475,70 +468,73 @@ const [Data , setData] = useState()
 
         if (Data) {
           Data.map((canCaptData, index) => {
-            const [binaryCan, binaryCap] = canCaptData.can_capt.split("_");
-            const itemCap = [];
-            const itemCan = [];
-
-            for (let i = 0; i < binaryCan.length; i++) {
-              const char = binaryCan.charAt(i);
-              const position = i + 1;
-
-              const item = codeData.find(
-                (obj) => obj.code === String(position)
-              );
-
-              if (item && char === "1") {
-                const correspondingCap = codeData.filter(
-                  (cap) => cap.code === String(position)
+            if(canCaptData.can_capt != "VIDE"){
+              const [binaryCan, binaryCap] = canCaptData.can_capt.split("_");
+              const itemCap = [];
+              const itemCan = [];
+  
+              for (let i = 0; i < binaryCan.length; i++) {
+                const char = binaryCan.charAt(i);
+                const position = i + 1;
+  
+                const item = codeData.find(
+                  (obj) => obj.code === String(position)
                 );
-                itemCap.push(...correspondingCap);
+  
+                if (item && char === "1") {
+                  const correspondingCap = codeData.filter(
+                    (cap) => cap.code === String(position)
+                  );
+                  itemCap.push(...correspondingCap);
+                }
               }
-            }
-            if (itemCap.length > 0) {
-              setlistcallcap(itemCap);
-            }
-
-            for (let i = 0; i < binaryCap.length; i++) {
-              const char = binaryCap.charAt(i);
-              const position = i + 34;
-
-              const item = codeData.find(
-                (obj) => obj.code === String(position)
-              );
-
-              if (item && char === "1") {
-                const correspondingCap = codeData.filter(
-                  (cap) => cap.code === String(position)
+              if (itemCap.length > 0) {
+                setlistcallcap(itemCap);
+              }
+  
+              for (let i = 0; i < binaryCap.length; i++) {
+                const char = binaryCap.charAt(i);
+                const position = i + 34;
+  
+                const item = codeData.find(
+                  (obj) => obj.code === String(position)
                 );
-                itemCan.push(...correspondingCap);
+  
+                if (item && char === "1") {
+                  const correspondingCap = codeData.filter(
+                    (cap) => cap.code === String(position)
+                  );
+                  itemCan.push(...correspondingCap);
+                }
               }
-            }
-
-            if (itemCan.length > 0) {
-              setlistcallcan(itemCan);
-            }
-            
-
-            canCaptData.capteur.split("").map((captValue, subIndex) => {
-              const codeItem = codeData.find(
-                (item) => item.code === String(subIndex + 1)
-              );
-              const date = canCaptData.date;
-              const intitule = codeItem ? codeItem.intitule : "";
-              const intitule1 = listcallcap.map((x) => x.intitule);
-
-              const isActive = captValue === "1" ? "ON" : "OFF";
-              const color = captValue === "1" ? "green" : "red";
-
-              if (intitule1.includes(intitule)) {
-                mylist.push({
-                  intitule: intitule,
-                  isActive: isActive,
-                  color: color,
-                  date: date,
-                });
+  
+              if (itemCan.length > 0) {
+                setlistcallcan(itemCan);
               }
-            });
+              
+  
+              canCaptData.capteur.split("").map((captValue, subIndex) => {
+                const codeItem = codeData.find(
+                  (item) => item.code === String(subIndex + 1)
+                );
+                const date = canCaptData.date;
+                const intitule = codeItem ? codeItem.intitule : "";
+                const intitule1 = listcallcap.map((x) => x.intitule);
+  
+                const isActive = captValue === "1" ? "ON" : "OFF";
+                const color = captValue === "1" ? "green" : "red";
+  
+                if (intitule1.includes(intitule)) {
+                  mylist.push({
+                    intitule: intitule,
+                    isActive: isActive,
+                    color: color,
+                    date: date,
+                  });
+                }
+              });
+            }
+      
           });
 
           setListCom(mylist);
@@ -1877,6 +1873,7 @@ drag_handle
 </div>}
 
 {DONNEES && <MaterialReactTable columns={columns} data={Data}  />}
+{BACS &&   <MaterialReactTable columns={columnsBacs} data={DataBacs}  />}
 {/* enableColumnResizing */}
 
 
