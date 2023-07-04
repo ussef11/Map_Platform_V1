@@ -223,7 +223,7 @@ const  [DataBacs , setDataBacs] = useState()
             let result = await res.json();
             setData(result)
 
-             let resBacs =  await fetch(`http://tanger.geodaki.com:3000/rpc/Bacs?dd=13/06/2023%2012:00:00&df=13/06/2023%2016:00:00&deviceid=110016`
+             let resBacs =  await fetch(`http://tanger.geodaki.com:3000/rpc/Bacs?dd=${startDate}%20${startTime}:00&df=${endDate}%20${endTime}:00&deviceid=${DeviceId}`
               , requestOptions)
              let resultBacs = await  resBacs.json()
              setDataBacs(resultBacs)
