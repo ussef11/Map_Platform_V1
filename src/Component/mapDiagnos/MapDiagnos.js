@@ -424,38 +424,38 @@ const MapDiagnos = () => {
   
         
   
-          // if (ActionPlay === "play") {
-          //   interval = setTimeout(() => {
-          //     if (Counter < result.length - 1) {
-          //       setCounter((current) => current + 1);
+          if (ActionPlay === "play") {
+            interval = setTimeout(() => {
+              if (Counter < result.length - 1) {
+                setCounter((current) => current + 1);
          
-          //         let pourcentage  = Math.floor((Counter/ result.length)*100)
-          //         setPourcentage(pourcentage)
-          //         console.log("pourcentage", Speed)
-          //       if(pourcentage ===100){
-          //         clearTimeout(interval);
-          //          return;
-          //       }
+                  let pourcentage  = Math.floor((Counter/ result.length)*100)
+                  setPourcentage(pourcentage)
+                  console.log("pourcentage", Speed)
+                if(pourcentage ===100){
+                  clearTimeout(interval);
+                   return;
+                }
                 
-          //     }
-          //   }, Speed);
-          // } else if (ActionPlay === "pause" || Counter === result.length - 1) {
-          //   console.log("pause", Counter);
+              }
+            }, Speed);
+          } else if (ActionPlay === "pause" || Counter === result.length - 1) {
+            console.log("pause", Counter);
           
-          //   clearTimeout(interval);
-          //   clearInterval(interval);
+            clearTimeout(interval);
+            clearInterval(interval);
             
-          // } else if (ActionPlay === "stop") {
-          //   setCounter(0);
-          //   setPourcentage(0)
-          //   console.log("stop", Counter);
-          //   clearTimeout(interval);
-          //   return;
-          // }
+          } else if (ActionPlay === "stop") {
+            setCounter(0);
+            setPourcentage(0)
+            console.log("stop", Counter);
+            clearTimeout(interval);
+            return;
+          }
   
          
         }
-        // return () => clearTimeout(interval);
+        return () => clearTimeout(interval);
       } catch (error) {
         console.log("error", error);
       }

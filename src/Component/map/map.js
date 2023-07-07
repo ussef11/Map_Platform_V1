@@ -442,7 +442,6 @@ const Map = () => {
             position: position,
             icon: icons,
             name: lat_lng[i].name,
-            id: lat_lng[i].id,
             typevehicule: lat_lng[i].typevehicule,
             lastupdate: lat_lng[i].lastupdate,
             batterie: lat_lng[i].batterie,
@@ -583,10 +582,7 @@ const Map = () => {
                             <span>Type : </span>
                             {x.typevehicule}
                           </div>
-                          <div>
-                            <span>ID : </span>
-                            {x.id}
-                          </div>
+                         
                           <div>
                             <span>Conducteur : </span>
                           </div>
