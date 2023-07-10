@@ -1,10 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/";
 
-
-
-
+const host = process.env.REACT_APP_API; 
+const API_URL = host;
 const register = (username, email, password) => {
   return axios.post(API_URL + "api/auth/signup", {
     username,
@@ -28,8 +26,23 @@ const login = (username, password) => {
     });
 };
 
+const forgotpaass = (username, password, newpassword) => {
+  return axios
+    .post(API_URL + "api/auth/ForgetPassword", {
+      username,
+      password,
+      newpassword,
+    })
+    .then((response) => {
+      if (response.data.accessToken) {
+        window.location.reload();
+      }
+    });
+};
+
 const logout = () => {
   localStorage.removeItem("user");
+  
 };
 
 const getCurrentUser = () => {
@@ -41,7 +54,7 @@ const AuthService = {
   login,
   logout,
   getCurrentUser,
-  
+  forgotpaass
 };
 
 export default AuthService;

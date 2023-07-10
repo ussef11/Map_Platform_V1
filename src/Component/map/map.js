@@ -204,7 +204,7 @@ const Map = () => {
     lat: 35.759465,
     lng: -5.833954,
   });
-
+  const hosts = process.env.REACT_API_URL; 
 
 
   useEffect(()=>{
@@ -221,7 +221,8 @@ const Map = () => {
       setdisplaybacs(false)
       setresultForpopup()
     }
-    console.log( "ssssss", SelectedRadioValue)
+    console.log( "ssssss", hosts)
+    
   } ,[ContextShowtTee , SelectedRadioValue] )
 
 

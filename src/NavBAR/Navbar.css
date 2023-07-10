@@ -150,3 +150,16 @@ p {
   left: -8px;
 }
 
+.action_button{
+  background: none;
+    border: none;
+    color: white;
+    font-size: 17pt;
+    cursor: pointer;
+    position: relative;
+    top: -6px
+}
+.action_button:hover{
+    color: red;
+  
+}

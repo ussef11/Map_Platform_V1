@@ -266,3 +266,10 @@
     font-weight: 700;
 
 }
+
+.span-danger{
+	margin-right: 100%;
+    margin-left: 123px;
+	color: red;
+	width: 43%;
+}
