@@ -1,13 +1,27 @@
 import axios from "axios";
 
 
-const host = process.env.REACT_APP_API; 
+const host = process.env.REACT_APP_API;
 const API_URL = host;
-const register = (username, email, password) => {
+const register = (
+  username,
+  email,
+  name,
+  latitude,
+  longitude,
+  gsm,
+  password,
+  roles
+) => {
   return axios.post(API_URL + "api/auth/signup", {
     username,
     email,
+    name,
+    latitude,
+    longitude,
+    gsm,
     password,
+    roles
   });
 };
 
@@ -42,7 +56,6 @@ const forgotpaass = (username, password, newpassword) => {
 
 const logout = () => {
   localStorage.removeItem("user");
-  
 };
 
 const getCurrentUser = () => {
@@ -54,7 +67,7 @@ const AuthService = {
   login,
   logout,
   getCurrentUser,
-  forgotpaass
+  forgotpaass,
 };
 
 export default AuthService;

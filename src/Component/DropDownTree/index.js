@@ -80,8 +80,6 @@ function Tree() {
       document.getElementsByClassName("dropdown")[0].style.height = "80vh";
     }
  
-    
-    
   }
 
 
@@ -113,7 +111,7 @@ function Tree() {
     
     else if (ContextShowtTee === "close All") {
       
-
+      setDeviceId(null)
       SetShowTempreel(false);
       setSelectedRadioValue(null)
       Setlat_lng([]);
@@ -634,7 +632,7 @@ function Tree() {
       }
     };
     if(ContextShowtTee === "TEMPS REEL"){
-      const intervalCall = setInterval(fetchData, 10000);
+      const intervalCall = setInterval(fetchData, 5000);
       return () => {
         clearInterval(intervalCall);
       };

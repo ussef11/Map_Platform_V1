@@ -11,7 +11,8 @@ import MapDiagnos from "../Component/mapDiagnos/MapDiagnos";
 import DisplayChart from "../Component/Chart/DisplayChart";
 import PopupDiag from "../Component/SidePopup/PopupDiag";
 
-import UserService from "../services/user.service"
+import UserService from "../services/user.service";
+import Utilisateur from "../Component/Gestion/utilisateur";
 import "./Home.css";
 const Home = () => {
   const [lat_lng, Setlat_lng] = useState();
@@ -43,32 +44,30 @@ const Home = () => {
 
   const [DeviceId, setDeviceId] = useState();
 
+  const [content, setcontent] = useState();
+  const [admin, isAdmin] = useState(false);
 
+  useEffect(() => {
+    UserService.getAdminBoard().then(
+      (res) => {
+        setcontent(res.data);
+        isAdmin(true);
+      },
+      (error) => {
+        const _content =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setcontent(_content);
+        isAdmin(false);
+        window.location.href = "/login";
+      }
+    );
 
-
-
-    
-  const[content  , setcontent] = useState()
-  const [admin , isAdmin] = useState(false);
-
-  useEffect(()=>{
-      UserService.getAdminBoard().then((res)=>{
-          setcontent(res.data)
-          isAdmin(true)
-      },(error)=>{
-          const _content =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-        setcontent(_content)
-        isAdmin(false)
-        window.location.href = "/login"
-      })
-
-      console.log("content", content)
-  },[])
+    console.log("content", content);
+  }, []);
   return (
     <ContextID.Provider
       value={{
@@ -117,26 +116,30 @@ const Home = () => {
         SetClickChartPos,
       }}
     >
-     { admin ? <>
-        <Navbar />
-        <div className="Container">
-          <Menu />
-          <Tree />
+      {admin ? (
+        <>
+          <Navbar />
+          <div className="Container">
+            <Menu />
+            <Tree />
 
-          <div className="mapPopupContainer">
-            {ContextShowtTee === "TEMPS REEL" ? (
-              <Map />
-            ) : ContextShowtTee === "DIAGNOSTIQUE" ? (
-              <MapDiagnos />
-            ) : (
-              <Map />
-            )}
-            {ContextShowtTee === "TEMPS REEL" ? <Popup /> : <PopupDiag />}
+            <div className="mapPopupContainer">
+              {ContextShowtTee === "TEMPS REEL" ? (
+                <Map />
+              ) : ContextShowtTee === "DIAGNOSTIQUE" ? (
+                <MapDiagnos />
+              ) : ContextShowtTee === "Gestion des utilisateurs" ? <Utilisateur/> :  (
+                <Map />
+              )}
+              {ContextShowtTee === "TEMPS REEL" ? <Popup /> : ContextShowtTee === "DIAGNOSTIQUE" ? <PopupDiag /> : null}
 
-            {ContextShowtTee === "DIAGNOSTIQUE" ? <DisplayChart /> : null}
+              {ContextShowtTee === "DIAGNOSTIQUE" ? <DisplayChart /> : null}
+            </div>
           </div>
-        </div>
-      </> :  content}
+        </>
+      ) : (
+        content
+      )}
     </ContextID.Provider>
   );
 };

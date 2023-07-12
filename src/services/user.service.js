@@ -2,7 +2,7 @@ import axios from "axios";
 import authHeader from "./auth.header";
 import AuthService from "./auth.service";
 
-const host = process.env.REACT_APP_API; 
+const host = process.env.REACT_APP_API;
 const API_URL = host;
 
 const getPublicContent = () => {
@@ -21,32 +21,62 @@ const getAdminBoard = () => {
   return axios.get(API_URL + "api/admin", { headers: authHeader() });
 };
 
-const currentuser = AuthService.getCurrentUser()
+const currentuser = AuthService.getCurrentUser();
 
-const AddArticles = (title , content) =>{
-  if(currentuser){
- console.log(currentuser.id)
+const getalluser = () => {
+  return axios.get(API_URL + "getalluser", { headers: authHeader() });
+};
 
-  return axios.post(API_URL + "Add", {
-    title,
-    content,
-    userId: currentuser.id
-  }, {
-    headers: authHeader()
-  });
 
-}else{
-   console.log(currentuser ,"currentuser")
+
+const updateUser = (id, username, email, name, latitude,longitude, gsm, roles) => {
+  return axios.post(API_URL + "api/admin/UpdatedUser", {
+    id,
+    username,
+    email,
+    name,
+    latitude,
+    longitude,
+    gsm,
+    roles,
+  },{ headers:authHeader()});
+};
+
+const deteleUser = (id)=>{
+  return axios.post(API_URL + "api/admin/DeleteUser" , {
+    id
+  },{ headers:authHeader()})
 }
+
+const AddArticles = (title, content) => {
+  if (currentuser) {
+    console.log(currentuser.id);
+
+    return axios.post(
+      API_URL + "Add",
+      {
+        title,
+        content,
+        userId: currentuser.id,
+      },
+      {
+        headers: authHeader(),
+      }
+    );
+  } else {
+    console.log(currentuser, "currentuser");
   }
- 
+};
 
 const UserService = {
   getPublicContent,
   getUserBoard,
   getModeratorBoard,
   getAdminBoard,
-  AddArticles
+  AddArticles,
+  getalluser,
+  updateUser,
+  deteleUser
 };
 
 export default UserService;

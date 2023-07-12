@@ -213,8 +213,7 @@ useEffect(()=>{
             {error.Repassword && (
               <span
                 style={{ width: "67%", marginLeft: "113px" }}
-                className="span-danger"
-              >
+ className="span-danger">
                 confirm is required
               </span>
             )}
@@ -296,7 +295,7 @@ useEffect(()=>{
               </p>
               {/* <button  onClick={handleSignUp} className="ghost"  id="signUp">Sign Up</button> */}
               <div className="copy">
-                <p>Copyright (C) 2020-2021 by VELOVOLT</p>
+                <p>Copyright (C) 2023-2021 by VELOVOLT</p>
               </div>
             </div>
           </div>

@@ -40,7 +40,9 @@ isAdmin = (req, res, next) => {
       });
       return;
     });
-  });
+  }).catch(error =>{
+    res.status(500).json({ message: error.message });
+  });;
 };
 
 isModerator = (req, res, next) => {

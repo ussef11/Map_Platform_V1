@@ -1569,8 +1569,7 @@ drag_handle
   
    </div>
   {GRAPH && <div>   
-      <div  className="chart">
-        <Bar
+            <Bar
           width={100}
           height={8}
           ref={chartrefbar}
@@ -1637,7 +1636,7 @@ drag_handle
             },
           }}
         />
-      </div>
+     
 
       <Line 
         width={100}

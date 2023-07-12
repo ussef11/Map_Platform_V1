@@ -402,9 +402,9 @@ width: 24vw;
   }
   
   
-    /* .node.focused {
+    .node.focused {
       background-color: #8aa8ff;
-  } */
+  }
   
   
   /* DateTimPicker */

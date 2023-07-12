@@ -550,7 +550,7 @@ const Map = () => {
               fullscreenControl: false,
 
               zoom:
-              SelectedRadioValue === "circuit" ? null :     IdMark != null ? (appliedZoom === false ? (defaultzoom ? 12 : 19) : null) : 12
+              SelectedRadioValue === "circuit" ? null :     IdMark != null ? (appliedZoom === false ? (defaultzoom ? 13 : 19) : null) : 13
 
               ,
 
