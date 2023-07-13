@@ -349,13 +349,19 @@ const roles = [
     <>
   
     {  tableData &&    <MaterialReactTable 
+      muiTableHeadCellProps={{
+        //no useTheme hook needed, just use the `sx` prop with the theme callback
+        sx: (theme) => ({
+          fontSize: "12px",
+        }),
+      }}
           key={ref}
         displayColumnDefOptions={{
           'mrt-row-actions': {
             muiTableHeadCellProps: {
               align: 'center',
             },
-            size: 50,
+            size: 70,
           },
         }}
         onPaginationChange={setPagination} //hoist pagination state to your state when it changes internally
@@ -417,6 +423,17 @@ export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
     onClose();
   };
 
+
+
+const roles = [
+    'admin',
+    'moderator',
+    'user',
+
+   
+  ];
+
+
   return (
     <Dialog open={open}>
       <DialogTitle textAlign="center">Create New Account</DialogTitle>
@@ -429,17 +446,37 @@ export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
               gap: '1.5rem',
             }}
           >
-            {columns.map((column) => (
-                
-              <TextField
-                key={column.accessorKey}
-                label={column.header}
-                name={column.accessorKey}
-                onChange={(e) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-              />
-            ))}
+
+  
+{columns.map((column) => (
+  column.accessorKey !== "id" ? (
+    column.accessorKey === "profil" ? (
+      <select className='selectroles'
+        key={column.accessorKey}
+        value={values[column.accessorKey]}
+        onChange={(e) =>
+          setValues({ ...values, [column.accessorKey]: e.target.value })
+        }
+      >
+        {roles.map((role) => (
+           <option key={role} value={role}>
+            {role}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <TextField
+        key={column.accessorKey}
+        label={column.header}
+        name={column.accessorKey}
+        onChange={(e) =>
+          setValues({ ...values, [column.accessorKey]: e.target.value })
+        }
+      />
+    )
+  ) : null
+))}
+
           </Stack>
         </form>
       </DialogContent>

@@ -1,6 +1,6 @@
 .Container{
     display: flex;
-    height: 96vh;
+    /* height: 96vh; */
 }
 
 .mapPopupContainer{

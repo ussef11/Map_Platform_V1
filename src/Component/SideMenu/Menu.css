@@ -33,13 +33,15 @@ ul.ant-menu li.ant-menu-item, .ant-menu-submenu div{
 
 
 :where(.css-dev-only-do-not-override-w8mnev).ant-menu-inline .ant-menu-item:not(:last-child), :where(.css-dev-only-do-not-override-w8mnev).ant-menu-vertical .ant-menu-item:not(:last-child) {
-    margin-top: 18px !important;
-    margin-bottom: 12px !important;;
+    margin-top: 14px !important;
+    margin-bottom: 13px !important;
 }
 
 
+
+
 :where(.css-dev-only-do-not-override-w8mnev).ant-menu-inline.ant-menu-root .ant-menu-item >.ant-menu-title-content, :where(.css-dev-only-do-not-override-w8mnev).ant-menu-inline.ant-menu-root .ant-menu-submenu-title >.ant-menu-title-content{
-    font-size: 16px;
+    font-size: 13px;
 }
 
 :where(.css-dev-only-do-not-override-w8mnev).ant-menu .ant-menu-item .ant-menu-item-icon svg, :where(.css-dev-only-do-not-override-w8mnev).ant-menu .ant-menu-submenu-title .ant-menu-item-icon svg{
@@ -65,3 +67,24 @@ height: 21px;
 :where(.css-dev-only-do-not-override-w8mnev).ant-menu-dark.ant-menu-inline .ant-menu-sub.ant-menu-inline, :where(.css-dev-only-do-not-override-w8mnev).ant-menu-dark>.ant-menu.ant-menu-inline .ant-menu-sub.ant-menu-inline{
     background-color: rgb(14,88,144); 
 }
+
+
+::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #91caff;
+    border-radius: 19px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0079ff;
+  }
