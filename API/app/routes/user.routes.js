@@ -45,4 +45,6 @@ module.exports = function(app) {
 
   app.post("/api/admin/UpdatedUser",  [authJwt.verifyToken , authJwt.isAdmin], controller.UpdatedUser);
   app.post("/api/admin/DeleteUser",  [authJwt.verifyToken , authJwt.isAdmin], controller.DeleteUser);
+  app.post("/api/auth/UpdatedUser", [authJwt.verifyToken , authJwt.isAdmin], controller.Updateduser_interfaces);
+
 };

@@ -36,6 +36,24 @@ exports.allAccess = (req, res) => {
       });
   }
 
+  exports.Updateduser_interfaces = async (req, res) => {
+    const {  id,    interfaceId  , create , read  , remove} = req.body;
+  try{
+    const query = `
+    UPDATE user_interfaces  ui
+    SET "read" = :read, "create" = :create, "delete" = :remove
+    where ui."userId" = :id and ui."interfaceId" = :interfaceId
+    `
+    const [updatedRows] =  await db.sequelize.query(query, {
+      replacements: { id, interfaceId, read, create, remove },
+    });
+    res.send({ message: "Interface_User was updated successfully!"  , id, interfaceId, read, create, remove} );
+    // console.log(`Updated ${updatedRows} rows.`);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+    }
+  };
+
  
 
   exports.getAlldata = (req, res) => {

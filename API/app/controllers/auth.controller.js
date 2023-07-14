@@ -3,22 +3,18 @@ const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
 const Article = db.articles;
+const Interface = db.interface;
 
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+
+
+
+
 exports.signup = (req, res) => {
-  // "username" : "ysf",
-  // "email" : "ysf",
-  // "name" : "youssef",
-  // "latitude" : "53.754633",
-  // "longitude" : "-5.835329",
-  // "password" :"123",
-  // "newpassword":"0000",
-  // "gsm" : "0616169076",
-  // "roles" :["admin"]
   try {
     User.create({
       username: req.body.username,
@@ -28,6 +24,8 @@ exports.signup = (req, res) => {
       longitude: req.body.longitude,
       gsm: req.body.gsm,
       password: bcrypt.hashSync(req.body.password, 8),
+      
+     
     })
       .then((user) => {
         if (req.body.roles) {
@@ -38,14 +36,73 @@ exports.signup = (req, res) => {
               },
             },
           }).then((roles) => {
-            user.setRoles(roles).then(() => {
-              res.send({ message: "User was registered successfully!"  , user:user} );
+              user.setRoles(roles).then(() => {
+              // res.send({ message: "User was registered successfully!"  , role:roles[0].name} );
+              if(req.body.interface){
+                if(roles[0].name === "admin"){
+                  Interface.findAll({
+                    where :{
+                      name :{
+                        [Op.or] : req.body.interface,
+                      },
+                      
+                    },
+                  }).then((interface)=>{
+                      user.setInterfaces(interface  ,{
+                        through: {
+                          read: req.body.read || true,
+                          create: req.body.create || true,
+                          delete: req.body.delete || true,
+                        }},).then(()=>{ 
+                         console.log(interface)
+                         res.send({ message: "User was registered successfully!"  , name :user.username} );
+                     })
+                  })
+              }else{
+                Interface.findAll({
+                  where :{
+                    name :{
+                      [Op.or] : req.body.interface,
+                    },
+                  },
+                }).then((interface)=>{
+                    user.setInterfaces(interface  ,{
+                      through: {
+                        read: req.body.read || false,
+                        create: req.body.create || false,
+                        delete: req.body.delete || false,
+                      }},).then(()=>{ 
+                       console.log(interface)
+                       res.send({ message: "User was registered successfully!"  , user} );
+                   })
+                })
+              }
+              }else{
+                  user.setInterfaces([1,2]  , {
+                    through: {
+                      read: req.body.read || false,
+                      create: req.body.create || false,
+                      delete: req.body.delete || false,
+                    }}).then(() => {
+                  res.send({ message: "User was registered successfully!"  , user});
+                });
+              }
+            
             });
           });
         } else {
-          // user role = 1
-          user.setRoles([1]).then(() => {
-            res.send({ message: "User was registered successfully!"  , user:user});
+          
+            //user role = 1
+            user.setRoles([1]).then(() => {
+              user.setInterfaces([1,2]  , {
+                through: {
+                  read: req.body.read || false,
+                  create: req.body.create || false,
+                  delete: req.body.delete || false,
+                }}).then(() => {
+              res.send({ message: "User was registered successfully!"  , user});
+            });
+            // res.send({ message: "User was registered successfully!"  , user:user});
           });
         }
       })
